@@ -25,8 +25,6 @@ class MainView extends Phaser.State {
     this.ladder = this.game.add.sprite(224,221, "Ladder");
     this.ladder.body.immovable = true;
 
-    this.computer = this.game.add.sprite(29, 40 - 390, "computer");
-
     this.hero = new Character(this.game, 20 , 40, "test", 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
@@ -44,7 +42,6 @@ class MainView extends Phaser.State {
   preload() {
     this.game.load.spritesheet("test", "res/hero.png", WidthSpriteSheetHero, HeightSpriteSheetHero);
     this.game.load.image('Tileset', "res/tileset.png");
-    this.game.load.image("computer", "res/computer.png");
     this.game.load.image('Ladder', "res/ladder.png");
     this.game.load.tilemap('Map1', "res/firstLevel.json", null, Phaser.Tilemap.TILED_JSON);
   }
