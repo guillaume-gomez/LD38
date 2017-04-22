@@ -41,6 +41,10 @@ class MainView extends Phaser.State {
 
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.keyRemoveLayer.onDown.add(this.mapManager.eraseBlock, this.mapManager);
+
+    this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
+    this.keyUndoLayer.onDown.add(this.mapManager.undoBlock, this.mapManager);
+
     this.game.time.advancedTiming = true;
 
   }
