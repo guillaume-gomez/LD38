@@ -77,8 +77,8 @@ class MainView extends Phaser.State {
   }
 
   updateMarker() {
-    this.marker.x = this.game.math.snapToFloor(this.game.input.activePointer.worldX, Size, 0);
-    this.marker.y = this.game.math.snapToFloor(this.game.input.activePointer.worldY, Size, 0);
+    this.marker.x = this.game.math.snapToFloor(this.game.input.activePointer.worldX, CursorSize, 0);
+    this.marker.y = this.game.math.snapToFloor(this.game.input.activePointer.worldY, CursorSize, 0);
 
     if (this.game.input.mousePointer.isDown && this.marker.y > Size) {
       this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
