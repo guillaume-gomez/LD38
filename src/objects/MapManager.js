@@ -24,20 +24,19 @@ class MapManager {
   eraseBlock() {
     const x = 0;
     const y = 0;
-    const lengthY = 10;
-    const lengthX = 10;
+    const lengthY = 4;
+    const lengthX = 4;
     //check the layers associated to the deletion;
     let objectsRemoves = []
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
-    for(let xAxis = x; xAxis < lengthX; xAxis++) {
-      for(let yAxis = y; yAxis < lengthY; yAxis++) {
+    for(let xAxis = x; xAxis <= lengthX; xAxis++) {
+      for(let yAxis = y; yAxis <= lengthY; yAxis++) {
         const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
         objectsRemoves.push(tile);
       }
     }
     this.removedBlock.push({tiles: objectsRemoves, layerIndex: layerIndex, x, y});
     this.removedBlock.sort(this.sortByLayerIndex);
-    console.log(this.removedBlock)
   }
 
   sortByLayerIndex(a, b) {
@@ -47,8 +46,8 @@ class MapManager {
   undoBlock() {
     const x = 0;
     const y = 0;
-    const lengthX = 10;
-    const lengthY = 10;
+    const lengthX = 4;
+    const lengthY = 4;
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
     if(redoElements) {
       redoElements.tiles.forEach(tile => {
