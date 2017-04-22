@@ -1,3 +1,5 @@
+import { CursorLength } from '../Constants.js';
+
 class MapManager {
 
   constructor(map, mapLayer) {
@@ -19,16 +21,14 @@ class MapManager {
     return layerIndex;
   }
 
-  eraseBlock() {
-    const x = 0;
-    const y = 0;
-    const lengthY = 4;
-    const lengthX = 4;
+  eraseBlock(x = 0, y = 0) {
+    const lengthY = CursorLength;
+    const lengthX = CursorLength;
     //check the layers associated to the deletion;
     let objectsRemoves = []
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
-    for(let xAxis = x; xAxis <= lengthX; xAxis++) {
-      for(let yAxis = y; yAxis <= lengthY; yAxis++) {
+    for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
+      for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
         const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
         objectsRemoves.push(tile);
       }
@@ -44,8 +44,8 @@ class MapManager {
   undoBlock() {
     const x = 0;
     const y = 0;
-    const lengthX = 4;
-    const lengthY = 4;
+    const lengthX = CursorLength;
+    const lengthY = CursorLength;
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
     if(redoElements) {
       redoElements.tiles.forEach(tile => {

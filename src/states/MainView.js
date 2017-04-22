@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize } from '../Constants.js';
 import { Tileset, Level1, HeroSpriteKey } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import { loadColissionMap } from "../platformerUtils.js";
@@ -37,6 +37,10 @@ class MainView extends Phaser.State {
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
+    this.marker = null;
+    this.createTileSelector();
+    this.game.input.addMoveCallback(this.updateMarker, this);
+
     this.mapManager = new MapManager(this.map, MaxLayer);
 
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -60,10 +64,26 @@ class MainView extends Phaser.State {
     this.game.load.tilemap(Level1.key, `res/${Level1.path}` , null, Phaser.Tilemap.TILED_JSON);
   }
 
-   render() {
-     //this.game.debug.spriteInfo(this.hero, 32, 400);
-     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-   }
+  render() {
+    this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
+  }
+
+  updateMarker() {
+    this.marker.x = this.game.math.snapToFloor(this.game.input.activePointer.worldX, Size, 0);
+    this.marker.y = this.game.math.snapToFloor(this.game.input.activePointer.worldY, Size, 0);
+
+    if (this.game.input.mousePointer.isDown && this.marker.y > Size) {
+      this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
+    }
+
+  }
+
+  createTileSelector() {
+    //Our painting marker
+    this.marker = this.game.add.graphics();
+    this.marker.lineStyle(2, 0xFF0000, 1);
+    this.marker.drawRect(0, 0, CursorSize, CursorSize);
+  }
 
 }
 
