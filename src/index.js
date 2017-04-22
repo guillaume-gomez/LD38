@@ -9,6 +9,9 @@ class Game extends Phaser.Game {
     this.state.start('MainView');
   }
 
+  reset() {
+    this.state.start('MainView', Phaser.Plugin.StateTransition.In.ScaleUp, Phaser.Plugin.StateTransition.Out.SlideBottom, true, true, 1);
+  }
   // goToMainGame(params = null) {
   //   this.state.start('MainView', Phaser.Plugin.StateTransition.Out.SlideLeft, Phaser.Plugin.StateTransition.Out.SlideLeft, true, true, params);
   // }

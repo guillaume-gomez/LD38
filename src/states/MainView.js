@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Height } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSpriteKey } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import { loadColissionMap } from "../platformerUtils.js";
@@ -57,6 +57,9 @@ class MainView extends Phaser.State {
 
   update() {
     this.game.physics.arcade.collide(this.hero, this.collisionLayer);
+    if(this.hero.y > Height + this.hero.height) {
+      this.game.reset();
+    }
   }
 
   preload() {
@@ -84,7 +87,6 @@ class MainView extends Phaser.State {
     if (this.game.input.mousePointer.isDown && this.marker.y > Size) {
       this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
     }
-
   }
 
   createTileSelector() {
