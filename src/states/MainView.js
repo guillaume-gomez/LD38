@@ -37,7 +37,7 @@ class MainView extends Phaser.State {
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
-    this.mapManager = new MapManager(this.map);
+    this.mapManager = new MapManager(this.map, MaxLayer);
 
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.keyRemoveLayer.onDown.add(this.mapManager.eraseBlock, this.mapManager);

@@ -1,16 +1,14 @@
-//TO DESTROY LATER
-const MaxLayer = 2
-
 class MapManager {
 
-  constructor(map) {
+  constructor(map, mapLayer) {
     this.removedBlock = [];
     this.map = map;
+    this.maxMapLayer = mapLayer;
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
     let layerIndex = 0;
-    for(let index = 0; index < MaxLayer; index++) {
+    for(let index = 0; index < this.maxMapLayer; index++) {
       if( this.map.getTile(x, y, index) === null &&
           this.map.getTile(x + lengthX-1, y + lengthY-1, index) === null) {
         layerIndex++;
