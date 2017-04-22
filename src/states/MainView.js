@@ -1,5 +1,5 @@
 import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize } from '../Constants.js';
-import { Tileset, Level1, HeroSpriteKey } from '../ConstantsKey.js';
+import { Tileset, Level1, Levels, HeroSpriteKey } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import { loadColissionMap } from "../platformerUtils.js";
 
@@ -14,7 +14,8 @@ class MainView extends Phaser.State {
     super();
   }
 
-  init() {
+  init(indexLevel) {
+    this.indexLevel = 1;
   }
 
   create() {
@@ -22,8 +23,8 @@ class MainView extends Phaser.State {
     // Add the physics engine to all game objects
     this.game.world.enableBody = true;
 
-    this.map = this.game.add.tilemap(Level1.key);
-    this.map.addTilesetImage(Level1.key, Tileset.key);
+    this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
+    this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
     this.map.createLayer('firstLayer');
     this.map.createLayer('secondLayer');
     this.map.createLayer('thirdLayer');
@@ -61,7 +62,7 @@ class MainView extends Phaser.State {
   preload() {
     this.game.load.spritesheet(HeroSpriteKey, "res/hero.png", WidthSpriteSheetHero, HeightSpriteSheetHero);
     this.game.load.image(Tileset.key, `res/${Tileset.path}`);
-    this.game.load.tilemap(Level1.key, `res/${Level1.path}` , null, Phaser.Tilemap.TILED_JSON);
+    this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
   }
 
   render() {
