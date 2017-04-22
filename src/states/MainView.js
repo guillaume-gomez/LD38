@@ -3,6 +3,8 @@ import { Tileset, Level1, HeroSpriteKey } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import { loadColissionMap } from "../platformerUtils.js";
 
+import MapManager from "objects/MapManager";
+
 //TO DESTROY LATER
 const MaxLayer = 2
 
@@ -35,42 +37,17 @@ class MainView extends Phaser.State {
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
+    this.mapManager = new MapManager(this.map);
+
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    this.keyRemoveLayer.onDown.add(this.eraseBlock, this);
-    //this.game.time.advancedTiming = true;
+    this.keyRemoveLayer.onDown.add(this.mapManager.eraseBlock, this.mapManager);
+    this.game.time.advancedTiming = true;
+
   }
 
 
   update() {
     this.game.physics.arcade.collide(this.hero, this.collisionLayer);
-  }
-
-  findLayerToDestroy(x, y, lengthX, lengthY) {
-    let layerIndex = 0;
-    for(let index = 0; index < 2; index++) {
-      if(this.map.getTile(x, y, index) === null &&
-         this.map.getTile(x + lengthX-1, y + lengthY-1, index) === null) {
-        layerIndex++;
-      } else {
-        break;
-      }
-    }
-    console.log(layerIndex)
-    return layerIndex;
-  }
-
-  eraseBlock() {
-    const x = 0;
-    const y = 0;
-    const lengthY = 10;
-    const lengthX = 10;
-    //check the layers associated to the deletion;
-    const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
-    for(let xAxis = x; xAxis < lengthX; xAxis++) {
-      for(let yAxis = y; yAxis < lengthY; yAxis++) {
-        this.map.removeTile(xAxis, yAxis, layerIndex);
-      }
-    }
   }
 
   preload() {
@@ -79,10 +56,10 @@ class MainView extends Phaser.State {
     this.game.load.tilemap(Level1.key, `res/${Level1.path}` , null, Phaser.Tilemap.TILED_JSON);
   }
 
-   //render() {
+   render() {
      //this.game.debug.spriteInfo(this.hero, 32, 400);
-     //this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
-   //}
+     this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+   }
 
 }
 
