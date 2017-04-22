@@ -6,7 +6,7 @@ import { loadColissionMap } from "../platformerUtils.js";
 import MapManager from "objects/MapManager";
 
 //TO DESTROY LATER
-const MaxLayer = 2
+const MaxLayer = 1
 
 class MainView extends Phaser.State {
 
