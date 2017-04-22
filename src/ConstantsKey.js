@@ -4,7 +4,7 @@ export const Tileset = {
   };
 
 export const Level1 = {
-  path: "test_level1.json",
+  path: "test_level1_DESIGN.json",
   key: "Test"
 };
 
