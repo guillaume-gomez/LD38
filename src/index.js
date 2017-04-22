@@ -7,10 +7,16 @@ class Game extends Phaser.Game {
     super(Width, Height, Phaser.AUTO, 'content', null);
     this.state.add('MainView', MainView, false);
     this.state.start('MainView');
+    this.currentLevel = 1;
   }
 
   reset() {
-    this.state.start('MainView', Phaser.Plugin.StateTransition.In.ScaleUp, Phaser.Plugin.StateTransition.Out.SlideBottom, true, true, 1);
+    this.state.start('MainView', Phaser.Plugin.StateTransition.In.ScaleUp, Phaser.Plugin.StateTransition.Out.SlideBottom, true, true, this.currentLevel);
+  }
+
+  nextLevel() {
+    this.currentLevel++;
+    this.state.start('MainView', Phaser.Plugin.StateTransition.In.SlideLeft, null, true, true, this.currentLevel);
   }
   // goToMainGame(params = null) {
   //   this.state.start('MainView', Phaser.Plugin.StateTransition.Out.SlideLeft, Phaser.Plugin.StateTransition.Out.SlideLeft, true, true, params);

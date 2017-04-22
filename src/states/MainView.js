@@ -15,7 +15,7 @@ class MainView extends Phaser.State {
   }
 
   init(indexLevel) {
-    this.indexLevel = 1;
+    this.indexLevel = indexLevel || 1;
   }
 
   create() {
@@ -34,7 +34,7 @@ class MainView extends Phaser.State {
     // This resizes the game world to match the layer dimensions
     this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 20 , 300, HeroSpriteKey, 0);
+    this.hero = new Character(this.game, 47 , 400, HeroSpriteKey, 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
@@ -56,9 +56,15 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, null,this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
+    }
+  }
+
+  additionalCheck(tile1, tile2) {
+    if(tile2.index != 179) {
+      this.game.nextLevel();
     }
   }
 

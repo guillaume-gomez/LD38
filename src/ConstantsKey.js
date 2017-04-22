@@ -4,13 +4,18 @@ export const Tileset = {
   };
 
 export const Level1 = {
-  path: "test.json",
+  path: "test_level1.json",
   key: "Test"
-  };
+};
 
+export const Level2 = {
+  path: "level2.json",
+  key: "Test"
+};
 
 export const Levels = {
-  Level1
+  Level1,
+  Level2
 }
 
 export const HeroSpriteKey = "hero"
