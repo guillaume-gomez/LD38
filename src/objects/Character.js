@@ -46,7 +46,7 @@ class Character extends Phaser.Sprite {
 
     // Make the player jump if he is touching the ground
     if (this.cursor.up.isDown && this.body.onFloor()) {
-      this.body.velocity.y = -270;
+      this.body.velocity.y = -150;
       this.animations.play("jump", TimeLapse);
     }
 
