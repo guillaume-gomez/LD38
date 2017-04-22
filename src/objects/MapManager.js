@@ -21,7 +21,7 @@ class MapManager {
     return layerIndex;
   }
 
-  eraseBlock(x = 0, y = 0) {
+  eraseBlock(x, y) {
     const lengthY = CursorLength;
     const lengthX = CursorLength;
     //check the layers associated to the deletion;
@@ -41,9 +41,7 @@ class MapManager {
     return a.layerIndex < b.layerIndex;
   }
 
-  undoBlock() {
-    const x = 0;
-    const y = 0;
+  undoBlock(x, y) {
     const lengthX = CursorLength;
     const lengthY = CursorLength;
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );

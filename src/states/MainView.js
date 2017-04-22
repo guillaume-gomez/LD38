@@ -44,10 +44,10 @@ class MainView extends Phaser.State {
     this.mapManager = new MapManager(this.map, MaxLayer);
 
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-    this.keyRemoveLayer.onDown.add(this.mapManager.eraseBlock, this.mapManager);
+    this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
 
     this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
-    this.keyUndoLayer.onDown.add(this.mapManager.undoBlock, this.mapManager);
+    this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
     this.game.time.advancedTiming = true;
 
@@ -66,6 +66,14 @@ class MainView extends Phaser.State {
 
   render() {
     this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
+  }
+
+  eraseBlockKeyboard() {
+    this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
+  }
+
+  undoBlockKeyboard() {
+    this.mapManager.undoBlock(this.marker.x / Size, this.marker.y / Size);
   }
 
   updateMarker() {
