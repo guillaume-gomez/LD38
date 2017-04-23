@@ -1,14 +1,21 @@
 import MainView from 'states/MainView';
+import MainMenu from 'states/MainMenu';
 import { Width, Height } from  "./Constants.js"
 
 class Game extends Phaser.Game {
 
   constructor() {
     super(Width, Height, Phaser.AUTO, 'content', null);
-    this.state.add('MainView', MainView, false);
-    this.state.start('MainView');
     this.currentLevel = 1;
+    this.state.add('MainMenu', MainMenu, false);
+    this.state.add('MainView', MainView, false);
+    this.state.start('MainMenu');
   }
+
+  goToMainGame() {
+     this.state.start('MainView');
+  }
+
 
   reset() {
     this.state.start('MainView', Phaser.Plugin.StateTransition.In.ScaleUp, Phaser.Plugin.StateTransition.Out.SlideBottom, true, true, this.currentLevel);
@@ -18,15 +25,6 @@ class Game extends Phaser.Game {
     this.currentLevel++;
     this.state.start('MainView', Phaser.Plugin.StateTransition.In.SlideLeft, null, true, true, this.currentLevel);
   }
-  // goToMainGame(params = null) {
-  //   this.state.start('MainView', Phaser.Plugin.StateTransition.Out.SlideLeft, Phaser.Plugin.StateTransition.Out.SlideLeft, true, true, params);
-  // }
-
-  // goToSecondLevel(params = null) {
-  //   this.state.start('LeftView', Phaser.Plugin.StateTransition.Out.SlideRight, Phaser.Plugin.StateTransition.Out.SlideRight, true, true, params);
-  // }
-
-
 }
 
 new Game();
