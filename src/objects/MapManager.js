@@ -9,11 +9,11 @@ class MapManager {
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
-    let layerIndex = 0;
-    for(let index = 0; index < this.maxMapLayer; index++) {
+    let layerIndex = this.maxMapLayer;
+    for(let index = this.maxMapLayer; index >= 1; index--) {
       if( this.map.getTile(x, y, index) === null &&
           this.map.getTile(x + lengthX-1, y + lengthY-1, index) === null) {
-        layerIndex++;
+        layerIndex--;
       } else {
         break;
       }
@@ -41,7 +41,7 @@ class MapManager {
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
-        let collidedTile = this.map.getTile(xAxis, yAxis, this.map.layers.length - 1);
+        let collidedTile = this.map.getTile(xAxis, yAxis, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
         }
@@ -54,7 +54,7 @@ class MapManager {
   }
 
   sortByLayerIndex(a, b) {
-    return a.layerIndex < b.layerIndex;
+    return a.layerIndex > b.layerIndex;
   }
 
   undoBlock(x, y) {
@@ -63,7 +63,7 @@ class MapManager {
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
     if(redoElements) {
       redoElements.tiles.forEach(tile => {
-        let collidedTile = this.map.getTile(tile.x, tile.y, this.map.layers.length - 1);
+        let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
         }

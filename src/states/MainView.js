@@ -5,7 +5,7 @@ import Character from 'objects/Character';
 import MapManager from "objects/MapManager";
 
 //TO DESTROY LATER
-const MaxLayer = 1
+const MaxLayer = 3;
 
 class MainView extends Phaser.State {
 
@@ -25,10 +25,10 @@ class MainView extends Phaser.State {
     this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
     this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
 
-    this.map.createLayer('firstLayer');
-    this.map.createLayer('secondLayer');
-    this.map.createLayer('thirdLayer');
 
+    this.map.createLayer('thirdLayer');
+    this.map.createLayer('secondLayer');
+    this.map.createLayer('firstLayer');
     // This resizes the game world to match the layer dimensions
     this.collisionLayer = this.map.createLayer('colissionLayer');
     this.map.setCollisionByExclusion([], true, this.collisionLayer);
