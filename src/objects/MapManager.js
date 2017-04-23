@@ -177,10 +177,9 @@ class MapManager {
   }
 
   showDoor() {
-    this.doorSprites.forEach(tile => {
+    this.doorSprites.forEach((tile, index) => {
       tile.alpha = 1;
-      tile.isVisible = true;
-    })
+    });
   }
 
 }
