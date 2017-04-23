@@ -11,14 +11,19 @@ class MapManager {
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
+    //layer can be deleted 3 and 2
     let layerIndex = this.maxMapLayer;
-    for(let index = this.maxMapLayer; index >= 1; index--) {
+    for(let index = this.maxMapLayer; index > 1; index--) {
       if( this.map.getTile(x, y, index) === null &&
           this.map.getTile(x + lengthX-1, y + lengthY-1, index) === null) {
         layerIndex--;
       } else {
         break;
       }
+    }
+    //impossibe
+    if(layerIndex <= 1) {
+      return -1;
     }
     return layerIndex;
   }
@@ -43,6 +48,11 @@ class MapManager {
     let objectsRemoves = [];
     let indexRemoval = 0;
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
+    //cannot destroy
+    if(layerIndex == -1) {
+      return;
+    }
+
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
         let collidedTile = this.map.getTile(xAxis, yAxis, "colissionLayer");
