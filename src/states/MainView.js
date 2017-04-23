@@ -1,6 +1,7 @@
 import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Height } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
+import InformationString from 'objects/InformationString';
 
 import MapManager from "objects/MapManager";
 
@@ -35,7 +36,7 @@ class MainView extends Phaser.State {
 
     this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 30 , 350, HeroSprite.key, 0);
+    this.hero = new Character(this.game, 64 , 352, HeroSprite.key, 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
@@ -46,6 +47,10 @@ class MainView extends Phaser.State {
     this.mapManager = new MapManager(this.map, MaxLayer);
     this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
+    this.text = new InformationString(this.game, 100, Levels[`Level${this.indexLevel}`].text );
+    this.game.add.existing(this.text);
+    this.text.blink();
+
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
 
@@ -53,20 +58,14 @@ class MainView extends Phaser.State {
     this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
     this.game.time.advancedTiming = true;
-
   }
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.processCallback ,this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, null , this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
-  }
-
-  processCallback(tile1, tile2) {
-    if(!tile2.isVisible) return false;
-    return true;
   }
 
   additionalCheck(tile1, tile2) {
