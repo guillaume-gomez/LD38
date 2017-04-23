@@ -19,8 +19,8 @@ class Character extends Phaser.Sprite {
     const rightArray = [31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16];
     const JumpArrayRight = [64,65,66];
     const JumpArrayLeft = [80, 81,82];
-    const PowerLeft = [48];
-    const PowerRight = [32];
+    const PowerLeft = [48,48,48,48];
+    const PowerRight = [32,32,32,32];
     const IdleRight = [96,97,98,99,100,101,102,103,104,105,106,107,108, 109, 110];
     const IdleLeft = [128,129,130,131, 132,133,134,135,136,137,138,139,140,141,142];
     this.scale.setTo(HeroRatio, HeroRatio);
