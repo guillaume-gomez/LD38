@@ -29,6 +29,7 @@ class MapManager {
          } else {
           tile.isVisible = false;
          }
+         tile.alpha = 0;
       });
     });
   }
