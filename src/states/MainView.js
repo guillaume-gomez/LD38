@@ -129,12 +129,14 @@ class MainView extends Phaser.State {
       this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
       this.hero.eraseBlocksAnimation(this.marker);
     }
+
+    //if (this.game.input.activePointer.rightButton.isDown && this.marker.y > Size) {
   }
 
   createTileSelector() {
     //Our painting marker
     this.marker = this.game.add.graphics();
-    this.marker.lineStyle(2, 0xFF0000, 1);
+    this.marker.lineStyle(2, 0xea4335, 1);
     this.marker.drawRect(0, 0, CursorSize, CursorSize);
     this.marker.x = 4 * CursorSize;
     this.marker.y = 4 * CursorSize;
