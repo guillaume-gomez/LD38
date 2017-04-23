@@ -11,7 +11,7 @@ class Character extends Phaser.Sprite {
     this.body.bounce.x = this.body.bounce.y = 0;
     this.cursor = game.input.keyboard.createCursorKeys();
     this.locked = false;
-    const fn = () => {this.body.gravity.y = 500;};
+    const fn = () => {this.body.gravity.y = 750;};
     setTimeout(fn, 500);
     const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
     const rightArray = [31, 30, 29, 28, 27, 26, 25, 24,23,22,21,20,19, 18,17,16];
@@ -45,7 +45,7 @@ class Character extends Phaser.Sprite {
 
     // Make the player jump if he is touching the ground
     if (this.cursor.up.isDown && this.body.onFloor()) {
-      this.body.velocity.y = -175;
+      this.body.velocity.y = -225;
       if(this.body.velocity.x === 0) {
         this.animations.play("jump", TimeLapse);
       }
