@@ -62,10 +62,17 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, null , this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
+  }
+
+  hasPortal(tile1, tile2) {
+    if(tile2.properties && tile2.properties.portal == 1 && !this.mapManager.portalEnable()) {
+      return false;
+    }
+    return true;
   }
 
   additionalCheck(tile1, tile2) {
@@ -79,7 +86,7 @@ class MainView extends Phaser.State {
       return;
     }
 
-    if(tile2.properties.portal == 1) {
+    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
       //maybe make an animation
       this.game.nextLevel();
     }

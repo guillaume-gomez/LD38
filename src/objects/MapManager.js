@@ -10,7 +10,8 @@ class MapManager {
     this.map = map;
     this.maxMapLayer = mapLayer;
     this.nbGems = 0;
-    this.doorSprites = []
+    this.doorSprites = [];
+    this.visibleDoor = false;
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
@@ -187,7 +188,12 @@ class MapManager {
     }
   }
 
+  portalEnable() {
+    return this.visibleDoor;
+  }
+
   showDoor() {
+    this.visibleDoor = true;
     this.doorSprites.forEach((tile, index) => {
       tile.alpha = 1;
     });
