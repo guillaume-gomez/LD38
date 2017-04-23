@@ -1,5 +1,7 @@
+import { HeroRatio } from "../Constants.js";
 const LimitY = 550;
 const TimeLapse = 10;
+
 class Character extends Phaser.Sprite {
 
   constructor(game, x, y, key, frame) {
@@ -9,18 +11,16 @@ class Character extends Phaser.Sprite {
     this.body.bounce.x = this.body.bounce.y = 0;
     this.cursor = game.input.keyboard.createCursorKeys();
     this.locked = false;
-    this.body.gravity.y = 500;
-    this.isClimbing = false;
-    const leftArray = [28, 27, 26, 25, 24, 23, 22, 21];
-    const rightArray = [1, 2, 3, 4, 5, 6, 7, 8];
-    const JumpArray = [9, 10, 11, 12, 14];
-    const ladderArray = [30, 31, 32, 33, 34, 35];
+    const fn = () => {this.body.gravity.y = 500;};
+    setTimeout(fn, 500);
+    const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
+    const rightArray = [31, 30, 29, 28, 27, 26, 25, 24,23,22,21,20,19, 18,17,16];
+    const JumpArray = [64,65,66];
+    this.scale.setTo(HeroRatio, HeroRatio);
 
     this.animations.add('jump', JumpArray, TimeLapse, true);
-    this.animations.add('left', leftArray, TimeLapse, true);
-    this.animations.add('right', rightArray, TimeLapse, true);
-    this.animations.add('climb', ladderArray, TimeLapse, true);
-    this.animations.add('climb-down', ladderArray.reverse(), TimeLapse, true);
+    this.animations.add('left', rightArray, TimeLapse, true);
+    this.animations.add('right', leftArray, TimeLapse, true);
     this.direction = 1;
   }
 
@@ -46,7 +46,9 @@ class Character extends Phaser.Sprite {
     // Make the player jump if he is touching the ground
     if (this.cursor.up.isDown && this.body.onFloor()) {
       this.body.velocity.y = -175;
-      this.animations.play("jump", TimeLapse);
+      if(this.body.velocity.x === 0) {
+        this.animations.play("jump", TimeLapse);
+      }
     }
 
     if(this.body.velocity.x == 0 && this.body.velocity.y == 0){
@@ -60,16 +62,6 @@ class Character extends Phaser.Sprite {
       return false;
     }
     return this.body.position.y > LimitY;
-  }
-
-  climbLadder() {
-    this.body.gravity.y = 0;
-    this.isClimbing = true;
-  }
-
-  leaveLadder() {
-    this.body.gravity.y = 500;
-    this.isClimbing = false;
   }
 
   lock() {
