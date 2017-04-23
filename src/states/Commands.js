@@ -20,7 +20,7 @@ class Commands extends Phaser.State {
     this.game.add.text(150, 375, "Erase Layer", { font: "bold 32px Arial", fill: "#fff" });
     this.game.add.text(500, 375, eraseLayer, { font: "bold 32px Arial", fill: "#fff" });
 
-    this.game.add.text(150, 450, "Redo Layer", { font: "bold 32px Arial", fill: "#fff" });
+    this.game.add.text(150, 450, "Rollback Layer", { font: "bold 32px Arial", fill: "#fff" });
     this.game.add.text(500, 450, redoText, { font: "bold 32px Arial", fill: "#fff" });
 
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
