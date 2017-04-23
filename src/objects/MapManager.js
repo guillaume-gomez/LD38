@@ -34,22 +34,27 @@ class MapManager {
   setUpCollisionLayer(colissionLayer) {
     colissionLayer.layer.data.forEach(column => {
       column.forEach(tile => {
-        if(tile.properties.is_gem == 1) {
+        if(tile.properties.layer_index && tile.properties.layer_index != 3) {
+          this.cacheCollisionLayer.push(tile);
+          this.map.removeTile(tile.x, tile.y, "colissionLayer");
+         }
+         if(tile.properties.layer_index) {
+            tile.alpha = 0;
+         }
+
+         if(tile.properties.is_gem == 1) {
           this.nbGems++;
+          if(tile.properties.layer_index == 3) {
+            tile.alpha = 1;
+          } else {
+            tile.alpha = 0;
+          }
         }
 
         if(tile.properties.portal == 1) {
           this.doorSprites.push(tile);
           tile.alpha = 0;
         }
-        if(tile.properties.layer_index == 3) {
-          tile.isVisible = true;
-         } else if(tile.properties.layer_index) {
-          this.cacheCollisionLayer.push(tile);
-          this.map.removeTile(tile.x, tile.y, "colissionLayer");
-          tile.isVisible = false;
-         }
-         //tile.alpha = 0;
       });
     });
   }
@@ -106,6 +111,9 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
+        if(!newTile.properties.is_gem) {
+          newTile.alpha = 0;
+        }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
       }
     }
@@ -133,6 +141,9 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
+        if(!newTile.properties.is_gem) {
+          newTile.alpha = 0;
+        }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
       }
     }
