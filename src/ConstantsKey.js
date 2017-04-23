@@ -16,6 +16,9 @@ export const Level2 = {
 export const Levels = {
   Level1,
   Level2
-}
+};
 
-export const HeroSpriteKey = "hero"
+export const HeroSprite = {
+  key: "hero",
+  path: "hero.png"
+}

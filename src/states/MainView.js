@@ -1,5 +1,5 @@
 import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Height } from '../Constants.js';
-import { Tileset, Level1, Levels, HeroSpriteKey } from '../ConstantsKey.js';
+import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 
 import MapManager from "objects/MapManager";
@@ -35,7 +35,7 @@ class MainView extends Phaser.State {
 
     this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 47 , 360, HeroSpriteKey, 0);
+    this.hero = new Character(this.game, 47 , 360, HeroSprite.key, 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
@@ -76,7 +76,7 @@ class MainView extends Phaser.State {
   }
 
   preload() {
-    this.game.load.spritesheet(HeroSpriteKey, "res/hero.png", WidthSpriteSheetHero, HeightSpriteSheetHero);
+    this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
     this.game.load.image(Tileset.key, `res/${Tileset.path}`);
     this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
   }
