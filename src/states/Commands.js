@@ -5,9 +5,9 @@ class Commands extends Phaser.State {
   create() {
     this.game.stage.setBackgroundColor(BackgroundColor);
     const moveText =  "Arrows keys/ Left Pad";
-    const aimText = "Mouse cursor / A, Q, S, D";
-    const redoText = "Left mouse button / B key";
-    const eraseLayer =  "Right mouse button / Spacebar";
+    const aimText = "Mouse cursor / A, Q, S, D keys";
+    const redoText = "Left mouse button / Spacebar";
+    const eraseLayer =  "B key";
 
     this.game.add.text(350, 80, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
 
