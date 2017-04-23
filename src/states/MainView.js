@@ -113,10 +113,12 @@ class MainView extends Phaser.State {
 
   eraseBlockKeyboard() {
     this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
+    this.hero.eraseBlocksAnimation(this.marker);
   }
 
   undoBlockKeyboard() {
     this.mapManager.undoBlock(this.marker.x / Size, this.marker.y / Size);
+    this.hero.eraseBlocksAnimation(this.marker);
   }
 
   updateMarker() {
@@ -125,6 +127,7 @@ class MainView extends Phaser.State {
 
     if (this.game.input.mousePointer.isDown && this.marker.y > Size) {
       this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
+      this.hero.eraseBlocksAnimation(this.marker);
     }
   }
 

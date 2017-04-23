@@ -10,6 +10,8 @@ class Character extends Phaser.Sprite {
     game.physics.arcade.enable(this);
     this.body.bounce.x = this.body.bounce.y = 0;
     this.cursor = game.input.keyboard.createCursorKeys();
+    this.keyRemoveLayer = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+
     this.locked = false;
     const fn = () => {this.body.gravity.y = 750;};
     setTimeout(fn, 1000);
@@ -17,10 +19,10 @@ class Character extends Phaser.Sprite {
     const rightArray = [31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16];
     const JumpArrayRight = [64,65,66];
     const JumpArrayLeft = [80, 81,82];
-    const PowerLeft = [];
-    const PowerRight = [];
-    const IdleLeft = [96,97,98,99,100];
-    const IdleRight = [112,113,114,115];
+    const PowerLeft = [48];
+    const PowerRight = [32];
+    const IdleRight = [96,97,98,99,100,101,102,103,104,105,106,107,108, 109, 110];
+    const IdleLeft = [128,129,130,131, 132,133,134,135,136,137,138,139,140,141,142];
     this.scale.setTo(HeroRatio, HeroRatio);
 
     this.animations.add('jumpLeft', JumpArrayLeft, TimeLapse, true);
@@ -66,12 +68,11 @@ class Character extends Phaser.Sprite {
     }
 
     if(this.body.velocity.x == 0 && this.body.velocity.y == 0){
-      //this.animations.stop();
-      //if (this.direction === -1) {
-      //  this.animations.play("idleLeft", TimeLapse);
-      //} else {
+      if (this.direction == -1) {
+        this.animations.play("idleLeft", TimeLapse);
+      } else {
         this.animations.play("idleRight", TimeLapse);
-      //}
+      }
       //this.frame = this.direction ===  1 ? 0 : 29;
     }
   }
@@ -89,6 +90,18 @@ class Character extends Phaser.Sprite {
 
   unlock() {
     this.locked = false;
+  }
+
+  eraseBlocksAnimation(cursor) {
+    if(this.x < cursor.x) {
+      this.frame = 32;
+      this.direction = 1;
+      //this.animations.play('powerLeft', TimeLapse);
+    } else {
+      this.frame = 48;
+      this.direction = -1;
+      //this.animations.play('powerRight', TimeLapse);
+    }
   }
 }
 
