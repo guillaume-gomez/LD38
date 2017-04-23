@@ -6,13 +6,13 @@ export const Tileset = {
 export const Level1 = {
   path: "level2B.json",
   key: "Test",
-  text: "This is a test"
+  text: "Press the left                                                                            "
 };
 
 export const Level2 = {
   path: "level1.json",
   key: "Test",
-  text: "Press the left mouse button to see what is going on"
+  text: "Press the left mouse button to see what is going on                                       "
 };
 
 export const Levels = {
