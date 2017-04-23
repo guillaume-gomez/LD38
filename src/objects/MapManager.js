@@ -8,6 +8,8 @@ class MapManager {
     this.removedBlock = [];
     this.map = map;
     this.maxMapLayer = mapLayer;
+    this.nbGems = 0;
+    this.doorSprites = []
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
@@ -31,12 +33,20 @@ class MapManager {
   setUpCollisionLayer(colissionLayer) {
     colissionLayer.layer.data.forEach(column => {
       column.forEach(tile => {
-         if(tile.properties.layer_index == 1) {
+        if(tile.properties.is_gem == 1) {
+          this.nbGems++;
+        }
+
+        if(tile.properties.portal == 1) {
+          this.doorSprites.push(tile);
+          tile.alpha = 0;
+        }
+        if(tile.properties.layer_index == 1) {
           tile.isVisible = true;
          } else {
           tile.isVisible = false;
          }
-         tile.alpha = 0;
+         //tile.alpha = 0;
       });
     });
   }
@@ -102,6 +112,20 @@ class MapManager {
       const newArray = this.removedBlock.filter(elmt => elmt !== redoElements);
       this.removedBlock = newArray.sort(this.sortByLayerIndex);
     }
+  }
+
+  killGem() {
+    this.nbGems--;
+    if(this.nbGems === 0) {
+      this.showDoor();
+    }
+  }
+
+  showDoor() {
+    this.doorSprites.forEach(tile => {
+      tile.alpha = 1;
+      tile.isVisible = true;
+    })
   }
 
 }
