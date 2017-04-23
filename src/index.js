@@ -1,5 +1,6 @@
 import MainView from 'states/MainView';
 import MainMenu from 'states/MainMenu';
+import Commands from 'states/Commands';
 import { Width, Height } from  "./Constants.js"
 
 class Game extends Phaser.Game {
@@ -9,11 +10,16 @@ class Game extends Phaser.Game {
     this.currentLevel = 1;
     this.state.add('MainMenu', MainMenu, false);
     this.state.add('MainView', MainView, false);
-    this.state.start('MainMenu');
+    this.state.add('Commands', Commands, false);
+    this.state.start('Commands');
   }
 
   goToMainGame() {
      this.state.start('MainView');
+  }
+
+  goToCommands() {
+    this.state.start('Commands');
   }
 
 

@@ -20,3 +20,5 @@ export const TextPosition = {
 export const Code = "9356";
 export const StyleRef = { font: "bold 8px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
 export const Style = { font: "bold 18px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+
+export const BackgroundColor = 0x212A43
