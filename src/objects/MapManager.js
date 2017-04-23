@@ -1,5 +1,7 @@
 import { CursorLength } from '../Constants.js';
 
+const LengthAnimation = 100;
+
 class MapManager {
 
   constructor(map, mapLayer) {
@@ -38,7 +40,8 @@ class MapManager {
     const lengthY = CursorLength;
     const lengthX = CursorLength;
     //check the layers associated to the deletion;
-    let objectsRemoves = []
+    let objectsRemoves = [];
+    let indexRemoval = 0;
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
@@ -46,8 +49,15 @@ class MapManager {
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
         }
-        const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
-        objectsRemoves.push(tile);
+        const fn = () => {
+          const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
+          objectsRemoves.push(tile);
+        }
+        setTimeout(fn, indexRemoval * LengthAnimation);
+        indexRemoval++;
+        if(indexRemoval > CursorLength) {
+          indexRemoval = 0;
+        }
       }
     }
     this.removedBlock.push({tiles: objectsRemoves, layerIndex: layerIndex, x, y});
@@ -63,12 +73,20 @@ class MapManager {
     const lengthY = CursorLength;
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
     if(redoElements) {
+      let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
         }
-        this.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
+        const fn = () => {
+          this.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
+        };
+        setTimeout(fn, indexRemoval * LengthAnimation);
+        indexRemoval--;
+        if(indexRemoval < 0) {
+          indexRemoval = CursorLength;
+        }
       });
       //remove the element after
       const newArray = this.removedBlock.filter(elmt => elmt !== redoElements);
