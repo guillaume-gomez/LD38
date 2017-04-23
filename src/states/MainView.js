@@ -35,7 +35,7 @@ class MainView extends Phaser.State {
 
     this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 47 , 360, HeroSprite.key, 0);
+    this.hero = new Character(this.game, 30 , 350, HeroSprite.key, 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
@@ -70,8 +70,19 @@ class MainView extends Phaser.State {
   }
 
   additionalCheck(tile1, tile2) {
-    if(tile2.index != 179) {
-      //this.game.nextLevel();
+    if(!tile2.properties) {
+      return;
+    }
+
+    if(tile2.properties.is_gem == 1) {
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
+      this.mapManager.killGem();
+      return;
+    }
+
+    if(tile2.properties.portal == 1) {
+      //maybe make an animation
+      this.game.nextLevel();
     }
   }
 
