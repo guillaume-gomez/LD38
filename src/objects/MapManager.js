@@ -1,6 +1,6 @@
 import { CursorLength } from '../Constants.js';
 
-const LengthAnimation = 100;
+const LengthAnimation = 50;
 
 class MapManager {
 
