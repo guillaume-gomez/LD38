@@ -1,7 +1,6 @@
 import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Height } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSpriteKey } from '../ConstantsKey.js';
 import Character from 'objects/Character';
-import { loadColissionMap } from "../platformerUtils.js";
 
 import MapManager from "objects/MapManager";
 
@@ -25,16 +24,18 @@ class MainView extends Phaser.State {
 
     this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
     this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
+
     this.map.createLayer('firstLayer');
     this.map.createLayer('secondLayer');
     this.map.createLayer('thirdLayer');
 
+    // This resizes the game world to match the layer dimensions
     this.collisionLayer = this.map.createLayer('colissionLayer');
     this.map.setCollisionByExclusion([], true, this.collisionLayer);
-    // This resizes the game world to match the layer dimensions
+
     this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 47 , 400, HeroSpriteKey, 0);
+    this.hero = new Character(this.game, 47 , 360, HeroSpriteKey, 0);
     this.game.add.existing(this.hero);
     this.game.camera.follow(this.hero);
 
@@ -43,6 +44,7 @@ class MainView extends Phaser.State {
     this.game.input.addMoveCallback(this.updateMarker, this);
 
     this.mapManager = new MapManager(this.map, MaxLayer);
+    this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
@@ -56,15 +58,20 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, null,this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.processCallback ,this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
   }
 
+  processCallback(tile1, tile2) {
+    if(!tile2.isVisible) return false;
+    return true;
+  }
+
   additionalCheck(tile1, tile2) {
     if(tile2.index != 179) {
-      this.game.nextLevel();
+      //this.game.nextLevel();
     }
   }
 

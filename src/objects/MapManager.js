@@ -21,6 +21,18 @@ class MapManager {
     return layerIndex;
   }
 
+  setUpCollisionLayer(colissionLayer) {
+    colissionLayer.layer.data.forEach(column => {
+      column.forEach(tile => {
+         if(tile.properties.layer_index == 1) {
+          tile.isVisible = true;
+         } else {
+          tile.isVisible = false;
+         }
+      });
+    });
+  }
+
   eraseBlock(x, y) {
     const lengthY = CursorLength;
     const lengthX = CursorLength;
@@ -29,6 +41,10 @@ class MapManager {
     const layerIndex = this.findLayerToDestroy(x, y, lengthX, lengthY);
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
+        let collidedTile = this.map.getTile(xAxis, yAxis, this.map.layers.length - 1);
+        if(collidedTile) {
+          collidedTile.isVisible = collidedTile.isVisible ? false : true;
+        }
         const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
         objectsRemoves.push(tile);
       }
@@ -47,6 +63,10 @@ class MapManager {
     const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
     if(redoElements) {
       redoElements.tiles.forEach(tile => {
+        let collidedTile = this.map.getTile(tile.x, tile.y, this.map.layers.length - 1);
+        if(collidedTile) {
+          collidedTile.isVisible = collidedTile.isVisible ? false : true;
+        }
         this.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
       });
       //remove the element after
