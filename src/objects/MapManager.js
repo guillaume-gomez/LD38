@@ -6,6 +6,7 @@ class MapManager {
 
   constructor(map, mapLayer) {
     this.removedBlock = [];
+    this.cacheCollisionLayer = [];
     this.map = map;
     this.maxMapLayer = mapLayer;
     this.nbGems = 0;
@@ -41,9 +42,11 @@ class MapManager {
           this.doorSprites.push(tile);
           tile.alpha = 0;
         }
-        if(tile.properties.layer_index == 1) {
+        if(tile.properties.layer_index == 3) {
           tile.isVisible = true;
-         } else {
+         } else if(tile.properties.layer_index) {
+          this.cacheCollisionLayer.push(tile);
+          this.map.removeTile(tile.x, tile.y, "colissionLayer");
           tile.isVisible = false;
          }
          //tile.alpha = 0;
@@ -65,10 +68,8 @@ class MapManager {
 
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
-        let collidedTile = this.map.getTile(xAxis, yAxis, "colissionLayer");
-        if(collidedTile) {
-          collidedTile.isVisible = collidedTile.isVisible ? false : true;
-        }
+        this.handleCollisionBlockOnErase(xAxis, yAxis, layerIndex);
+
         const fn = () => {
           const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
           objectsRemoves.push(tile);
@@ -84,6 +85,59 @@ class MapManager {
     this.removedBlock.sort(this.sortByLayerIndex);
   }
 
+  handleCollisionBlockOnErase(x,y, layerIndex) {
+    let collidedTile = this.map.getTile(x, y, "colissionLayer");
+    if(collidedTile && collidedTile.properties) {
+      if(collidedTile.properties.layer_index >= layerIndex) {
+        this.cacheCollisionLayer.push(collidedTile);
+        this.map.removeTile(x, y, "colissionLayer")
+      }
+    } else{
+      //dont find the tile in the layer, so the tile might be in the deleted tiles
+      let indexRemoveCollisionBlock = 0;
+      const tileToInsert = this.cacheCollisionLayer.find((tile, index) => {
+        indexRemoveCollisionBlock = index;
+        return tile.x === x && tile.y === y;
+      });
+      if(!tileToInsert) {
+        return;
+      }
+      if(tileToInsert.properties.layer_index == layerIndex - 1) {
+        let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
+        //copy property
+        newTile.properties = Object.assign({}, tileToInsert.properties);
+        this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
+      }
+    }
+  }
+
+  handleCollisionBlockOnUndo(x,y, layerIndex) {
+    let collidedTile = this.map.getTile(x, y, "colissionLayer");
+    if(collidedTile && collidedTile.properties) {
+      //remove collision block
+      if(collidedTile.properties.layer_index < layerIndex) {
+        this.cacheCollisionLayer.push(collidedTile);
+        this.map.removeTile(x, y, "colissionLayer")
+      }
+    } else {
+      //dont find the tile in the layer, so the tile might be in the deleted tiles
+      let indexRemoveCollisionBlock = 0;
+      const tileToInsert = this.cacheCollisionLayer.find((tile, index) => {
+        indexRemoveCollisionBlock = index;
+        return tile.x === x && tile.y === y;
+      });
+      if(!tileToInsert) {
+        return;
+      }
+      if(tileToInsert.properties.layer_index == layerIndex) {
+        let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
+        //copy property
+        newTile.properties = Object.assign({}, tileToInsert.properties);
+        this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
+      }
+    }
+  }
+
   sortByLayerIndex(a, b) {
     return a.layerIndex > b.layerIndex;
   }
@@ -95,6 +149,7 @@ class MapManager {
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
+        this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex)
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
