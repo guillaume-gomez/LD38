@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Height } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -51,11 +51,20 @@ class MainView extends Phaser.State {
     this.game.add.existing(this.text);
     this.text.blink();
 
-    this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
 
     this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
     this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
+
+    this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+    this.keyUpLayer.onDown.add(this.moveUp, this);
+    this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+    this.keyDownLayer.onDown.add(this.moveDown, this);
+    this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    this.keyLeftLayer.onDown.add(this.moveLeft, this);
+    this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+    this.keyRightLayer.onDown.add(this.moveRight, this);
 
     this.game.time.advancedTiming = true;
   }
@@ -124,6 +133,36 @@ class MainView extends Phaser.State {
     this.marker = this.game.add.graphics();
     this.marker.lineStyle(2, 0xFF0000, 1);
     this.marker.drawRect(0, 0, CursorSize, CursorSize);
+    this.marker.x = 4 * CursorSize;
+    this.marker.y = 4 * CursorSize;
+  }
+
+  moveUp() {
+    this.marker.y -= CursorSize;
+    if(this.marker.y < 0) {
+      this.marker.y = 0;
+    }
+  }
+
+  moveDown() {
+    this.marker.y += CursorSize;
+    if(this.marker.y > Height - CursorSize) {
+      this.marker.y = Height - CursorSize;
+    }
+  }
+
+  moveLeft() {
+    this.marker.x -= CursorSize;
+    if(this.marker.x < 0) {
+      this.marker.x = 0;
+    }
+  }
+
+  moveRight() {
+    this.marker.x += CursorSize;
+    if(this.marker.x > Width - CursorSize) {
+      this.marker.x = Width - CursorSize;
+    }
   }
 
 }
