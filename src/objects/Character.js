@@ -15,7 +15,7 @@ class Character extends Phaser.Sprite {
     this.locked = false;
     this.body.gravity.y = 0;
     const fn = () => {this.body.gravity.y = 750;};
-    setTimeout(fn, 10);
+    setTimeout(fn, 200);
     const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
     const rightArray = [31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16];
     const JumpArrayRight = [64,65,66];
