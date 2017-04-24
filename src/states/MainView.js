@@ -39,7 +39,7 @@ class MainView extends Phaser.State {
 
       this.collisionLayer.resizeWorld();
 
-      this.hero = new Character(this.game, 64 , 352, HeroSprite.key, 0);
+      this.hero = new Character(this.game, Levels[`Level${this.indexLevel}`].playerPosition.x , Levels[`Level${this.indexLevel}`].playerPosition.y, HeroSprite.key, 0);
       this.game.add.existing(this.hero);
       this.game.camera.follow(this.hero);
 
@@ -50,7 +50,7 @@ class MainView extends Phaser.State {
       this.mapManager = new MapManager(this.map, Levels[`Level${this.indexLevel}`].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.text = new InformationString(this.game, 100, Levels[`Level${this.indexLevel}`].text );
+      this.text = new InformationString(this.game, Width/2, Levels[`Level${this.indexLevel}`].text );
       this.game.add.existing(this.text);
       this.text.blink();
 
