@@ -8,7 +8,6 @@ class MapManager {
   constructor(map, lastLayerAvailable) {
     this.removedBlock = [];
     this.cacheCollisionLayer = [];
-    console.log(lastLayerAvailable)
     this.lastLayerAvailable = lastLayerAvailable;
     this.map = map;
     this.nbGems = 0;
