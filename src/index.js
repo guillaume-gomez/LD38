@@ -24,6 +24,7 @@ class Game extends Phaser.Game {
 
   goToMenu() {
     this.state.start('MainMenu');
+    this.currentLevel = 1;
   }
 
 
