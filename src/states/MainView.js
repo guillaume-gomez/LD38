@@ -15,60 +15,68 @@ class MainView extends Phaser.State {
   }
 
   init(indexLevel) {
+    console.log("init")
     this.indexLevel = indexLevel || 1;
+    this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
+    //no more levels :|
   }
 
   create() {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    // Add the physics engine to all game objects
-    this.game.world.enableBody = true;
+    if(!this.hasLevel) {
+      this.game.goToMenu();
+    } else {
 
-    this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
-    this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+      // Add the physics engine to all game objects
+      this.game.world.enableBody = true;
+
+      this.map = this.game.add.tilemap(Levels[`Level${this.indexLevel}`].key);
+      this.map.addTilesetImage(Levels[`Level${this.indexLevel}`].key, Tileset.key);
 
 
-    this.map.createLayer('thirdLayer');
-    this.map.createLayer('secondLayer');
-    this.map.createLayer('firstLayer');
-    // This resizes the game world to match the layer dimensions
-    this.collisionLayer = this.map.createLayer('colissionLayer');
-    this.map.setCollisionByExclusion([], true, this.collisionLayer);
+      this.map.createLayer('thirdLayer');
+      this.map.createLayer('secondLayer');
+      this.map.createLayer('firstLayer');
+      // This resizes the game world to match the layer dimensions
+      this.collisionLayer = this.map.createLayer('colissionLayer');
+      this.map.setCollisionByExclusion([], true, this.collisionLayer);
 
-    this.collisionLayer.resizeWorld();
+      this.collisionLayer.resizeWorld();
 
-    this.hero = new Character(this.game, 64 , 352, HeroSprite.key, 0);
-    this.game.add.existing(this.hero);
-    this.game.camera.follow(this.hero);
+      this.hero = new Character(this.game, 64 , 352, HeroSprite.key, 0);
+      this.game.add.existing(this.hero);
+      this.game.camera.follow(this.hero);
 
-    this.marker = null;
-    this.createTileSelector();
-    this.game.input.addMoveCallback(this.updateMarker, this);
+      this.marker = null;
+      this.createTileSelector();
+      this.game.input.addMoveCallback(this.updateMarker, this);
 
-    this.mapManager = new MapManager(this.map, MaxLayer);
-    this.mapManager.setUpCollisionLayer(this.collisionLayer);
+      this.mapManager = new MapManager(this.map, MaxLayer);
+      this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-    this.text = new InformationString(this.game, 100, Levels[`Level${this.indexLevel}`].text );
-    this.game.add.existing(this.text);
-    this.text.blink();
+      this.text = new InformationString(this.game, 100, Levels[`Level${this.indexLevel}`].text );
+      this.game.add.existing(this.text);
+      this.text.blink();
 
-    this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
+      this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
 
-    this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
+      this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
 
-    this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
-    this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
+      this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
+      this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
-    this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
-    this.keyUpLayer.onDown.add(this.moveUp, this);
-    this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
-    this.keyDownLayer.onDown.add(this.moveDown, this);
-    this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
-    this.keyLeftLayer.onDown.add(this.moveLeft, this);
-    this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
-    this.keyRightLayer.onDown.add(this.moveRight, this);
+      this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+      this.keyUpLayer.onDown.add(this.moveUp, this);
+      this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+      this.keyDownLayer.onDown.add(this.moveDown, this);
+      this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+      this.keyLeftLayer.onDown.add(this.moveLeft, this);
+      this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+      this.keyRightLayer.onDown.add(this.moveRight, this);
 
-    this.game.time.advancedTiming = true;
+      this.game.time.advancedTiming = true;
+    }
   }
 
 
@@ -113,9 +121,12 @@ class MainView extends Phaser.State {
   }
 
   preload() {
+    console.log("preload")
     this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
     this.game.load.image(Tileset.key, `res/${Tileset.path}`);
-    this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
+    if(this.hasLevel) {
+      this.game.load.tilemap(Levels[`Level${this.indexLevel}`].key, `res/${Levels[`Level${this.indexLevel}`].path}` , null, Phaser.Tilemap.TILED_JSON);
+    }
   }
 
   render() {
