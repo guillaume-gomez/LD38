@@ -12,9 +12,12 @@ class Character extends Phaser.Sprite {
     this.cursor = game.input.keyboard.createCursorKeys();
     this.keyRemoveLayer = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
-    this.locked = false;
+    this.locked = true;
     this.body.gravity.y = 0;
-    const fn = () => {this.body.gravity.y = 750;};
+    const fn = () => {
+      this.body.gravity.y = 750;
+      this.locked = false;
+    };
     setTimeout(fn, 500);
     const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
     const rightArray = [31,30,29,28,27,26,25,24,23,22,21,20,19,18,17,16];
@@ -83,14 +86,6 @@ class Character extends Phaser.Sprite {
       return false;
     }
     return this.body.position.y > LimitY;
-  }
-
-  lock() {
-    this.locked = true;
-  }
-
-  unlock() {
-    this.locked = false;
   }
 
   eraseBlocksAnimation(cursor) {
