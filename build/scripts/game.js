@@ -49,7 +49,7 @@ var Level2 = exports.Level2 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
-  text: "Try to erase layer",
+  text: "The gap is too large, try to erase layer",
   playerPosition: { x: 64, y: 352 }
 };
 
@@ -57,7 +57,7 @@ var Level3 = exports.Level3 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 1,
-  text: "Try to remove more than one layer",
+  text: "You may need to remove more than one layer",
   playerPosition: { x: 64, y: 352 }
 };
 
@@ -715,7 +715,7 @@ var Commands = function (_Phaser$State) {
     value: function create() {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
       var moveText = "Arrows keys/ Left Pad";
-      var aimText = "Mouse cursor / A, Q, S, D keys";
+      var aimText = "Mouse cursor / W, S, A, D keys";
       var redoText = "Left mouse button / Spacebar";
       var eraseLayer = "B key";
 
@@ -947,11 +947,11 @@ var MainView = function (_Phaser$State) {
         this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
         this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
-        this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+        this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
         this.keyUpLayer.onDown.add(this.moveUp, this);
         this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
         this.keyDownLayer.onDown.add(this.moveDown, this);
-        this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+        this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
         this.keyLeftLayer.onDown.add(this.moveLeft, this);
         this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         this.keyRightLayer.onDown.add(this.moveRight, this);
