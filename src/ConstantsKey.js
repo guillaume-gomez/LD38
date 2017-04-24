@@ -19,18 +19,29 @@ export const Level2 = {
   playerPosition: {x: 64, y: 352}
 };
 
+
 export const Level3 = {
   path: "LVL_3.json",
+  key: "Test",
+  lastLayer: 2,
+  text: "A layer can help you, but it could stop you too. Press B to rollback.",
+  playerPosition: {x: 64, y: 352}
+};
+
+export const Level4 = {
+  path: "LVL_4.json",
   key: "Test",
   lastLayer: 1,
   text: "You may need to remove more than one layer",
   playerPosition: {x: 64, y: 352}
 };
 
+
 export const Levels = {
   Level1,
   Level2,
-  Level3
+  Level3,
+  Level4
 };
 
 export const HeroSprite = {

@@ -11,7 +11,7 @@ class Game extends Phaser.Game {
     this.state.add('MainMenu', MainMenu, false);
     this.state.add('MainView', MainView, false);
     this.state.add('Commands', Commands, false);
-    this.state.start('MainMenu');
+    this.state.start('MainView');
   }
 
   goToMainGame() {
