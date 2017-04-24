@@ -12,6 +12,14 @@ export const Level1 = {
 };
 
 export const Level2 = {
+  path: "LVL_6.json",
+  key: "Test",
+  lastLayer: 3,
+  text: "",
+  playerPosition: {x: 64, y: 20}
+};
+
+export const Level3 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
@@ -20,7 +28,7 @@ export const Level2 = {
 };
 
 
-export const Level3 = {
+export const Level4 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 2,
@@ -28,7 +36,7 @@ export const Level3 = {
   playerPosition: {x: 64, y: 352}
 };
 
-export const Level4 = {
+export const Level5 = {
   path: "LVL_4.json",
   key: "Test",
   lastLayer: 1,
@@ -41,7 +49,8 @@ export const Levels = {
   Level1,
   Level2,
   Level3,
-  Level4
+  Level4,
+  Level5,
 };
 
 export const HeroSprite = {
