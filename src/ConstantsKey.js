@@ -15,7 +15,7 @@ export const Level2 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
-  text: "The gap seems too large. You might want to use you power",
+  text: "The gap seems too large. You might want to use your power",
   playerPosition: {x: 64, y: 352}
 };
 
