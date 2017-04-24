@@ -48,6 +48,14 @@ var Level1 = exports.Level1 = {
 };
 
 var Level2 = exports.Level2 = {
+  path: "LVL_6.json",
+  key: "Test",
+  lastLayer: 3,
+  text: "",
+  playerPosition: { x: 64, y: 20 }
+};
+
+var Level3 = exports.Level3 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
@@ -55,7 +63,7 @@ var Level2 = exports.Level2 = {
   playerPosition: { x: 64, y: 352 }
 };
 
-var Level3 = exports.Level3 = {
+var Level4 = exports.Level4 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 2,
@@ -63,7 +71,7 @@ var Level3 = exports.Level3 = {
   playerPosition: { x: 64, y: 352 }
 };
 
-var Level4 = exports.Level4 = {
+var Level5 = exports.Level5 = {
   path: "LVL_4.json",
   key: "Test",
   lastLayer: 1,
@@ -75,7 +83,8 @@ var Levels = exports.Levels = {
   Level1: Level1,
   Level2: Level2,
   Level3: Level3,
-  Level4: Level4
+  Level4: Level4,
+  Level5: Level5
 };
 
 var HeroSprite = exports.HeroSprite = {
