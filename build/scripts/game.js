@@ -58,6 +58,14 @@ var Level2 = exports.Level2 = {
 var Level3 = exports.Level3 = {
   path: "LVL_3.json",
   key: "Test",
+  lastLayer: 2,
+  text: "A layer can help you, but it could stop you too. Press B to rollback.",
+  playerPosition: { x: 64, y: 352 }
+};
+
+var Level4 = exports.Level4 = {
+  path: "LVL_4.json",
+  key: "Test",
   lastLayer: 1,
   text: "You may need to remove more than one layer",
   playerPosition: { x: 64, y: 352 }
@@ -66,7 +74,8 @@ var Level3 = exports.Level3 = {
 var Levels = exports.Levels = {
   Level1: Level1,
   Level2: Level2,
-  Level3: Level3
+  Level3: Level3,
+  Level4: Level4
 };
 
 var HeroSprite = exports.HeroSprite = {
@@ -723,16 +732,16 @@ var Commands = function (_Phaser$State) {
 
       this.game.add.text(350, 50, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
 
-      this.game.add.text(150, 200, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(50, 200, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(500, 200, moveText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(50, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 350, "Erase Layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(50, 350, "Swith to inner layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 425, "Rollback Layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(500, 425, redoText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
