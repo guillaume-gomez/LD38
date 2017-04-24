@@ -6,7 +6,7 @@ class MainMenu extends Phaser.State {
     this.game.stage.setBackgroundColor(BackgroundColor);
     this.game.add.sprite(20,500, "LD");
     this.game.add.sprite(0,0, "background");
-    this.game.add.text(350, 50, "Press enter to start", { font: "bold 34px Arial", fill: "#fff" });
+    this.game.add.text(350, 400, "Press enter to start", { font: "bold 34px Arial", fill: "#fff" });
     this.game.add.text(700, 530, "Thanks for playing ! :)", { font: "bold 19px Arial", fill: "#fff" })
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   }
