@@ -144,7 +144,7 @@ var Game = function (_Phaser$Game) {
     _this.state.add('MainMenu', _MainMenu2.default, false);
     _this.state.add('MainView', _MainView2.default, false);
     _this.state.add('Commands', _Commands2.default, false);
-    _this.state.start('MainMenu');
+    _this.state.start('MainView');
     return _this;
   }
 
@@ -162,6 +162,7 @@ var Game = function (_Phaser$Game) {
     key: 'goToMenu',
     value: function goToMenu() {
       this.state.start('MainMenu');
+      this.currentLevel = 1;
     }
   }, {
     key: 'reset',
