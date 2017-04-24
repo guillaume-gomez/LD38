@@ -129,8 +129,6 @@ class MainView extends Phaser.State {
       this.mapManager.eraseBlock(this.marker.x / Size, this.marker.y / Size);
       this.hero.eraseBlocksAnimation(this.marker);
     }
-
-    //if (this.game.input.activePointer.rightButton.isDown && this.marker.y > Size) {
   }
 
   createTileSelector() {
