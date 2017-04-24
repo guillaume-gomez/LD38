@@ -716,7 +716,7 @@ var Commands = function (_Phaser$State) {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
       var moveText = "Arrows keys/ Left Pad";
       var aimText = "Mouse cursor / W, S, A, D keys";
-      var redoText = "Left mouse button / Spacebar";
+      var redoText = "Spacebar";
       var eraseLayer = "B key";
 
       this.game.add.text(350, 50, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
