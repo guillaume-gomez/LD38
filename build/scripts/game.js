@@ -15,6 +15,8 @@ var HeroRatio = exports.HeroRatio = 0.75;
 
 var TextPosition = exports.TextPosition = 55;
 
+var TextColor = exports.TextColor = "#8cc169";
+
 var Code = exports.Code = "9356";
 var StyleRef = exports.StyleRef = { font: "bold 8px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
 var Style = exports.Style = { font: "bold 18px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
@@ -49,7 +51,7 @@ var Level2 = exports.Level2 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
-  text: "The gap is too large, try to erase layer",
+  text: "The gap seems too large. You might want to use you power",
   playerPosition: { x: 64, y: 352 }
 };
 
@@ -714,26 +716,26 @@ var Commands = function (_Phaser$State) {
     key: "create",
     value: function create() {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
-      var moveText = "Arrows keys/ Left Pad";
+      var moveText = "Arrow keys/ Left Pad";
       var aimText = "Mouse cursor / W, S, A, D keys";
       var redoText = "Spacebar";
       var eraseLayer = "B key";
 
       this.game.add.text(350, 50, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
 
-      this.game.add.text(150, 200, "Move", { font: "bold 32px Arial", fill: "#fff" });
-      this.game.add.text(500, 200, moveText, { font: "bold 32px Arial", fill: "#fff" });
+      this.game.add.text(150, 200, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(500, 200, moveText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 275, "Aim", { font: "bold 32px Arial", fill: "#fff" });
-      this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: "#fff" });
+      this.game.add.text(150, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 350, "Erase Layer", { font: "bold 32px Arial", fill: "#fff" });
-      this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: "#fff" });
+      this.game.add.text(150, 350, "Erase Layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(150, 425, "Rollback Layer", { font: "bold 32px Arial", fill: "#fff" });
-      this.game.add.text(500, 425, redoText, { font: "bold 32px Arial", fill: "#fff" });
+      this.game.add.text(150, 425, "Rollback Layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(500, 425, redoText, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
-      this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: "#fff" });
+      this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
 
       this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
       this.game.input.gamepad.start();
@@ -804,8 +806,8 @@ var MainMenu = function (_Phaser$State) {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
       this.game.add.sprite(20, 500, "LD");
       this.game.add.sprite(0, 0, "background");
-      this.game.add.text(350, 400, "Press enter to start", { font: "bold 34px Arial", fill: "#fff" });
-      this.game.add.text(700, 530, "Thanks for playing ! :)", { font: "bold 19px Arial", fill: "#fff" });
+      this.game.add.text(350, 400, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
+      this.game.add.text(700, 530, "Thanks for playing ! :)", { font: "bold 19px Arial", fill: _Constants.TextColor });
       this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     }
   }, {
