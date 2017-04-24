@@ -144,7 +144,7 @@ var Game = function (_Phaser$Game) {
     _this.state.add('MainMenu', _MainMenu2.default, false);
     _this.state.add('MainView', _MainView2.default, false);
     _this.state.add('Commands', _Commands2.default, false);
-    _this.state.start('MainView');
+    _this.state.start('MainMenu');
     return _this;
   }
 
