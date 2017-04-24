@@ -5,9 +5,6 @@ import InformationString from 'objects/InformationString';
 
 import MapManager from "objects/MapManager";
 
-//TO DESTROY LATER
-const MaxLayer = 3;
-
 class MainView extends Phaser.State {
 
   constructor() {
@@ -15,7 +12,6 @@ class MainView extends Phaser.State {
   }
 
   init(indexLevel) {
-    console.log("init")
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
     //no more levels :|
@@ -51,7 +47,7 @@ class MainView extends Phaser.State {
       this.createTileSelector();
       this.game.input.addMoveCallback(this.updateMarker, this);
 
-      this.mapManager = new MapManager(this.map, MaxLayer);
+      this.mapManager = new MapManager(this.map, Levels[`Level${this.indexLevel}`].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
       this.text = new InformationString(this.game, 100, Levels[`Level${this.indexLevel}`].text );
@@ -123,7 +119,6 @@ class MainView extends Phaser.State {
   }
 
   preload() {
-    console.log("preload")
     this.game.load.spritesheet(HeroSprite.key, `res/${HeroSprite.path}`, WidthSpriteSheetHero, HeightSpriteSheetHero);
     this.game.load.image(Tileset.key, `res/${Tileset.path}`);
     if(this.hasLevel) {
@@ -132,7 +127,7 @@ class MainView extends Phaser.State {
   }
 
   render() {
-    this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
+    //this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
   }
 
   eraseBlockKeyboard() {

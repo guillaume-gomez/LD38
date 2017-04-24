@@ -1,14 +1,16 @@
 import { CursorLength } from '../Constants.js';
 
 const LengthAnimation = 50;
+const MaxLayer = 3;
 
 class MapManager {
 
-  constructor(map, mapLayer) {
+  constructor(map, lastLayerAvailable) {
     this.removedBlock = [];
     this.cacheCollisionLayer = [];
+    console.log(lastLayerAvailable)
+    this.lastLayerAvailable = lastLayerAvailable;
     this.map = map;
-    this.maxMapLayer = mapLayer;
     this.nbGems = 0;
     this.currentGems = 0;
     this.doorSprites = [];
@@ -17,8 +19,8 @@ class MapManager {
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
     //layer can be deleted 3 and 2
-    let layerIndex = this.maxMapLayer;
-    for(let index = this.maxMapLayer; index > 1; index--) {
+    let layerIndex = MaxLayer;
+    for(let index = MaxLayer; index > 1; index--) {
       if( this.map.getTile(x, y, index) === null &&
           this.map.getTile(x + lengthX-1, y + lengthY-1, index) === null) {
         layerIndex--;
@@ -27,7 +29,7 @@ class MapManager {
       }
     }
     //impossibe
-    if(layerIndex <= 1) {
+    if(layerIndex <= 1 ||  layerIndex <= this.lastLayerAvailable) {
       return -1;
     }
     return layerIndex;
@@ -36,7 +38,7 @@ class MapManager {
   setUpCollisionLayer(colissionLayer) {
     colissionLayer.layer.data.forEach(column => {
       column.forEach(tile => {
-        if(tile.properties.layer_index && tile.properties.layer_index != 3) {
+        if(tile.properties.layer_index && tile.properties.layer_index != MaxLayer) {
           this.cacheCollisionLayer.push(tile);
           this.map.removeTile(tile.x, tile.y, "colissionLayer");
          }
@@ -46,7 +48,7 @@ class MapManager {
 
          if(tile.properties.is_gem == 1) {
           this.nbGems++;
-          if(tile.properties.layer_index == 3) {
+          if(tile.properties.layer_index == MaxLayer) {
             tile.alpha = 1;
           } else {
             tile.alpha = 0;
