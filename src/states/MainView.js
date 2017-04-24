@@ -59,6 +59,8 @@ class MainView extends Phaser.State {
       this.text.blink();
 
       this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
+      this.hud.x = this.game.camera.x + HudTextX;
+      this.hud.y = this.game.camera.y + HudTextY;
 
       this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
