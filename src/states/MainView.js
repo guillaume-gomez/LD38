@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -51,6 +51,8 @@ class MainView extends Phaser.State {
     this.game.add.existing(this.text);
     this.text.blink();
 
+    this.hud = this.game.add.text(400, 400, HudText, { font: "bold 22px Arial", fill: '#FFFFFF' });
+
     this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
 
@@ -75,6 +77,15 @@ class MainView extends Phaser.State {
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
+
+    this.updateGui();
+  }
+
+  updateGui() {
+    this.hud.setText(HudText + this.mapManager.currentGems + " / " + this.mapManager.nbGems);
+    this.hud.x = this.game.camera.x + HudTextX;
+    this.hud.y = this.game.camera.y + HudTextY;
+
   }
 
   hasPortal(tile1, tile2) {

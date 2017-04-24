@@ -10,6 +10,7 @@ class MapManager {
     this.map = map;
     this.maxMapLayer = mapLayer;
     this.nbGems = 0;
+    this.currentGems = 0;
     this.doorSprites = [];
     this.visibleDoor = false;
   }
@@ -182,8 +183,8 @@ class MapManager {
   }
 
   killGem() {
-    this.nbGems--;
-    if(this.nbGems === 0) {
+    this.currentGems++;
+    if(this.nbGems === this.currentGems) {
       this.showDoor();
     }
   }

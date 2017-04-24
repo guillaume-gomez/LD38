@@ -22,3 +22,8 @@ export const StyleRef = { font: "bold 8px Arial", fill: "#000", boundsAlignH: "c
 export const Style = { font: "bold 18px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
 export const BackgroundColor = 0x212A43
+
+HudTextX
+export const HudText = "Gems : ";
+export const HudTextX = 10;
+export const HudTextY = 540;
