@@ -9,6 +9,8 @@ export const HeroRatio = 0.75;
 
 export const TextPosition = 55;
 
+export const TextColor = "#8cc169";
+
 
 export const Code = "9356";
 export const StyleRef = { font: "bold 8px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
