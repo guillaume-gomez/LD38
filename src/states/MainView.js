@@ -64,11 +64,11 @@ class MainView extends Phaser.State {
       this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
       this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
-      this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Z);
+      this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
       this.keyUpLayer.onDown.add(this.moveUp, this);
       this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
       this.keyDownLayer.onDown.add(this.moveDown, this);
-      this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.Q);
+      this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
       this.keyLeftLayer.onDown.add(this.moveLeft, this);
       this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
       this.keyRightLayer.onDown.add(this.moveRight, this);

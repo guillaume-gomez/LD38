@@ -15,7 +15,7 @@ export const Level2 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
-  text: "Try to erase layer",
+  text: "The gap is too large, try to erase layer",
   playerPosition: {x: 64, y: 352}
 };
 
@@ -23,7 +23,7 @@ export const Level3 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 1,
-  text: "Try to remove more than one layer",
+  text: "You may need to remove more than one layer",
   playerPosition: {x: 64, y: 352}
 };
 
