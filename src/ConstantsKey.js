@@ -7,21 +7,24 @@ export const Level1 = {
   path: "LVL_1.json",
   key: "Test",
   lastLayer: 3,
-  text: "                                               "
+  text: "",
+  playerPosition: {x: 64, y: 352}
 };
 
 export const Level2 = {
   path: "LVL_2.json",
   key: "Test",
   lastLayer: 2,
-  text: "Press the left mouse button to see what is going on                                       "
+  text: "Try to erase layer",
+  playerPosition: {x: 64, y: 352}
 };
 
 export const Level3 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 1,
-  text: "Press the left mouse button to see what is going on                                       "
+  text: "Try to remove more than one layer",
+  playerPosition: {x: 64, y: 352}
 };
 
 export const Levels = {

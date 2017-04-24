@@ -7,14 +7,7 @@ export const WidthSpriteSheetHero = 64;
 export const HeightSpriteSheetHero = 96;
 export const HeroRatio = 0.75;
 
-export const TextPosition = {
-  x: 10,
-  y: 20,
-  x0: 0,
-  y0: 0,
-  x1: 300,
-  y1: 100
-};
+export const TextPosition = 55;
 
 
 export const Code = "9356";
