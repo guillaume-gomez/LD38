@@ -21,7 +21,7 @@ Aim : Mouse cursor / W, S, A, D
 Swith to inner layer : Left mouse button / SpaceBar
 Rollback to previous layer : B key
 
-[PLAY Chrome recommended](https://guillaume-gomez.github.io/LD38/build/)
+[PLAY (Chrome recommended)](https://guillaume-gomez.github.io/LD38/build/)
 
 ## Team
 - Leo Delisle : Graphics
