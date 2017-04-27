@@ -23,7 +23,7 @@ Rollback to previous layer : B key
 
 [PLAY Chrome recommended](https://guillaume-gomez.github.io/LD38/build/)
 
-##Team
+## Team
 - Leo Delisle : Graphics
 - Eloi Calleja: Graphics
 - Nans Chabaud: Concept/ Game Design
