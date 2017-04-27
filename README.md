@@ -13,9 +13,6 @@ All assets have been made during the event.
 ## Screenshots
 ![Title](screenshots/title.png "Main Screen")
 ![Gameplay](screenshots/gameplay.gif "Gameplay")
-Screen Shot 2017-04-24 at 13.49.25.png
-
-gameplay.gif
 
 ## Controls
 
