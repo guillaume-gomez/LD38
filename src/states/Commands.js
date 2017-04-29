@@ -61,7 +61,7 @@ class Commands extends Phaser.State {
   }
 
   switchKeyboard() {
-    this.game.controls.isQwerty = !this.game.controls.isQwerty;
+    this.game.controls.toggleKeyboardType();
     const text = this.game.controls.isQwerty ? "Qwerty" : "Azerty";
     this.textInfo.setText(text);
   }

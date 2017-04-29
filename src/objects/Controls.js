@@ -81,6 +81,11 @@ class Controls {
     this.controlsSettings[action] = key;
   }
 
+  toggleKeyboardType() {
+    this.isQwerty = !this.isQwerty;
+    this.PostMortemDefaultConfig();
+  }
+
   export() {
     return this.controlsSettings;
   }

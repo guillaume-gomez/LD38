@@ -15,10 +15,9 @@ class MainView extends Phaser.State {
   init(indexLevel) {
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
-
     if(!this.game.controls) {
       let controls = new Controls();
-      controls.defaultConfig();
+      controls.PostMortemDefaultConfig();
       this.game.controls = controls;
     }
     //no more levels :|
