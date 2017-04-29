@@ -4,6 +4,7 @@ import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
 
 import MapManager from "objects/MapManager";
+import Controls from "objects/Controls";
 
 class MainView extends Phaser.State {
 
@@ -14,6 +15,12 @@ class MainView extends Phaser.State {
   init(indexLevel) {
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
+
+    if(!this.game.controls) {
+      let controls = new Controls();
+      controls.defaultConfig();
+      this.game.controls = controls;
+    }
     //no more levels :|
   }
 
@@ -58,19 +65,18 @@ class MainView extends Phaser.State {
       this.hud.x = this.game.camera.x + HudTextX;
       this.hud.y = this.game.camera.y + HudTextY;
 
-      this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+      this.keyRemoveLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("undoLayer"));
       this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
-
-      this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
+      this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
       this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
-      this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+      this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
       this.keyUpLayer.onDown.add(this.moveUp, this);
-      this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+      this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
       this.keyDownLayer.onDown.add(this.moveDown, this);
-      this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+      this.keyLeftLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveLeftCursor"));
       this.keyLeftLayer.onDown.add(this.moveLeft, this);
-      this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+      this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
       this.keyRightLayer.onDown.add(this.moveRight, this);
 
       this.game.time.advancedTiming = true;

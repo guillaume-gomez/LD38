@@ -1,4 +1,5 @@
 import { BackgroundColor, TextColor } from "../Constants.js";
+import Controls from "../objects/Controls";
 
 class Commands extends Phaser.State {
 
@@ -27,6 +28,10 @@ class Commands extends Phaser.State {
 
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.game.input.gamepad.start();
+
+    let controls = new Controls();
+    controls.PostMortemDefaultConfig();
+    this.game.controls = controls;
   }
 
   update() {
