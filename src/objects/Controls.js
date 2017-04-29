@@ -4,6 +4,7 @@ class Controls {
   constructor(controlsSettings = {}, actionList = Actions) {
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
+    this.isQwerty = true;
   };
 
   getKey(action) {
@@ -15,6 +16,29 @@ class Controls {
 
   addControls(params) {
     Object.keys(params).forEach(action => this.addControl(params[action], action));
+  }
+
+  qwertyKeyboard() {
+    return {
+      "left" : Phaser.Keyboard.A,
+      "right" : Phaser.Keyboard.D,
+      "jump" : Phaser.Keyboard.W,
+    }
+  }
+
+  azertyKeyBoard() {
+    return {
+      "left" : Phaser.Keyboard.Q,
+      "right" : Phaser.Keyboard.D,
+      "jump" : Phaser.Keyboard.Z,
+    }
+  }
+
+  injectPropsDueToKeyboardType() {
+    if(!this.isQwerty) {
+      return this.azertyKeyBoard();
+    }
+    return this.qwertyKeyboard();
   }
 
   defaultConfig() {
@@ -33,7 +57,7 @@ class Controls {
   }
 
   PostMortemDefaultConfig() {
-    const defaultConfigParams = {
+    let defaultConfigParams = {
         "left" : Phaser.Keyboard.Q,
         "right" : Phaser.Keyboard.D,
         "jump" : Phaser.Keyboard.Z,
@@ -44,6 +68,8 @@ class Controls {
         "undoLayer" : Phaser.Keyboard.A,
         "removeLayer" : Phaser.Keyboard.E
       };
+
+      defaultConfigParams = Object.assign({}, defaultConfigParams, this.injectPropsDueToKeyboardType());
       this.addControls(defaultConfigParams);
   }
 
