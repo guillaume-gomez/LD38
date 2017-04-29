@@ -23,6 +23,8 @@ class Controls {
       "left" : Phaser.Keyboard.A,
       "right" : Phaser.Keyboard.D,
       "jump" : Phaser.Keyboard.W,
+      "undoLayer" : Phaser.Keyboard.Q,
+      "removeLayer" : Phaser.Keyboard.E
     }
   }
 
@@ -31,6 +33,8 @@ class Controls {
       "left" : Phaser.Keyboard.Q,
       "right" : Phaser.Keyboard.D,
       "jump" : Phaser.Keyboard.Z,
+      "undoLayer" : Phaser.Keyboard.A,
+      "removeLayer" : Phaser.Keyboard.E
     }
   }
 
@@ -43,30 +47,20 @@ class Controls {
 
   defaultConfig() {
     const defaultConfigParams = {
-        "left" : Phaser.Keyboard.A,
-        "right" : Phaser.Keyboard.A,
-        "jump" : Phaser.Keyboard.A,
         "moveLeftCursor" : Phaser.Keyboard.A,
         "moveRightCursor" : Phaser.Keyboard.D,
         "moveDownCursor": Phaser.Keyboard.S,
         "moveUpCursor" : Phaser.Keyboard.W,
-        "undoLayer" : Phaser.Keyboard.SPACEBAR,
-        "removeLayer" : Phaser.Keyboard.B
       };
       this.addControls(defaultConfigParams);
   }
 
   PostMortemDefaultConfig() {
     let defaultConfigParams = {
-        "left" : Phaser.Keyboard.Q,
-        "right" : Phaser.Keyboard.D,
-        "jump" : Phaser.Keyboard.Z,
         "moveLeftCursor" : Phaser.Keyboard.LEFT,
         "moveRightCursor" : Phaser.Keyboard.RIGHT,
         "moveDownCursor": Phaser.Keyboard.DOWN,
         "moveUpCursor" : Phaser.Keyboard.UP,
-        "undoLayer" : Phaser.Keyboard.A,
-        "removeLayer" : Phaser.Keyboard.E
       };
 
       defaultConfigParams = Object.assign({}, defaultConfigParams, this.injectPropsDueToKeyboardType());
