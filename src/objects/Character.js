@@ -10,7 +10,6 @@ class Character extends Phaser.Sprite {
     game.physics.arcade.enable(this);
     this.body.bounce.x = this.body.bounce.y = 0;
     this.cursor = game.input.keyboard.createCursorKeys();
-    this.keyRemoveLayer = game.input.keyboard.addKey(Phaser.Keyboard.Z);
 
     this.locked = true;
     this.body.gravity.y = 0;
