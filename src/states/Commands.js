@@ -10,7 +10,7 @@ class Commands extends Phaser.State {
 
     let group = this.game.add.group();
     const button = this.game.make.button(800, 20, 'button', this.switchKeyboard, this, 2, 1, 0);
-    this.textInfo = this.game.add.text(867, 90, "Qwerty", { font: "bold 14px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
+    this.textInfo = this.game.add.text(870, 90, "Qwerty", { font: "bold 14px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
     group.add(button);
 
     this.game.add.text(350, 25, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
