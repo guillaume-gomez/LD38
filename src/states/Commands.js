@@ -9,7 +9,8 @@ class Commands extends Phaser.State {
     const eraseLayer =  "E key";
 
     let group = this.game.add.group();
-    const button = this.game.make.button(800, 25, 'button', this.switchKeyboard, this, 2, 1, 0);
+    const button = this.game.make.button(800, 20, 'button', this.switchKeyboard, this, 2, 1, 0);
+    this.textInfo = this.game.add.text(867, 90, "Qwerty", { font: "bold 14px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
     group.add(button);
 
     this.game.add.text(350, 25, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
@@ -45,8 +46,8 @@ class Commands extends Phaser.State {
     }
 
     if(this.game.controls.isQwerty) {
-      this.moveText.setText( "A / D keys");
-      this.redoText.setText( "Q key");
+      this.moveText.setText("A / D keys");
+      this.redoText.setText("Q key");
       this.jumpText.setText("W key");
     } else {
       this.moveText.setText("Q / D keys");
@@ -61,7 +62,8 @@ class Commands extends Phaser.State {
 
   switchKeyboard() {
     this.game.controls.isQwerty = !this.game.controls.isQwerty;
-    console.log(this.game.controls.isQwerty);
+    const text = this.game.controls.isQwerty ? "Qwerty" : "Azerty";
+    this.textInfo.setText(text);
   }
 
 }
