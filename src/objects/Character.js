@@ -9,8 +9,10 @@ class Character extends Phaser.Sprite {
     //Enable physics on the player
     game.physics.arcade.enable(this);
     this.body.bounce.x = this.body.bounce.y = 0;
-    this.cursor = game.input.keyboard.createCursorKeys();
-    this.keyRemoveLayer = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+
+    this.upKey = game.input.keyboard.addKey(this.game.controls.getKey("jump"));
+    this.leftKey = game.input.keyboard.addKey(this.game.controls.getKey("left"));
+    this.rightKey = game.input.keyboard.addKey(this.game.controls.getKey("right"));
 
     this.locked = true;
     this.body.gravity.y = 0;
@@ -46,12 +48,12 @@ class Character extends Phaser.Sprite {
       return;
     }
 
-    if (this.cursor.left.isDown) {
+    if (this.leftKey.isDown) {
         this.body.velocity.x = -200;
         this.animations.play("left", TimeLapse);
         this.direction = -1;
     }
-    else if (this.cursor.right.isDown) {
+    else if (this.rightKey.isDown) {
         this.body.velocity.x = 200;
         this.animations.play("right", TimeLapse);
         this.direction = 1;
@@ -60,7 +62,7 @@ class Character extends Phaser.Sprite {
     }
 
     // Make the player jump if he is touching the ground
-    if (this.cursor.up.isDown && this.body.onFloor()) {
+    if (this.upKey.isDown && this.body.onFloor()) {
       this.body.velocity.y = -225;
       if(this.body.velocity.x === 0) {
         if(this.direction === -1) {

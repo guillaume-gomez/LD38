@@ -18,7 +18,6 @@ export const Style = { font: "bold 18px Arial", fill: "#fff", boundsAlignH: "cen
 
 export const BackgroundColor = 0x212A43
 
-HudTextX
 export const HudText = "Gems : ";
 export const HudTextX = 10;
 export const HudTextY = 540;

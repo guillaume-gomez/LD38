@@ -23,7 +23,6 @@ var Style = exports.Style = { font: "bold 18px Arial", fill: "#fff", boundsAlign
 
 var BackgroundColor = exports.BackgroundColor = 0x212A43;
 
-HudTextX;
 var HudText = exports.HudText = "Gems : ";
 var HudTextX = exports.HudTextX = 10;
 var HudTextY = exports.HudTextY = 540;
@@ -200,8 +199,8 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"./Constants.js":1,"states/Commands":7,"states/MainMenu":8,"states/MainView":9}],4:[function(require,module,exports){
-'use strict';
+},{"./Constants.js":1,"states/Commands":8,"states/MainMenu":9,"states/MainView":10}],4:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -217,7 +216,7 @@ var _createClass = function () {
   };
 }();
 
-var _Constants = require('../Constants.js');
+var _Constants = require("../Constants.js");
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -251,8 +250,10 @@ var Character = function (_Phaser$Sprite) {
 
     game.physics.arcade.enable(_this);
     _this.body.bounce.x = _this.body.bounce.y = 0;
-    _this.cursor = game.input.keyboard.createCursorKeys();
-    _this.keyRemoveLayer = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+
+    _this.upKey = game.input.keyboard.addKey(_this.game.controls.getKey("jump"));
+    _this.leftKey = game.input.keyboard.addKey(_this.game.controls.getKey("left"));
+    _this.rightKey = game.input.keyboard.addKey(_this.game.controls.getKey("right"));
 
     _this.locked = true;
     _this.body.gravity.y = 0;
@@ -284,18 +285,18 @@ var Character = function (_Phaser$Sprite) {
   }
 
   _createClass(Character, [{
-    key: 'update',
+    key: "update",
     value: function update() {
       if (this.locked) {
         this.body.velocity.x = 0;
         return;
       }
 
-      if (this.cursor.left.isDown) {
+      if (this.leftKey.isDown) {
         this.body.velocity.x = -200;
         this.animations.play("left", TimeLapse);
         this.direction = -1;
-      } else if (this.cursor.right.isDown) {
+      } else if (this.rightKey.isDown) {
         this.body.velocity.x = 200;
         this.animations.play("right", TimeLapse);
         this.direction = 1;
@@ -304,7 +305,7 @@ var Character = function (_Phaser$Sprite) {
       }
 
       // Make the player jump if he is touching the ground
-      if (this.cursor.up.isDown && this.body.onFloor()) {
+      if (this.upKey.isDown && this.body.onFloor()) {
         this.body.velocity.y = -225;
         if (this.body.velocity.x === 0) {
           if (this.direction === -1) {
@@ -325,7 +326,7 @@ var Character = function (_Phaser$Sprite) {
       }
     }
   }, {
-    key: 'isDeath',
+    key: "isDeath",
     value: function isDeath() {
       if (!this.body) {
         return false;
@@ -333,7 +334,7 @@ var Character = function (_Phaser$Sprite) {
       return this.body.position.y > LimitY;
     }
   }, {
-    key: 'eraseBlocksAnimation',
+    key: "eraseBlocksAnimation",
     value: function eraseBlocksAnimation(cursor) {
       if (this.x < cursor.x) {
         this.frame = 32;
@@ -353,6 +354,148 @@ var Character = function (_Phaser$Sprite) {
 exports.default = Character;
 
 },{"../Constants.js":1}],5:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+var Actions = ["left", "right", "jump", "moveLeftCursor", "moveRightCursor", "moveDownCursor", "moveUpCursor", "undoLayer", "removeLayer"];
+
+var Controls = function () {
+  function Controls() {
+    var controlsSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var actionList = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Actions;
+
+    _classCallCheck(this, Controls);
+
+    this.controlsSettings = controlsSettings;
+    this.actionList = actionList;
+    this.isQwerty = true;
+  }
+
+  _createClass(Controls, [{
+    key: "getKey",
+    value: function getKey(action) {
+      if (!this.controlsSettings[action]) {
+        console.error("cannot find " + action + " in the action list");
+      }
+      return this.controlsSettings[action];
+    }
+  }, {
+    key: "addControls",
+    value: function addControls(params) {
+      var _this = this;
+
+      Object.keys(params).forEach(function (action) {
+        return _this.addControl(params[action], action);
+      });
+    }
+  }, {
+    key: "qwertyKeyboard",
+    value: function qwertyKeyboard() {
+      return {
+        "left": Phaser.Keyboard.A,
+        "right": Phaser.Keyboard.D,
+        "jump": Phaser.Keyboard.W,
+        "undoLayer": Phaser.Keyboard.Q,
+        "removeLayer": Phaser.Keyboard.E
+      };
+    }
+  }, {
+    key: "azertyKeyBoard",
+    value: function azertyKeyBoard() {
+      return {
+        "left": Phaser.Keyboard.Q,
+        "right": Phaser.Keyboard.D,
+        "jump": Phaser.Keyboard.Z,
+        "undoLayer": Phaser.Keyboard.A,
+        "removeLayer": Phaser.Keyboard.E
+      };
+    }
+  }, {
+    key: "injectPropsDueToKeyboardType",
+    value: function injectPropsDueToKeyboardType() {
+      if (!this.isQwerty) {
+        return this.azertyKeyBoard();
+      }
+      return this.qwertyKeyboard();
+    }
+  }, {
+    key: "defaultConfig",
+    value: function defaultConfig() {
+      var defaultConfigParams = {
+        "moveLeftCursor": Phaser.Keyboard.A,
+        "moveRightCursor": Phaser.Keyboard.D,
+        "moveDownCursor": Phaser.Keyboard.S,
+        "moveUpCursor": Phaser.Keyboard.W
+      };
+      this.addControls(defaultConfigParams);
+    }
+  }, {
+    key: "PostMortemDefaultConfig",
+    value: function PostMortemDefaultConfig() {
+      var defaultConfigParams = {
+        "moveLeftCursor": Phaser.Keyboard.LEFT,
+        "moveRightCursor": Phaser.Keyboard.RIGHT,
+        "moveDownCursor": Phaser.Keyboard.DOWN,
+        "moveUpCursor": Phaser.Keyboard.UP
+      };
+
+      defaultConfigParams = Object.assign({}, defaultConfigParams, this.injectPropsDueToKeyboardType());
+      this.addControls(defaultConfigParams);
+    }
+
+    // // { {ref: pointer, action: left key: Z}}
+    // setUpControl(params) {
+
+    //   this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
+    //   this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
+    // }
+
+  }, {
+    key: "addControl",
+    value: function addControl(key, action) {
+      if (!this.actionList.includes(action)) {
+        console.error("the action named '" + action + "' does not exist");
+      }
+      this.controlsSettings[action] = key;
+    }
+  }, {
+    key: "toggleKeyboardType",
+    value: function toggleKeyboardType() {
+      this.isQwerty = !this.isQwerty;
+      this.PostMortemDefaultConfig();
+    }
+  }, {
+    key: "export",
+    value: function _export() {
+      return this.controlsSettings;
+    }
+  }]);
+
+  return Controls;
+}();
+
+exports.default = Controls;
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -433,7 +576,7 @@ var InformationString = function (_Phaser$Text) {
 
 exports.default = InformationString;
 
-},{"../Constants.js":1}],6:[function(require,module,exports){
+},{"../Constants.js":1}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -694,7 +837,7 @@ var MapManager = function () {
 
 exports.default = MapManager;
 
-},{"../Constants.js":1}],7:[function(require,module,exports){
+},{"../Constants.js":1}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -712,6 +855,14 @@ var _createClass = function () {
 }();
 
 var _Constants = require("../Constants.js");
+
+var _Controls = require("../objects/Controls");
+
+var _Controls2 = _interopRequireDefault(_Controls);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -744,15 +895,21 @@ var Commands = function (_Phaser$State) {
     key: "create",
     value: function create() {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
-      var moveText = "Arrow keys/ Left Pad";
-      var aimText = "Mouse cursor / W, S, A, D keys";
-      var redoText = "Spacebar";
-      var eraseLayer = "B key";
+      var aimText = "Mouse cursor / Arrow keys";
+      var eraseLayer = "E key";
 
-      this.game.add.text(350, 50, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
+      var group = this.game.add.group();
+      var button = this.game.make.button(800, 20, 'button', this.switchKeyboard, this, 2, 1, 0);
+      this.textInfo = this.game.add.text(870, 90, "Qwerty", { font: "bold 14px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
+      group.add(button);
 
-      this.game.add.text(50, 200, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(500, 200, moveText, { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(350, 25, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
+
+      this.game.add.text(50, 125, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.moveText = this.game.add.text(500, 125, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
+
+      this.game.add.text(50, 200, "Jump", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.jumpText = this.game.add.text(500, 200, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(50, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: _Constants.TextColor });
@@ -761,12 +918,16 @@ var Commands = function (_Phaser$State) {
       this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(500, 425, redoText, { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.redoText = this.game.add.text(500, 425, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
 
       this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
       this.game.input.gamepad.start();
+
+      var controls = new _Controls2.default();
+      controls.PostMortemDefaultConfig();
+      this.game.controls = controls;
     }
   }, {
     key: "update",
@@ -774,6 +935,28 @@ var Commands = function (_Phaser$State) {
       if (this.enterButton.isDown) {
         this.game.goToMainGame();
       }
+
+      if (this.game.controls.isQwerty) {
+        this.moveText.setText("A / D keys");
+        this.redoText.setText("Q key");
+        this.jumpText.setText("W key");
+      } else {
+        this.moveText.setText("Q / D keys");
+        this.redoText.setText("A key");
+        this.jumpText.setText("S key");
+      }
+    }
+  }, {
+    key: "preload",
+    value: function preload() {
+      this.game.load.spritesheet('button', "res/button_sprite_sheet.png", 193, 71);
+    }
+  }, {
+    key: "switchKeyboard",
+    value: function switchKeyboard() {
+      this.game.controls.toggleKeyboardType();
+      var text = this.game.controls.isQwerty ? "Qwerty" : "Azerty";
+      this.textInfo.setText(text);
     }
   }]);
 
@@ -782,7 +965,7 @@ var Commands = function (_Phaser$State) {
 
 exports.default = Commands;
 
-},{"../Constants.js":1}],8:[function(require,module,exports){
+},{"../Constants.js":1,"../objects/Controls":5}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -858,7 +1041,7 @@ var MainMenu = function (_Phaser$State) {
 
 exports.default = MainMenu;
 
-},{"../Constants.js":1}],9:[function(require,module,exports){
+},{"../Constants.js":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -890,6 +1073,10 @@ var _InformationString2 = _interopRequireDefault(_InformationString);
 var _MapManager = require('objects/MapManager');
 
 var _MapManager2 = _interopRequireDefault(_MapManager);
+
+var _Controls = require('objects/Controls');
+
+var _Controls2 = _interopRequireDefault(_Controls);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -927,6 +1114,11 @@ var MainView = function (_Phaser$State) {
     value: function init(indexLevel) {
       this.indexLevel = indexLevel || 1;
       this.hasLevel = Object.keys(_ConstantsKey.Levels).length >= this.indexLevel;
+      if (!this.game.controls) {
+        var controls = new _Controls2.default();
+        controls.PostMortemDefaultConfig();
+        this.game.controls = controls;
+      }
       //no more levels :|
     }
   }, {
@@ -971,19 +1163,18 @@ var MainView = function (_Phaser$State) {
         this.hud.x = this.game.camera.x + _Constants.HudTextX;
         this.hud.y = this.game.camera.y + _Constants.HudTextY;
 
-        this.keyRemoveLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        this.keyRemoveLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("undoLayer"));
         this.keyRemoveLayer.onDown.add(this.eraseBlockKeyboard, this);
-
-        this.keyUndoLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.B);
+        this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
         this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
-        this.keyUpLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.W);
+        this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
         this.keyUpLayer.onDown.add(this.moveUp, this);
-        this.keyDownLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.S);
+        this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
         this.keyDownLayer.onDown.add(this.moveDown, this);
-        this.keyLeftLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
+        this.keyLeftLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveLeftCursor"));
         this.keyLeftLayer.onDown.add(this.moveLeft, this);
-        this.keyRightLayer = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
         this.keyRightLayer.onDown.add(this.moveRight, this);
 
         this.game.time.advancedTiming = true;
@@ -1118,5 +1309,5 @@ var MainView = function (_Phaser$State) {
 
 exports.default = MainView;
 
-},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/InformationString":5,"objects/MapManager":6}]},{},[3])
+},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/Controls":5,"objects/InformationString":6,"objects/MapManager":7}]},{},[3])
 //# sourceMappingURL=game.js.map
