@@ -14,14 +14,29 @@ All assets have been made during the event.
 ![Title](screenshots/title.png "Main Screen")
 ![Gameplay](screenshots/gameplay.gif "Gameplay")
 
-## Controls
+## Ludum dare Jam
 
-Move : Arrow keys
-Aim : Mouse cursor / W, S, A, D
-Swith to inner layer : Left mouse button / SpaceBar
-Rollback to previous layer : B key
+### Controls
 
-[PLAY (Chrome recommended)](https://guillaume-gomez.github.io/LD38/build/)
+- Move : Arrow keys
+- Jump : W
+- Aim : Mouse cursor / A, D
+- Swith to inner layer : Left mouse button / SpaceBar
+- Rollback to previous layer : B key
+
+[PLAY Ludum dare version(Chrome recommended)](https://guillaume-gomez.github.io/LD38/build_v1/)
+
+## Ludum dare post-mortem
+
+### Controls
+
+- Move : A, D //  Q, D
+- Jump : W // Z 
+- Aim : Arrow keys
+- Swith to inner layer : Left mouse button / Q // A 
+- Rollback to previous layer : E
+
+[PLAY Post-mortem version(Chrome recommended)](https://guillaume-gomez.github.io/LD38/build/)
 
 ## Team
 - Leo Delisle : Graphics
