@@ -44,3 +44,11 @@ All assets have been made during the event.
 - Nans Chabaud: Concept/ Game Design
 - Florian Coulouma: Game Design/ Narration
 - Guillaume Gomez: Programming
+
+## Build from sources
+```
+npm install
+npm start
+```
+
+go to localhost:3000 on your browser
