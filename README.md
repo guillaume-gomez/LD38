@@ -33,8 +33,8 @@ All assets have been made during the event.
 - Move : A, D //  Q, D
 - Jump : W // Z 
 - Aim : Arrow keys
-- Swith to inner layer : Left mouse button / Q // A 
-- Rollback to previous layer : E
+- Swith to inner layer : Left mouse button / Spacebar 
+- Rollback to previous layer : Shift
 
 [PLAY Post-mortem version(Chrome recommended)](https://guillaume-gomez.github.io/LD38/build/)
 
