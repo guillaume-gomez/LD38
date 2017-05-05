@@ -6,7 +6,7 @@ class Commands extends Phaser.State {
   create() {
     this.game.stage.setBackgroundColor(BackgroundColor);
     const aimText = "Mouse cursor / Arrow keys";
-    const eraseLayer =  "E key";
+    const eraseLayer =  "Spacebar";
 
     let group = this.game.add.group();
     const button = this.game.make.button(800, 20, 'button', this.switchKeyboard, this, 2, 1, 0);
@@ -28,7 +28,7 @@ class Commands extends Phaser.State {
     this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: TextColor });
 
     this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: TextColor });
-    this.redoText = this.game.add.text(500, 425, "", { font: "bold 32px Arial", fill: TextColor });
+    this.game.add.text(500, 425, "Shift", { font: "bold 32px Arial", fill: TextColor });
 
     this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: TextColor });
 
@@ -47,11 +47,9 @@ class Commands extends Phaser.State {
 
     if(this.game.controls.isQwerty) {
       this.moveText.setText("A / D keys");
-      this.redoText.setText("Q key");
       this.jumpText.setText("W key");
     } else {
       this.moveText.setText("Q / D keys");
-      this.redoText.setText("A key");
       this.jumpText.setText("S key");
     }
   }
