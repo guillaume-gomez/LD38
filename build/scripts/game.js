@@ -74,7 +74,7 @@ var Level5 = exports.Level5 = {
   path: "LVL_3.json",
   key: "Test",
   lastLayer: 2,
-  text: "A layer can help you, but it could stop you too. Press B to rollback.",
+  text: "A layer can help you, but it could stop you too. Press Shift to rollback.",
   playerPosition: { x: 64, y: 352 }
 };
 
