@@ -23,8 +23,8 @@ class Controls {
       "left" : Phaser.Keyboard.A,
       "right" : Phaser.Keyboard.D,
       "jump" : Phaser.Keyboard.W,
-      "undoLayer" : Phaser.Keyboard.Q,
-      "removeLayer" : Phaser.Keyboard.E
+      "undoLayer" : Phaser.Keyboard.SPACEBAR,
+      "removeLayer" : Phaser.Keyboard.SHIFT
     }
   }
 
@@ -33,8 +33,8 @@ class Controls {
       "left" : Phaser.Keyboard.Q,
       "right" : Phaser.Keyboard.D,
       "jump" : Phaser.Keyboard.Z,
-      "undoLayer" : Phaser.Keyboard.A,
-      "removeLayer" : Phaser.Keyboard.E
+      "undoLayer" : Phaser.Keyboard.SPACEBAR,
+      "removeLayer" : Phaser.Keyboard.SHIFT
     }
   }
 
