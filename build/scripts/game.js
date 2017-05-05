@@ -414,8 +414,8 @@ var Controls = function () {
         "left": Phaser.Keyboard.A,
         "right": Phaser.Keyboard.D,
         "jump": Phaser.Keyboard.W,
-        "undoLayer": Phaser.Keyboard.Q,
-        "removeLayer": Phaser.Keyboard.E
+        "undoLayer": Phaser.Keyboard.SPACEBAR,
+        "removeLayer": Phaser.Keyboard.SHIFT
       };
     }
   }, {
@@ -425,8 +425,8 @@ var Controls = function () {
         "left": Phaser.Keyboard.Q,
         "right": Phaser.Keyboard.D,
         "jump": Phaser.Keyboard.Z,
-        "undoLayer": Phaser.Keyboard.A,
-        "removeLayer": Phaser.Keyboard.E
+        "undoLayer": Phaser.Keyboard.SPACEBAR,
+        "removeLayer": Phaser.Keyboard.SHIFT
       };
     }
   }, {
@@ -896,7 +896,7 @@ var Commands = function (_Phaser$State) {
     value: function create() {
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
       var aimText = "Mouse cursor / Arrow keys";
-      var eraseLayer = "E key";
+      var eraseLayer = "Spacebar";
 
       var group = this.game.add.group();
       var button = this.game.make.button(800, 20, 'button', this.switchKeyboard, this, 2, 1, 0);
@@ -918,7 +918,7 @@ var Commands = function (_Phaser$State) {
       this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.redoText = this.game.add.text(500, 425, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(500, 425, "Shift", { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
 
@@ -938,11 +938,9 @@ var Commands = function (_Phaser$State) {
 
       if (this.game.controls.isQwerty) {
         this.moveText.setText("A / D keys");
-        this.redoText.setText("Q key");
         this.jumpText.setText("W key");
       } else {
         this.moveText.setText("Q / D keys");
-        this.redoText.setText("A key");
         this.jumpText.setText("S key");
       }
     }
