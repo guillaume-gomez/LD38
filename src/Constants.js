@@ -6,6 +6,7 @@ export const CursorSize = CursorLength * Size;
 export const WidthSpriteSheetHero = 64;
 export const HeightSpriteSheetHero = 96;
 export const HeroRatio = 0.75;
+export const BabyRatio = 0.50;
 
 export const TextPosition = 55;
 
