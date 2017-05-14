@@ -27,23 +27,28 @@ class Introduction extends Phaser.State {
       this.mapManager = new MapManager(this.map, Levels[`Level6`].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.baby = this.game.add.sprite(400, 395, 'baby');
-      this.baby2 = this.game.add.sprite(350, 395, 'baby2');
-      this.badGuy = this.game.add.sprite(950, 370, 'baby3');
+      const originPositionBadGuy = 200;
+      const originPositionBaby = 900;
+
+      this.baby = this.game.add.sprite(originPositionBaby, 395, 'baby');
+      this.baby2 = this.game.add.sprite(originPositionBaby + 50, 395, 'baby2');
+      this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
+
       this.baby.scale.setTo(BabyRatio, BabyRatio);
       this.baby2.scale.setTo(BabyRatio, BabyRatio);
       this.badGuy.scale.setTo(HeroRatio, HeroRatio);
+      const timer = 3000;
 
       let tweenA = this.game.add.tween(this.badGuy).to( { y: 320 }, 2000, "Quart.easeOut");
-      let tweenB = this.game.add.tween(this.badGuy).to( { x: 370 }, 1000, "Quart.easeOut");
-      this.tweenC = this.game.add.tween(this.badGuy).to( { x: -320 }, 1000, "Quart.easeOut");
-      this.tweenD = this.game.add.tween(this.baby).to( { x: -350 + 50 }, 1000, "Quart.easeOut");
-      this.tweenE = this.game.add.tween(this.baby2).to( { x: -350 }, 1000, "Quart.easeOut");
+      let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
+      this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 120 }, timer, "Quart.easeOut");
+      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 + 50 }, timer, "Quart.easeOut");
+      this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 100 }, timer, "Quart.easeOut");
 
-      this.tweenF = this.game.add.tween(this.badGuy).to( { x: -350 }, 1000, "Quart.easeOut");
-      this.tweenG = this.game.add.tween(this.baby).to( { x: -350 }, 1000, "Quart.easeOut");
-      this.tweenH = this.game.add.tween(this.baby2).to( { x: 400 }, 1000, "Quart.easeOut");
-      this.tweenI = this.game.add.tween(this.baby).to( { x: 400 }, 1000, "Quart.easeOut");
+      this.tweenF = this.game.add.tween(this.badGuy).to( { x: Width + 100 }, timer, "Quart.easeOut");
+      this.tweenG = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer, "Quart.easeOut");
+      this.tweenH = this.game.add.tween(this.baby2).to( { x: 600 }, timer, "Quart.easeOut");
+      this.tweenI = this.game.add.tween(this.baby).to( { x: 600 }, timer, "Quart.easeOut");
 
       tweenA.chain(tweenB);
       tweenB.chain(this.tweenC);
@@ -59,9 +64,9 @@ class Introduction extends Phaser.State {
 
     this.tweenE.onComplete.add(() => {
       this.mapManager.removeLayer();
-      this.badGuy.x = 970;
-      this.baby.x = 990;
-      this.baby2.x = 950;
+      this.badGuy.x = 150;
+      this.baby.x = 130;
+      this.baby2.x = 170;
 
       this.tweenF.start();
       this.tweenG.start();
@@ -70,8 +75,8 @@ class Introduction extends Phaser.State {
 
     this.tweenH.onComplete.add(() => {
       this.mapManager.removeLayer();
-      this.badGuy.x = 970;
-      this.baby.x = 990;
+      this.badGuy.x = 150;
+      this.baby.x = 130;
 
       this.baby2.kill();
 
