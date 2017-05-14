@@ -63,25 +63,25 @@ class Introduction extends Phaser.State {
     this.tweenE.start();
 
     this.tweenE.onComplete.add(() => {
+      this.camera.fade(0x000000, 300, false);
+      this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenF, this.tweenG, this.tweenH]), this);
+      this.game.camera.onFadeComplete
       this.mapManager.removeLayer();
       this.badGuy.x = 150;
       this.baby.x = 130;
       this.baby2.x = 170;
-
-      this.tweenF.start();
-      this.tweenG.start();
-      this.tweenH.start();
     }, this);
 
     this.tweenH.onComplete.add(() => {
+      console.log("kkkk")
+      this.camera.fade(0x000000, 300, false);
+      this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenF, this.tweenI]), this);
       this.mapManager.removeLayer();
+
       this.badGuy.x = 150;
       this.baby.x = 130;
-
       this.baby2.kill();
 
-      this.tweenF.start();
-      this.tweenI.start();
     }, this);
   }
 
@@ -94,20 +94,15 @@ class Introduction extends Phaser.State {
     this.game.load.image("baby3", "res/baby3.png");
   }
 
-  // fadeIn() {
-  //   this.baby = 0;
-  //   this.baby2 = 0;
-  //   this.badGuy = 0;
-
-  //   this.game.add.tween(this.baby).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
-  //   this.game.add.tween(this.baby2).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
-  //   this.game.add.tween(this.badGuy).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
-  // }
-
-  render() {
-    //this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
+  resetFade(TweensArray) {
+    return() => {
+      this.game.camera.resetFX();
+      TweensArray.forEach(tween => {
+        console.log(tween)
+        tween.start();
+      });
+    }
   }
-
 
 }
 
