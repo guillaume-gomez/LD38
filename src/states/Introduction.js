@@ -42,7 +42,7 @@ class Introduction extends Phaser.State {
       let tweenA = this.game.add.tween(this.badGuy).to( { y: 320 }, 2000, "Quart.easeOut");
       let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
       this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 120 }, timer, "Quart.easeOut");
-      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 + 50 }, timer, "Quart.easeOut");
+      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 80 }, timer, "Quart.easeOut");
       this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 100 }, timer, "Quart.easeOut");
 
       this.tweenF = this.game.add.tween(this.badGuy).to( { x: Width + 100 }, timer, "Quart.easeOut");
@@ -93,6 +93,16 @@ class Introduction extends Phaser.State {
     this.game.load.image("baby2", "res/baby2.png");
     this.game.load.image("baby3", "res/baby3.png");
   }
+
+  // fadeIn() {
+  //   this.baby = 0;
+  //   this.baby2 = 0;
+  //   this.badGuy = 0;
+
+  //   this.game.add.tween(this.baby).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
+  //   this.game.add.tween(this.baby2).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
+  //   this.game.add.tween(this.badGuy).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true, 0, 4000, true);
+  // }
 
   render() {
     //this.game.debug.text(this.game.time.fps, 2, 16, "#00ff00");
