@@ -88,9 +88,9 @@ class Character extends Phaser.Sprite {
       //this.frame = this.direction ===  1 ? 0 : 29;
     }
 
-    // if(this.body.onFloor()) {
-    //   this.jumpCount = 0;
-    // }
+    if(this.body.onFloor()) {
+       this.jumpCount = 0;
+    }
   }
 
   checkDoubleJump() {
@@ -103,6 +103,7 @@ class Character extends Phaser.Sprite {
            this.animations.play("jumpRight", TimeLapse);
          }
       }
+      this.jumpCount++;
     }
   }
 
