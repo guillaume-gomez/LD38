@@ -15,6 +15,10 @@ class Character extends Phaser.Sprite {
     this.rightKey = game.input.keyboard.addKey(this.game.controls.getKey("right"));
 
     this.locked = true;
+
+    this.jumpCount = 0;
+    this.upKey.onDown.add(this.checkDoubleJump, this);
+
     this.body.gravity.y = 0;
     const fn = () => {
       this.body.gravity.y = 750;
@@ -61,17 +65,19 @@ class Character extends Phaser.Sprite {
       this.body.velocity.x = 0;
     }
 
-    // Make the player jump if he is touching the ground
-    if (this.upKey.isDown && this.body.onFloor()) {
-      this.body.velocity.y = -225;
-      if(this.body.velocity.x === 0) {
-        if(this.direction === -1) {
-          this.animations.play("jumpLeft", TimeLapse);
-        } else {
-          this.animations.play("jumpRight", TimeLapse);
-        }
-      }
-    }
+    // // Make the player jump if he is touching the ground
+    // if (this.upKey.isDown  && this.jumpCount < 2) {
+    //   console.log('jumpCount')
+    //   this.body.velocity.y = -225;
+    //   if(this.body.velocity.x === 0) {
+    //     if(this.direction === -1) {
+    //       this.animations.play("jumpLeft", TimeLapse);
+    //     } else {
+    //       this.animations.play("jumpRight", TimeLapse);
+    //     }
+    //   }
+    //   this.jumpCount++;
+    // }
 
     if(this.body.velocity.x == 0 && this.body.velocity.y == 0){
       if (this.direction == -1) {
@@ -80,6 +86,23 @@ class Character extends Phaser.Sprite {
         this.animations.play("idleRight", TimeLapse);
       }
       //this.frame = this.direction ===  1 ? 0 : 29;
+    }
+
+    // if(this.body.onFloor()) {
+    //   this.jumpCount = 0;
+    // }
+  }
+
+  checkDoubleJump() {
+    if(this.jumpCount < 2) {
+      this.body.velocity.y = -225;
+       if(this.body.velocity.x === 0) {
+         if(this.direction === -1) {
+           this.animations.play("jumpLeft", TimeLapse);
+         } else {
+           this.animations.play("jumpRight", TimeLapse);
+         }
+      }
     }
   }
 
