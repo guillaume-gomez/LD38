@@ -50,7 +50,7 @@ class Commands extends Phaser.State {
       this.jumpText.setText("W key");
     } else {
       this.moveText.setText("Q / D keys");
-      this.jumpText.setText("S key");
+      this.jumpText.setText("Z key");
     }
   }
 

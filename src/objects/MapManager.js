@@ -1,4 +1,4 @@
-import { CursorLength } from '../Constants.js';
+import { CursorLength, Width, Height, Size } from '../Constants.js';
 
 const LengthAnimation = 50;
 const MaxLayer = 3;
@@ -91,6 +91,22 @@ class MapManager {
     }
     this.removedBlock.push({tiles: objectsRemoves, layerIndex: layerIndex, x, y});
     this.removedBlock.sort(this.sortByLayerIndex);
+  }
+
+  removeLayer() {
+    for(let x = 0; x < Width / Size; x++) {
+      for(let y = 0; y < Height / Size; y++) {
+        this.eraseBlock(x,y);
+      }
+    }
+  }
+
+  undoLayer() {
+    for(let x = 0; x < Width / Size; x++) {
+      for(let y = 0; y < Height / Size; y++) {
+        this.undoBlock(x,y);
+      }
+    }
   }
 
   handleCollisionBlockOnErase(x,y, layerIndex) {
