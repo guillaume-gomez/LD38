@@ -12,6 +12,7 @@ var CursorSize = exports.CursorSize = CursorLength * Size;
 var WidthSpriteSheetHero = exports.WidthSpriteSheetHero = 64;
 var HeightSpriteSheetHero = exports.HeightSpriteSheetHero = 96;
 var HeroRatio = exports.HeroRatio = 0.75;
+var BabyRatio = exports.BabyRatio = 0.50;
 
 var TextPosition = exports.TextPosition = 55;
 
@@ -125,6 +126,10 @@ var _Commands = require('states/Commands');
 
 var _Commands2 = _interopRequireDefault(_Commands);
 
+var _Introduction = require('states/Introduction');
+
+var _Introduction2 = _interopRequireDefault(_Introduction);
+
 var _Constants = require('./Constants.js');
 
 function _interopRequireDefault(obj) {
@@ -161,6 +166,7 @@ var Game = function (_Phaser$Game) {
     _this.state.add('MainMenu', _MainMenu2.default, false);
     _this.state.add('MainView', _MainView2.default, false);
     _this.state.add('Commands', _Commands2.default, false);
+    //this.state.add('Introduction', Introduction, false);
     _this.state.start('MainMenu');
     return _this;
   }
@@ -199,7 +205,7 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"./Constants.js":1,"states/Commands":8,"states/MainMenu":9,"states/MainView":10}],4:[function(require,module,exports){
+},{"./Constants.js":1,"states/Commands":8,"states/Introduction":9,"states/MainMenu":10,"states/MainView":11}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -256,6 +262,10 @@ var Character = function (_Phaser$Sprite) {
     _this.rightKey = game.input.keyboard.addKey(_this.game.controls.getKey("right"));
 
     _this.locked = true;
+
+    _this.jumpCount = 0;
+    _this.upKey.onDown.add(_this.checkDoubleJump, _this);
+
     _this.body.gravity.y = 0;
     var fn = function fn() {
       _this.body.gravity.y = 750;
@@ -304,17 +314,19 @@ var Character = function (_Phaser$Sprite) {
         this.body.velocity.x = 0;
       }
 
-      // Make the player jump if he is touching the ground
-      if (this.upKey.isDown && this.body.onFloor()) {
-        this.body.velocity.y = -225;
-        if (this.body.velocity.x === 0) {
-          if (this.direction === -1) {
-            this.animations.play("jumpLeft", TimeLapse);
-          } else {
-            this.animations.play("jumpRight", TimeLapse);
-          }
-        }
-      }
+      // // Make the player jump if he is touching the ground
+      // if (this.upKey.isDown  && this.jumpCount < 2) {
+      //   console.log('jumpCount')
+      //   this.body.velocity.y = -225;
+      //   if(this.body.velocity.x === 0) {
+      //     if(this.direction === -1) {
+      //       this.animations.play("jumpLeft", TimeLapse);
+      //     } else {
+      //       this.animations.play("jumpRight", TimeLapse);
+      //     }
+      //   }
+      //   this.jumpCount++;
+      // }
 
       if (this.body.velocity.x == 0 && this.body.velocity.y == 0) {
         if (this.direction == -1) {
@@ -323,6 +335,25 @@ var Character = function (_Phaser$Sprite) {
           this.animations.play("idleRight", TimeLapse);
         }
         //this.frame = this.direction ===  1 ? 0 : 29;
+      }
+
+      if (this.body.onFloor()) {
+        this.jumpCount = 0;
+      }
+    }
+  }, {
+    key: "checkDoubleJump",
+    value: function checkDoubleJump() {
+      if (this.jumpCount < 2) {
+        this.body.velocity.y = -225;
+        if (this.body.velocity.x === 0) {
+          if (this.direction === -1) {
+            this.animations.play("jumpLeft", TimeLapse);
+          } else {
+            this.animations.play("jumpRight", TimeLapse);
+          }
+        }
+        this.jumpCount++;
       }
     }
   }, {
@@ -710,6 +741,24 @@ var MapManager = function () {
       this.removedBlock.sort(this.sortByLayerIndex);
     }
   }, {
+    key: "removeLayer",
+    value: function removeLayer() {
+      for (var x = 0; x < _Constants.Width / _Constants.Size; x++) {
+        for (var y = 0; y < _Constants.Height / _Constants.Size; y++) {
+          this.eraseBlock(x, y);
+        }
+      }
+    }
+  }, {
+    key: "undoLayer",
+    value: function undoLayer() {
+      for (var x = 0; x < _Constants.Width / _Constants.Size; x++) {
+        for (var y = 0; y < _Constants.Height / _Constants.Size; y++) {
+          this.undoBlock(x, y);
+        }
+      }
+    }
+  }, {
     key: "handleCollisionBlockOnErase",
     value: function handleCollisionBlockOnErase(x, y, layerIndex) {
       var collidedTile = this.map.getTile(x, y, "colissionLayer");
@@ -941,7 +990,7 @@ var Commands = function (_Phaser$State) {
         this.jumpText.setText("W key");
       } else {
         this.moveText.setText("Q / D keys");
-        this.jumpText.setText("S key");
+        this.jumpText.setText("Z key");
       }
     }
   }, {
@@ -964,6 +1013,175 @@ var Commands = function (_Phaser$State) {
 exports.default = Commands;
 
 },{"../Constants.js":1,"../objects/Controls":5}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
+var _Constants = require('../Constants.js');
+
+var _ConstantsKey = require('../ConstantsKey.js');
+
+var _MapManager = require('objects/MapManager');
+
+var _MapManager2 = _interopRequireDefault(_MapManager);
+
+var _Character = require('objects/Character');
+
+var _Character2 = _interopRequireDefault(_Character);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var Introduction = function (_Phaser$State) {
+  _inherits(Introduction, _Phaser$State);
+
+  function Introduction() {
+    _classCallCheck(this, Introduction);
+
+    return _possibleConstructorReturn(this, (Introduction.__proto__ || Object.getPrototypeOf(Introduction)).call(this));
+  }
+
+  _createClass(Introduction, [{
+    key: 'create',
+    value: function create() {
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+      this.map = this.game.add.tilemap(_ConstantsKey.Levels['Level6'].key);
+      this.map.addTilesetImage(_ConstantsKey.Levels['Level6'].key, _ConstantsKey.Tileset.key);
+
+      this.map.createLayer('thirdLayer');
+      this.map.createLayer('secondLayer');
+      this.map.createLayer('firstLayer');
+      // This resizes the game world to match the layer dimensions
+      this.collisionLayer = this.map.createLayer('colissionLayer');
+      this.map.setCollisionByExclusion([], true, this.collisionLayer);
+
+      this.collisionLayer.resizeWorld();
+
+      this.mapManager = new _MapManager2.default(this.map, _ConstantsKey.Levels['Level6'].lastLayer);
+      this.mapManager.setUpCollisionLayer(this.collisionLayer);
+
+      var originPositionBadGuy = 200;
+      var originPositionBaby = 900;
+
+      this.baby = this.game.add.sprite(originPositionBaby, 395, 'baby');
+      this.baby2 = this.game.add.sprite(originPositionBaby + 50, 395, 'baby2');
+      this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
+
+      this.baby.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
+      this.baby2.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
+      this.badGuy.scale.setTo(_Constants.HeroRatio, _Constants.HeroRatio);
+      var timer = 3000;
+
+      var tweenA = this.game.add.tween(this.badGuy).to({ y: 320 }, 2000, "Quart.easeOut");
+      var tweenB = this.game.add.tween(this.badGuy).to({ x: 920 }, timer, "Quart.easeOut");
+      this.tweenC = this.game.add.tween(this.badGuy).to({ x: _Constants.Width + 120 }, timer, "Quart.easeOut");
+      this.tweenD = this.game.add.tween(this.baby).to({ x: _Constants.Width + 80 }, timer, "Quart.easeOut");
+      this.tweenE = this.game.add.tween(this.baby2).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
+
+      this.tweenF = this.game.add.tween(this.badGuy).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
+      this.tweenG = this.game.add.tween(this.baby).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
+      this.tweenH = this.game.add.tween(this.baby2).to({ x: 600 }, timer, "Quart.easeOut");
+      this.tweenI = this.game.add.tween(this.baby).to({ x: 600 }, timer, "Quart.easeOut");
+
+      tweenA.chain(tweenB);
+      tweenB.chain(this.tweenC);
+      tweenB.onComplete.add(this.catched, this);
+
+      tweenA.start();
+    }
+  }, {
+    key: 'catched',
+    value: function catched() {
+      var _this2 = this;
+
+      this.tweenC.start();
+      this.tweenD.start();
+      this.tweenE.start();
+
+      this.tweenE.onComplete.add(function () {
+        _this2.camera.fade(0x000000, 300, false);
+        _this2.game.camera.onFadeComplete.addOnce(_this2.resetFade([_this2.tweenF, _this2.tweenG, _this2.tweenH]), _this2);
+        _this2.game.camera.onFadeComplete;
+        _this2.mapManager.removeLayer();
+        _this2.badGuy.x = 150;
+        _this2.baby.x = 130;
+        _this2.baby2.x = 170;
+      }, this);
+
+      this.tweenH.onComplete.add(function () {
+        console.log("kkkk");
+        _this2.camera.fade(0x000000, 300, false);
+        _this2.game.camera.onFadeComplete.addOnce(_this2.resetFade([_this2.tweenF, _this2.tweenI]), _this2);
+        _this2.mapManager.removeLayer();
+
+        _this2.badGuy.x = 150;
+        _this2.baby.x = 130;
+        _this2.baby2.kill();
+      }, this);
+    }
+  }, {
+    key: 'preload',
+    value: function preload() {
+      this.game.load.spritesheet(_ConstantsKey.HeroSprite.key, 'res/' + _ConstantsKey.HeroSprite.path, _Constants.WidthSpriteSheetHero, _Constants.HeightSpriteSheetHero);
+      this.game.load.image(_ConstantsKey.Tileset.key, 'res/' + _ConstantsKey.Tileset.path);
+      this.game.load.tilemap(_ConstantsKey.Levels['Level6'].key, 'res/' + _ConstantsKey.Levels['Level6'].path, null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.image("baby", "res/baby.png");
+      this.game.load.image("baby2", "res/baby2.png");
+      this.game.load.image("baby3", "res/baby3.png");
+    }
+  }, {
+    key: 'resetFade',
+    value: function resetFade(TweensArray) {
+      var _this3 = this;
+
+      return function () {
+        _this3.game.camera.resetFX();
+        TweensArray.forEach(function (tween) {
+          console.log(tween);
+          tween.start();
+        });
+      };
+    }
+  }]);
+
+  return Introduction;
+}(Phaser.State);
+
+exports.default = Introduction;
+
+},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/MapManager":7}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1039,7 +1257,7 @@ var MainMenu = function (_Phaser$State) {
 
 exports.default = MainMenu;
 
-},{"../Constants.js":1}],10:[function(require,module,exports){
+},{"../Constants.js":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
