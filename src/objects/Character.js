@@ -17,12 +17,12 @@ class Character extends Phaser.Sprite {
     this.locked = true;
 
     this.jumpCount = 0;
-    this.upKey.onDown.add(this.checkDoubleJump, this);
 
     this.body.gravity.y = 0;
     const fn = () => {
       this.body.gravity.y = 750;
       this.locked = false;
+      this.upKey.onDown.add(this.checkDoubleJump, this);
     };
     setTimeout(fn, 500);
     const leftArray = [0,1,2,3,4,5,6,8,9,10,11,12,13,14,15];
