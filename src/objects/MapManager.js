@@ -16,6 +16,10 @@ class MapManager {
     this.visibleDoor = false;
   }
 
+  shouldPicked(tile) {
+    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1;
+  }
+
   findLayerToDestroy(x, y, lengthX, lengthY) {
     //layer can be deleted 3 and 2
     let layerIndex = MaxLayer;
@@ -45,13 +49,16 @@ class MapManager {
             tile.alpha = 0;
          }
 
-         if(tile.properties.is_gem == 1) {
-          this.nbGems++;
+        if(this.shouldPicked(tile)) {
           if(tile.properties.layer_index == MaxLayer) {
             tile.alpha = 1;
           } else {
             tile.alpha = 0;
           }
+        }
+
+        if(tile.properties.is_gem == 1) {
+          this.nbGems++;
         }
 
         if(tile.properties.portal == 1) {
@@ -130,7 +137,7 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
-        if(!newTile.properties.is_gem) {
+        if(!this.shouldPicked(newTile)) {
           newTile.alpha = 0;
         }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
@@ -160,7 +167,7 @@ class MapManager {
         let newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
         //copy property
         newTile.properties = Object.assign({}, tileToInsert.properties);
-        if(!newTile.properties.is_gem) {
+        if(!this.shouldPicked(newTile)) {
           newTile.alpha = 0;
         }
         this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
