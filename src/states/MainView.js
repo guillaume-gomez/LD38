@@ -111,6 +111,14 @@ class MainView extends Phaser.State {
       return;
     }
 
+    // if(!tile2.properties.layer_gem == 1) {
+    //   if(!tile2.properties.layer_destroy) {
+    //     this.mapManager.removeLayer();
+    //   } else if (!tile2.properties.layer_rollback) {
+    //     this.mapManager.undoLayer();
+    //   }
+    // }
+
     if(tile2.properties.is_gem == 1) {
       this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
       this.mapManager.killGem();
