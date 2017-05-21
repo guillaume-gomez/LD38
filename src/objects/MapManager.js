@@ -81,7 +81,6 @@ class MapManager {
     if(layerIndex == -1) {
       return;
     }
-
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
         this.handleCollisionBlockOnErase(xAxis, yAxis, layerIndex);
@@ -121,8 +120,10 @@ class MapManager {
     let collidedTile = this.map.getTile(x, y, "colissionLayer");
     if(collidedTile && collidedTile.properties) {
       if(collidedTile.properties.layer_index >= layerIndex) {
-        this.cacheCollisionLayer.push(collidedTile);
-        this.map.removeTile(x, y, "colissionLayer")
+        if(!collidedTile.properties || !collidedTile.properties.portal) {
+          this.cacheCollisionLayer.push(collidedTile);
+          this.map.removeTile(x, y, "colissionLayer");
+        }
       }
     } else{
       //dont find the tile in the layer, so the tile might be in the deleted tiles
