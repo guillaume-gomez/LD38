@@ -180,14 +180,20 @@ class MapManager {
     return a.layerIndex > b.layerIndex;
   }
 
-  undoBlock(x, y) {
-    const lengthX = CursorLength;
-    const lengthY = CursorLength;
-    const redoElements = this.removedBlock.find(list => list.x === x && list.y === y );
+  undoBlock(x, y, nbTiles = CursorLength) {
+    const lengthX = nbTiles;
+    const lengthY = nbTiles;
+    const redoElementsArray = this.removedBlock.filter(list => list.x === x && list.y === y );
+    const redoElements = redoElementsArray.reduce((acc, elm) => {
+      if(elm.layerIndex < acc.layerIndex) {
+        return elm;
+      }
+      return acc;
+    });
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
-        this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex)
+        this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex);
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
           collidedTile.isVisible = collidedTile.isVisible ? false : true;
