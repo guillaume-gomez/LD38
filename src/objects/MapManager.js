@@ -45,8 +45,9 @@ class MapManager {
           this.cacheCollisionLayer.push(tile);
           this.map.removeTile(tile.x, tile.y, "colissionLayer");
          }
+
          if(tile.properties.layer_index) {
-            tile.alpha = 0;
+          tile.alpha = 0;
          }
 
         if(this.shouldPicked(tile)) {
