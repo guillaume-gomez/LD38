@@ -117,6 +117,7 @@ class MainView extends Phaser.State {
       } else if (tile2.properties.layer_rollback) {
         this.mapManager.undoLayer();
       }
+      return;
     }
 
     if(tile2.properties.is_gem == 1) {
