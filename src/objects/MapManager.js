@@ -1,4 +1,4 @@
-import { CursorLength, Width, Height, Size } from '../Constants.js';
+import { CursorLength, Width, Height, Size, WidthLevel, HeightLevel } from '../Constants.js';
 
 const LengthAnimation = 50;
 const MaxLayer = 3;
@@ -69,9 +69,9 @@ class MapManager {
     });
   }
 
-  eraseBlock(x, y) {
-    const lengthY = CursorLength;
-    const lengthX = CursorLength;
+  eraseBlock(x, y, nbTiles = CursorLength) {
+    const lengthY = nbTiles;
+    const lengthX = nbTiles;
     //check the layers associated to the deletion;
     let objectsRemoves = [];
     let indexRemoval = 0;
@@ -101,17 +101,17 @@ class MapManager {
   }
 
   removeLayer() {
-    for(let x = 0; x < Width / Size; x++) {
-      for(let y = 0; y < Height / Size; y++) {
-        this.eraseBlock(x,y);
+    for(let x = 0; x < WidthLevel / Size; x++) {
+      for(let y = 0; y < HeightLevel / Size; y++) {
+        this.eraseBlock(x,y, 1);
       }
     }
   }
 
   undoLayer() {
-    for(let x = 0; x < Width / Size; x++) {
-      for(let y = 0; y < Height / Size; y++) {
-        this.undoBlock(x,y);
+    for(let x = 0; x < WidthLevel / Size; x++) {
+      for(let y = 0; y < HeightLevel / Size; y++) {
+        this.undoBlock(x,y, 1);
       }
     }
   }
