@@ -118,6 +118,7 @@ class MainView extends Phaser.State {
       } else if (tile2.properties.layer_rollback) {
         this.mapManager.undoLayer();
       }
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
       return;
     }
 
