@@ -38,6 +38,13 @@ class Controls {
     }
   }
 
+  padConfig() {
+    "jump": Phaser.Gamepad.XBOX360_A,
+    "undoLayer" : Phaser.Gamepad.XBOX360_X,
+    "removeLayer" : Phaser.Gamepad.XBOX360_B,
+    //"right": 
+  }
+
   injectPropsDueToKeyboardType() {
     if(!this.isQwerty) {
       return this.azertyKeyBoard();
@@ -88,6 +95,17 @@ class Controls {
 
   export() {
     return this.controlsSettings;
+  }
+
+
+  hasGamepad(game) {
+    return game.input.gamepad.supported && game.input.gamepad.active && game.input.gamepad.pad1.connected;
+  }
+
+
+  initAndInstallGamepad1(game) {
+    game.input.gamepad.start();
+    return game.input.gamepad.pad1;
   }
 
 
