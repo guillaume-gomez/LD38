@@ -84,7 +84,8 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
+    this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
