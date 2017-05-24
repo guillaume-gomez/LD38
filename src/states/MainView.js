@@ -84,8 +84,8 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer);
+    this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheckOverlap, null , this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheckCollide, this.hasPortal, this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
@@ -107,7 +107,14 @@ class MainView extends Phaser.State {
     return true;
   }
 
-  additionalCheck(tile1, tile2) {
+  additionalCheckCollide(tile1, tile2) {
+    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
+      //maybe make an animation
+      this.game.nextLevel();
+    }
+  }
+
+  additionalCheckOverlap(tile1, tile2) {
     if(!tile2.properties) {
       return;
     }
@@ -123,14 +130,15 @@ class MainView extends Phaser.State {
     }
 
     if(tile2.properties.is_gem == 1) {
-      this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
       this.mapManager.killGem();
       return;
     }
 
-    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
-      //maybe make an animation
-      this.game.nextLevel();
+    if(tile2.properties.trigger) {
+      this.mapManager.removeCollisionsAndAddElements(tile2.properties.layer_index);
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+      return;
     }
   }
 

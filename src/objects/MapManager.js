@@ -2,6 +2,7 @@ import { CursorLength, Width, Height, Size, WidthLevel, HeightLevel } from '../C
 
 const LengthAnimation = 50;
 const MaxLayer = 3;
+const DefaultTiles = [{layer_index: 3, tile: 1152}, {layer_index: 2, tile: 1184}, {layer_index: 1, tile: 1216}]
 
 class MapManager {
 
@@ -17,7 +18,7 @@ class MapManager {
   }
 
   shouldPicked(tile) {
-    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1;
+    return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1 || tile.properties.trigger === true;
   }
 
   findLayerToDestroy(x, y, lengthX, lengthY) {
@@ -31,7 +32,7 @@ class MapManager {
         break;
       }
     }
-    //impossibe
+    //impossible
     if(layerIndex <= 1 ||  layerIndex <= this.lastLayerAvailable) {
       return -1;
     }
@@ -232,6 +233,21 @@ class MapManager {
     });
   }
 
+  removeCollisionsAndAddElements(layerIndex) {
+    let props = [];
+    this.map.forEach((tile) => {
+      if(tile.properties && tile.properties.layer_index == layerIndex && tile.properties.removed_block) {
+        props.push({x:tile.x, y: tile.y});
+      }
+    });
+    props.forEach(coord => {
+      this.map.removeTile(coord.x, coord.y, "colissionLayer");
+      //this.map.removeTile(coord.x, coord.y, layerIndex); CHECK IF CORRECT
+      const defaultTile = DefaultTiles.find(object => object.layer_index == layerIndex);
+      console.log(defaultTile.tile)
+      this.map.putTile(defaultTile.tile, coord.x, coord.y, layerIndex);
+    });
+  }
 }
 
 export default MapManager;
