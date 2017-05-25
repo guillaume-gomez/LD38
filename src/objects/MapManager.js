@@ -244,7 +244,6 @@ class MapManager {
       this.map.removeTile(coord.x, coord.y, "colissionLayer");
       //this.map.removeTile(coord.x, coord.y, layerIndex); CHECK IF CORRECT
       const defaultTile = DefaultTiles.find(object => object.layer_index == layerIndex);
-      console.log(defaultTile.tile)
       this.map.putTile(defaultTile.tile, coord.x, coord.y, layerIndex);
     });
   }
