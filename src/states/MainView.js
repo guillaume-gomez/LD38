@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, WidthLevel } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -192,8 +192,8 @@ class MainView extends Phaser.State {
 
   moveDown() {
     this.marker.y += CursorSize;
-    if(this.marker.y > Height - CursorSize) {
-      this.marker.y = Height - CursorSize;
+    if(this.marker.y > Height) {
+      this.marker.y -= CursorSize;
     }
   }
 
@@ -206,8 +206,8 @@ class MainView extends Phaser.State {
 
   moveRight() {
     this.marker.x += CursorSize;
-    if(this.marker.x > Width - CursorSize) {
-      this.marker.x = Width - CursorSize;
+    if(this.marker.x > WidthLevel) {
+      this.marker.x -= CursorSize;
     }
   }
 
