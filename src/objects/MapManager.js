@@ -195,6 +195,9 @@ class MapManager {
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
+        if(!tile) {
+          return;
+        }
         this.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex);
         let collidedTile = this.map.getTile(tile.x, tile.y, "colissionLayer");
         if(collidedTile) {
