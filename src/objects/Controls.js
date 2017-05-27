@@ -4,7 +4,7 @@ class Controls {
   constructor(controlsSettings = {}, actionList = Actions) {
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
-    this.isQwerty = false;
+    this.isQwerty = true;
   };
 
   getKey(action) {
