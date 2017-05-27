@@ -1,4 +1,4 @@
-import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY } from '../Constants.js';
+import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, WidthLevel } from '../Constants.js';
 import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
@@ -84,7 +84,8 @@ class MainView extends Phaser.State {
 
 
   update() {
-    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal , this);
+    this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheckOverlap, null , this);
+    this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheckCollide, this.hasPortal, this);
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
@@ -106,20 +107,38 @@ class MainView extends Phaser.State {
     return true;
   }
 
-  additionalCheck(tile1, tile2) {
+  additionalCheckCollide(tile1, tile2) {
+    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
+      //maybe make an animation
+      this.game.nextLevel();
+    }
+  }
+
+  additionalCheckOverlap(tile1, tile2) {
     if(!tile2.properties) {
       return;
     }
 
+    if(tile2.properties.layer_gem == 1) {
+      if(tile2.properties.layer_destroy) {
+        this.mapManager.removeLayer();
+      } else if (tile2.properties.layer_rollback) {
+        this.mapManager.undoLayer();
+      }
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+      return;
+    }
+
     if(tile2.properties.is_gem == 1) {
-      this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
       this.mapManager.killGem();
       return;
     }
 
-    if(tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
-      //maybe make an animation
-      this.game.nextLevel();
+    if(tile2.properties.trigger) {
+      this.mapManager.removeCollisionsAndAddElements(tile2.properties.layer_index);
+      this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+      return;
     }
   }
 
@@ -173,8 +192,8 @@ class MainView extends Phaser.State {
 
   moveDown() {
     this.marker.y += CursorSize;
-    if(this.marker.y > Height - CursorSize) {
-      this.marker.y = Height - CursorSize;
+    if(this.marker.y > Height) {
+      this.marker.y -= CursorSize;
     }
   }
 
@@ -187,8 +206,8 @@ class MainView extends Phaser.State {
 
   moveRight() {
     this.marker.x += CursorSize;
-    if(this.marker.x > Width - CursorSize) {
-      this.marker.x = Width - CursorSize;
+    if(this.marker.x > WidthLevel) {
+      this.marker.x -= CursorSize;
     }
   }
 
