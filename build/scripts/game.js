@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 var Width = exports.Width = 1024;
 var Height = exports.Height = 576;
 var Size = exports.Size = 32;
+var WidthLevel = exports.WidthLevel = Size * 34;
+var HeightLevel = exports.HeightLevel = Size * 19;
 var CursorLength = exports.CursorLength = 3;
 var CursorSize = exports.CursorSize = CursorLength * Size;
 var WidthSpriteSheetHero = exports.WidthSpriteSheetHero = 64;
@@ -34,6 +36,8 @@ var HudTextY = exports.HudTextY = 540;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var Key = "Test";
+
 var Tileset = exports.Tileset = {
   path: "tileset.png",
   key: "tileset"
@@ -41,7 +45,7 @@ var Tileset = exports.Tileset = {
 
 var Level1 = exports.Level1 = {
   path: "LVL_1.json",
-  key: "Test",
+  key: Key,
   lastLayer: 3,
   text: "",
   playerPosition: { x: 64, y: 352 }
@@ -49,7 +53,7 @@ var Level1 = exports.Level1 = {
 
 var Level2 = exports.Level2 = {
   path: "LVL_6.json",
-  key: "Test",
+  key: Key,
   lastLayer: 3,
   text: "",
   playerPosition: { x: 64, y: 20 }
@@ -57,7 +61,7 @@ var Level2 = exports.Level2 = {
 
 var Level3 = exports.Level3 = {
   path: "LVL_2.json",
-  key: "Test",
+  key: Key,
   lastLayer: 2,
   text: "The gap seems too large. You might want to use your power",
   playerPosition: { x: 64, y: 352 }
@@ -65,7 +69,7 @@ var Level3 = exports.Level3 = {
 
 var Level4 = exports.Level4 = {
   path: "LVL_7.json",
-  key: "Test",
+  key: Key,
   lastLayer: 2,
   text: "",
   playerPosition: { x: 64, y: 20 }
@@ -73,7 +77,7 @@ var Level4 = exports.Level4 = {
 
 var Level5 = exports.Level5 = {
   path: "LVL_3.json",
-  key: "Test",
+  key: Key,
   lastLayer: 2,
   text: "A layer can help you, but it could stop you too. Press Shift to rollback.",
   playerPosition: { x: 64, y: 352 }
@@ -81,7 +85,7 @@ var Level5 = exports.Level5 = {
 
 var Level6 = exports.Level6 = {
   path: "LVL_4.json",
-  key: "Test",
+  key: Key,
   lastLayer: 1,
   text: "You may need to remove more than one layer",
   playerPosition: { x: 64, y: 352 }
@@ -264,12 +268,12 @@ var Character = function (_Phaser$Sprite) {
     _this.locked = true;
 
     _this.jumpCount = 0;
-    _this.upKey.onDown.add(_this.checkDoubleJump, _this);
 
     _this.body.gravity.y = 0;
     var fn = function fn() {
       _this.body.gravity.y = 750;
       _this.locked = false;
+      _this.upKey.onDown.add(_this.checkDoubleJump, _this);
     };
     setTimeout(fn, 500);
     var leftArray = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -418,7 +422,7 @@ var Controls = function () {
 
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
-    this.isQwerty = true;
+    this.isQwerty = false;
   }
 
   _createClass(Controls, [{
@@ -458,6 +462,15 @@ var Controls = function () {
         "jump": Phaser.Keyboard.Z,
         "undoLayer": Phaser.Keyboard.SPACEBAR,
         "removeLayer": Phaser.Keyboard.SHIFT
+      };
+    }
+  }, {
+    key: "padConfig",
+    value: function padConfig() {
+      return {
+        "jump": Phaser.Gamepad.XBOX360_A,
+        "undoLayer": Phaser.Gamepad.XBOX360_X,
+        "removeLayer": Phaser.Gamepad.XBOX360_B
       };
     }
   }, {
@@ -518,6 +531,17 @@ var Controls = function () {
     key: "export",
     value: function _export() {
       return this.controlsSettings;
+    }
+  }, {
+    key: "hasGamepad",
+    value: function hasGamepad(game) {
+      return game.input.gamepad.supported && game.input.gamepad.active && game.input.gamepad.pad1.connected;
+    }
+  }, {
+    key: "initAndInstallGamepad1",
+    value: function initAndInstallGamepad1(game) {
+      game.input.gamepad.start();
+      return game.input.gamepad.pad1;
     }
   }]);
 
@@ -634,6 +658,7 @@ function _classCallCheck(instance, Constructor) {
 
 var LengthAnimation = 50;
 var MaxLayer = 3;
+var DefaultTiles = [{ layer_index: 3, tile: 1152 }, { layer_index: 2, tile: 1184 }, { layer_index: 1, tile: 1216 }];
 
 var MapManager = function () {
   function MapManager(map, lastLayerAvailable) {
@@ -650,6 +675,11 @@ var MapManager = function () {
   }
 
   _createClass(MapManager, [{
+    key: "shouldPicked",
+    value: function shouldPicked(tile) {
+      return tile.properties.is_gem == 1 || tile.properties.layer_gem == 1 || tile.properties.trigger === true;
+    }
+  }, {
     key: "findLayerToDestroy",
     value: function findLayerToDestroy(x, y, lengthX, lengthY) {
       //layer can be deleted 3 and 2
@@ -661,7 +691,7 @@ var MapManager = function () {
           break;
         }
       }
-      //impossibe
+      //impossible
       if (layerIndex <= 1 || layerIndex <= this.lastLayerAvailable) {
         return -1;
       }
@@ -678,17 +708,21 @@ var MapManager = function () {
             _this.cacheCollisionLayer.push(tile);
             _this.map.removeTile(tile.x, tile.y, "colissionLayer");
           }
+
           if (tile.properties.layer_index) {
             tile.alpha = 0;
           }
 
-          if (tile.properties.is_gem == 1) {
-            _this.nbGems++;
+          if (_this.shouldPicked(tile)) {
             if (tile.properties.layer_index == MaxLayer) {
               tile.alpha = 1;
             } else {
               tile.alpha = 0;
             }
+          }
+
+          if (tile.properties.is_gem == 1) {
+            _this.nbGems++;
           }
 
           if (tile.properties.portal == 1) {
@@ -703,8 +737,10 @@ var MapManager = function () {
     value: function eraseBlock(x, y) {
       var _this2 = this;
 
-      var lengthY = _Constants.CursorLength;
-      var lengthX = _Constants.CursorLength;
+      var nbTiles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _Constants.CursorLength;
+
+      var lengthY = nbTiles;
+      var lengthX = nbTiles;
       //check the layers associated to the deletion;
       var objectsRemoves = [];
       var indexRemoval = 0;
@@ -743,18 +779,18 @@ var MapManager = function () {
   }, {
     key: "removeLayer",
     value: function removeLayer() {
-      for (var x = 0; x < _Constants.Width / _Constants.Size; x++) {
-        for (var y = 0; y < _Constants.Height / _Constants.Size; y++) {
-          this.eraseBlock(x, y);
+      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x++) {
+        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y++) {
+          this.eraseBlock(x, y, 1);
         }
       }
     }
   }, {
     key: "undoLayer",
     value: function undoLayer() {
-      for (var x = 0; x < _Constants.Width / _Constants.Size; x++) {
-        for (var y = 0; y < _Constants.Height / _Constants.Size; y++) {
-          this.undoBlock(x, y);
+      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x++) {
+        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y++) {
+          this.undoBlock(x, y, 1);
         }
       }
     }
@@ -764,8 +800,10 @@ var MapManager = function () {
       var collidedTile = this.map.getTile(x, y, "colissionLayer");
       if (collidedTile && collidedTile.properties) {
         if (collidedTile.properties.layer_index >= layerIndex) {
-          this.cacheCollisionLayer.push(collidedTile);
-          this.map.removeTile(x, y, "colissionLayer");
+          if (!collidedTile.properties || !collidedTile.properties.portal) {
+            this.cacheCollisionLayer.push(collidedTile);
+            this.map.removeTile(x, y, "colissionLayer");
+          }
         }
       } else {
         //dont find the tile in the layer, so the tile might be in the deleted tiles
@@ -781,7 +819,7 @@ var MapManager = function () {
           var newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
           //copy property
           newTile.properties = Object.assign({}, tileToInsert.properties);
-          if (!newTile.properties.is_gem) {
+          if (!this.shouldPicked(newTile)) {
             newTile.alpha = 0;
           }
           this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
@@ -812,7 +850,7 @@ var MapManager = function () {
           var newTile = this.map.putTile(tileToInsert, tileToInsert.x, tileToInsert.y, "colissionLayer");
           //copy property
           newTile.properties = Object.assign({}, tileToInsert.properties);
-          if (!newTile.properties.is_gem) {
+          if (!this.shouldPicked(newTile)) {
             newTile.alpha = 0;
           }
           this.cacheCollisionLayer.splice(indexRemoveCollisionBlock, 1);
@@ -829,14 +867,25 @@ var MapManager = function () {
     value: function undoBlock(x, y) {
       var _this3 = this;
 
-      var lengthX = _Constants.CursorLength;
-      var lengthY = _Constants.CursorLength;
-      var redoElements = this.removedBlock.find(function (list) {
+      var nbTiles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _Constants.CursorLength;
+
+      var lengthX = nbTiles;
+      var lengthY = nbTiles;
+      var redoElementsArray = this.removedBlock.filter(function (list) {
         return list.x === x && list.y === y;
+      });
+      var redoElements = redoElementsArray.reduce(function (acc, elm) {
+        if (elm.layerIndex < acc.layerIndex) {
+          return elm;
+        }
+        return acc;
       });
       if (redoElements) {
         var indexRemoval = _Constants.CursorLength;
         redoElements.tiles.forEach(function (tile) {
+          if (!tile) {
+            return;
+          }
           _this3.handleCollisionBlockOnUndo(tile.x, tile.y, redoElements.layerIndex);
           var collidedTile = _this3.map.getTile(tile.x, tile.y, "colissionLayer");
           if (collidedTile) {
@@ -877,6 +926,26 @@ var MapManager = function () {
       this.visibleDoor = true;
       this.doorSprites.forEach(function (tile, index) {
         tile.alpha = 1;
+      });
+    }
+  }, {
+    key: "removeCollisionsAndAddElements",
+    value: function removeCollisionsAndAddElements(layerIndex) {
+      var _this4 = this;
+
+      var props = [];
+      this.map.forEach(function (tile) {
+        if (tile.properties && tile.properties.layer_index == layerIndex && tile.properties.removed_block) {
+          props.push({ x: tile.x, y: tile.y });
+        }
+      });
+      props.forEach(function (coord) {
+        _this4.map.removeTile(coord.x, coord.y, "colissionLayer");
+        //this.map.removeTile(coord.x, coord.y, layerIndex); CHECK IF CORRECT
+        var defaultTile = DefaultTiles.find(function (object) {
+          return object.layer_index == layerIndex;
+        });
+        _this4.map.putTile(defaultTile.tile, coord.x, coord.y, layerIndex);
       });
     }
   }]);
@@ -1399,7 +1468,8 @@ var MainView = function (_Phaser$State) {
   }, {
     key: 'update',
     value: function update() {
-      this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheck, this.hasPortal, this);
+      this.game.physics.arcade.overlap(this.hero, this.collisionLayer, this.additionalCheckOverlap, null, this);
+      this.game.physics.arcade.collide(this.hero, this.collisionLayer, this.additionalCheckCollide, this.hasPortal, this);
       if (this.hero.y > _Constants.Height + this.hero.height) {
         this.game.reset();
       }
@@ -1422,21 +1492,40 @@ var MainView = function (_Phaser$State) {
       return true;
     }
   }, {
-    key: 'additionalCheck',
-    value: function additionalCheck(tile1, tile2) {
+    key: 'additionalCheckCollide',
+    value: function additionalCheckCollide(tile1, tile2) {
+      if (tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
+        //maybe make an animation
+        this.game.nextLevel();
+      }
+    }
+  }, {
+    key: 'additionalCheckOverlap',
+    value: function additionalCheckOverlap(tile1, tile2) {
       if (!tile2.properties) {
         return;
       }
 
+      if (tile2.properties.layer_gem == 1) {
+        if (tile2.properties.layer_destroy) {
+          this.mapManager.removeLayer();
+        } else if (tile2.properties.layer_rollback) {
+          this.mapManager.undoLayer();
+        }
+        this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+        return;
+      }
+
       if (tile2.properties.is_gem == 1) {
-        this.map.removeTile(tile2.x, tile2.y, "colissionLayer").destroy();
+        this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
         this.mapManager.killGem();
         return;
       }
 
-      if (tile2.properties.portal == 1 && this.mapManager.portalEnable()) {
-        //maybe make an animation
-        this.game.nextLevel();
+      if (tile2.properties.trigger) {
+        this.mapManager.removeCollisionsAndAddElements(tile2.properties.layer_index);
+        this.map.removeTile(tile2.x, tile2.y, "colissionLayer");
+        return;
       }
     }
   }, {
@@ -1498,8 +1587,8 @@ var MainView = function (_Phaser$State) {
     key: 'moveDown',
     value: function moveDown() {
       this.marker.y += _Constants.CursorSize;
-      if (this.marker.y > _Constants.Height - _Constants.CursorSize) {
-        this.marker.y = _Constants.Height - _Constants.CursorSize;
+      if (this.marker.y > _Constants.Height) {
+        this.marker.y -= _Constants.CursorSize;
       }
     }
   }, {
@@ -1514,8 +1603,8 @@ var MainView = function (_Phaser$State) {
     key: 'moveRight',
     value: function moveRight() {
       this.marker.x += _Constants.CursorSize;
-      if (this.marker.x > _Constants.Width - _Constants.CursorSize) {
-        this.marker.x = _Constants.Width - _Constants.CursorSize;
+      if (this.marker.x > _Constants.WidthLevel) {
+        this.marker.x -= _Constants.CursorSize;
       }
     }
   }]);
