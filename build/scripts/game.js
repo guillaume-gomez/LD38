@@ -422,7 +422,7 @@ var Controls = function () {
 
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
-    this.isQwerty = false;
+    this.isQwerty = true;
   }
 
   _createClass(Controls, [{
