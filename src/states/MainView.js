@@ -16,7 +16,7 @@ class MainView extends Phaser.State {
     this.indexLevel = indexLevel || 1;
     this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
     if(!this.game.controls) {
-      let controls = new Controls();
+      let controls = new Controls(this.game);
       controls.PostMortemDefaultConfig();
       this.game.controls = controls;
     }
@@ -69,6 +69,13 @@ class MainView extends Phaser.State {
       this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
       this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
+      if(this.game.controls.hasGamepad()) {
+        let buttonB = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_B);
+        buttonB.onDown.add(this.eraseBlockKeyboard, this);
+
+        let buttonX = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_X);
+        buttonB.onDown.add(this.undoBlockKeyboard, this);
+      }
       this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
       this.keyUpLayer.onDown.add(this.moveUp, this);
       this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
@@ -77,7 +84,6 @@ class MainView extends Phaser.State {
       this.keyLeftLayer.onDown.add(this.moveLeft, this);
       this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
       this.keyRightLayer.onDown.add(this.moveRight, this);
-
       this.game.time.advancedTiming = true;
     }
   }
@@ -89,8 +95,25 @@ class MainView extends Phaser.State {
     if(this.hero.y > Height + this.hero.height) {
       this.game.reset();
     }
-
+    if(this.game.controls.hasGamepad()) {
+      this.commandsPad();
+    }
     this.updateGui();
+  }
+
+  commandsPad() {
+    if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) < -0.5 ) {
+      this.moveLeft();
+    }
+    else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) > 0.5) {
+      this.moveRight();
+    }
+
+    if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) < -0.5) {
+      this.moveUp();
+    } else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) > 0.5) {
+      this.moveDown();
+    }
   }
 
   updateGui() {
