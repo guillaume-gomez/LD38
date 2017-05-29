@@ -35,7 +35,7 @@ class Commands extends Phaser.State {
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.game.input.gamepad.start();
 
-    let controls = new Controls();
+    let controls = new Controls(this.game);
     controls.PostMortemDefaultConfig();
     this.game.controls = controls;
   }
