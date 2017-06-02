@@ -74,7 +74,7 @@ class MainView extends Phaser.State {
         buttonB.onDown.add(this.eraseBlockKeyboard, this);
 
         let buttonX = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_X);
-        buttonB.onDown.add(this.undoBlockKeyboard, this);
+        buttonX.onDown.add(this.undoBlockKeyboard, this);
       }
       this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
       this.keyUpLayer.onDown.add(this.moveUp, this);
@@ -102,17 +102,21 @@ class MainView extends Phaser.State {
   }
 
   commandsPad() {
-    if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) < -0.5 ) {
-      this.moveLeft();
-    }
-    else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) > 0.5) {
-      this.moveRight();
-    }
+    if(!this.game.controls.isMovingRightPad) {
+      this.game.controls.isMovingRightPad = true;
+      this.game.controls.delayControl(50)
+      if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) < -0.5 ) {
+        this.moveLeft();
+      }
+      else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) > 0.5) {
+        this.moveRight();
+      }
 
-    if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) < -0.5) {
-      this.moveUp();
-    } else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) > 0.5) {
-      this.moveDown();
+      if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) < -0.5) {
+        this.moveUp();
+      } else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) > 0.5) {
+        this.moveDown();
+      }
     }
   }
 

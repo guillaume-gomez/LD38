@@ -8,6 +8,7 @@ class Controls {
     this.isQwerty = true;
     this.game.input.gamepad.start();
     this.pad = this.game.input.gamepad.pad1;
+    this.isMovingRightPad = false;
   };
 
   getKey(action) {
@@ -100,6 +101,11 @@ class Controls {
 
   export() {
     return this.controlsSettings;
+  }
+
+  delayControl(timer) {
+    const fn = () => { this.isMovingRightPad = false};
+    setTimeout(fn, timer);
   }
 
 
