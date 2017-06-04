@@ -71,9 +71,9 @@ class MapManager {
     });
   }
 
-  eraseBlock(x, y, nbTiles = CursorLength) {
-    const lengthY = nbTiles;
-    const lengthX = nbTiles;
+  eraseBlock(x, y, timerAnim = LengthAnimation) {
+    const lengthY = CursorLength;
+    const lengthX = CursorLength;
     //check the layers associated to the deletion;
     let objectsRemoves = [];
     let indexRemoval = 0;
@@ -90,7 +90,7 @@ class MapManager {
           const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
           objectsRemoves.push(tile);
         }
-        setTimeout(fn, indexRemoval * LengthAnimation);
+        setTimeout(fn, indexRemoval * timerAnim);
         indexRemoval++;
         if(indexRemoval > CursorLength) {
           indexRemoval = 0;
@@ -102,17 +102,17 @@ class MapManager {
   }
 
   removeLayer() {
-    for(let x = 0; x < WidthLevel / Size; x++) {
-      for(let y = 0; y < HeightLevel / Size; y++) {
-        this.eraseBlock(x,y, 1);
+    for(let x = 0; x < WidthLevel / Size; x += CursorLength) {
+      for(let y = 0; y < HeightLevel / Size; y += CursorLength) {
+        this.eraseBlock(x,y, 0);
       }
     }
   }
 
   undoLayer() {
-    for(let x = 0; x < WidthLevel / Size; x++) {
-      for(let y = 0; y < HeightLevel / Size; y++) {
-        this.undoBlock(x,y, 1);
+    for(let x = 0; x < WidthLevel / Size; x += CursorLength) {
+      for(let y = 0; y < HeightLevel / Size; y += CursorLength) {
+        this.undoBlock(x,y, 0);
       }
     }
   }
@@ -182,16 +182,21 @@ class MapManager {
     return a.layerIndex > b.layerIndex;
   }
 
-  undoBlock(x, y, nbTiles = CursorLength) {
-    const lengthX = nbTiles;
-    const lengthY = nbTiles;
+  undoBlock(x, y, timerAnim = LengthAnimation) {
+    const lengthX = CursorLength;
+    const lengthY = CursorLength;
     const redoElementsArray = this.removedBlock.filter(list => list.x === x && list.y === y );
+    // no matching
+    if(redoElementsArray.length === 0) {
+      return
+    }
     const redoElements = redoElementsArray.reduce((acc, elm) => {
       if(elm.layerIndex < acc.layerIndex) {
         return elm;
       }
       return acc;
     });
+    console.log(redoElements)
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
@@ -206,7 +211,7 @@ class MapManager {
         const fn = () => {
           this.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
         };
-        setTimeout(fn, indexRemoval * LengthAnimation);
+        setTimeout(fn, indexRemoval * timerAnim);
         indexRemoval--;
         if(indexRemoval < 0) {
           indexRemoval = CursorLength;
