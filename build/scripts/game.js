@@ -264,6 +264,7 @@ var Character = function (_Phaser$Sprite) {
     _this.upKey = game.input.keyboard.addKey(_this.game.controls.getKey("jump"));
     _this.leftKey = game.input.keyboard.addKey(_this.game.controls.getKey("left"));
     _this.rightKey = game.input.keyboard.addKey(_this.game.controls.getKey("right"));
+    _this.button = _this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
 
     _this.locked = true;
 
@@ -274,6 +275,9 @@ var Character = function (_Phaser$Sprite) {
       _this.body.gravity.y = 750;
       _this.locked = false;
       _this.upKey.onDown.add(_this.checkDoubleJump, _this);
+      if (_this.game.controls.hasGamepad()) {
+        _this.button.onDown.add(_this.checkDoubleJump, _this);
+      }
     };
     setTimeout(fn, 500);
     var leftArray = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -306,11 +310,11 @@ var Character = function (_Phaser$Sprite) {
         return;
       }
 
-      if (this.leftKey.isDown) {
+      if (this.leftKey.isDown || this.game.controls.hasGamepad() && this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.5) {
         this.body.velocity.x = -200;
         this.animations.play("left", TimeLapse);
         this.direction = -1;
-      } else if (this.rightKey.isDown) {
+      } else if (this.rightKey.isDown || this.game.controls.hasGamepad() && this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.5) {
         this.body.velocity.x = 200;
         this.animations.play("right", TimeLapse);
         this.direction = 1;
@@ -349,6 +353,8 @@ var Character = function (_Phaser$Sprite) {
     key: "checkDoubleJump",
     value: function checkDoubleJump() {
       if (this.jumpCount < 2) {
+        //due to the gamepad
+        if (!this.body) return;
         this.body.velocity.y = -225;
         if (this.body.velocity.x === 0) {
           if (this.direction === -1) {
@@ -414,15 +420,19 @@ function _classCallCheck(instance, Constructor) {
 var Actions = ["left", "right", "jump", "moveLeftCursor", "moveRightCursor", "moveDownCursor", "moveUpCursor", "undoLayer", "removeLayer"];
 
 var Controls = function () {
-  function Controls() {
-    var controlsSettings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var actionList = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Actions;
+  function Controls(game) {
+    var controlsSettings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var actionList = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Actions;
 
     _classCallCheck(this, Controls);
 
+    this.game = game;
     this.controlsSettings = controlsSettings;
     this.actionList = actionList;
     this.isQwerty = true;
+    this.game.input.gamepad.start();
+    this.pad = this.game.input.gamepad.pad1;
+    this.isMovingRightPad = false;
   }
 
   _createClass(Controls, [{
@@ -471,6 +481,7 @@ var Controls = function () {
         "jump": Phaser.Gamepad.XBOX360_A,
         "undoLayer": Phaser.Gamepad.XBOX360_X,
         "removeLayer": Phaser.Gamepad.XBOX360_B
+
       };
     }
   }, {
@@ -533,15 +544,19 @@ var Controls = function () {
       return this.controlsSettings;
     }
   }, {
-    key: "hasGamepad",
-    value: function hasGamepad(game) {
-      return game.input.gamepad.supported && game.input.gamepad.active && game.input.gamepad.pad1.connected;
+    key: "delayControl",
+    value: function delayControl(timer) {
+      var _this2 = this;
+
+      var fn = function fn() {
+        _this2.isMovingRightPad = false;
+      };
+      setTimeout(fn, timer);
     }
   }, {
-    key: "initAndInstallGamepad1",
-    value: function initAndInstallGamepad1(game) {
-      game.input.gamepad.start();
-      return game.input.gamepad.pad1;
+    key: "hasGamepad",
+    value: function hasGamepad() {
+      return this.game.input.gamepad.supported && this.game.input.gamepad.active && this.game.input.gamepad.pad1.connected;
     }
   }]);
 
@@ -737,10 +752,10 @@ var MapManager = function () {
     value: function eraseBlock(x, y) {
       var _this2 = this;
 
-      var nbTiles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _Constants.CursorLength;
+      var timerAnim = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LengthAnimation;
 
-      var lengthY = nbTiles;
-      var lengthX = nbTiles;
+      var lengthY = _Constants.CursorLength;
+      var lengthX = _Constants.CursorLength;
       //check the layers associated to the deletion;
       var objectsRemoves = [];
       var indexRemoval = 0;
@@ -758,7 +773,7 @@ var MapManager = function () {
             var tile = _this2.map.removeTile(xAxis, yAxis, layerIndex);
             objectsRemoves.push(tile);
           };
-          setTimeout(fn, indexRemoval * LengthAnimation);
+          setTimeout(fn, indexRemoval * timerAnim);
           indexRemoval++;
           if (indexRemoval > _Constants.CursorLength) {
             indexRemoval = 0;
@@ -779,18 +794,18 @@ var MapManager = function () {
   }, {
     key: "removeLayer",
     value: function removeLayer() {
-      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x++) {
-        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y++) {
-          this.eraseBlock(x, y, 1);
+      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x += _Constants.CursorLength) {
+        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y += _Constants.CursorLength) {
+          this.eraseBlock(x, y, 0);
         }
       }
     }
   }, {
     key: "undoLayer",
     value: function undoLayer() {
-      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x++) {
-        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y++) {
-          this.undoBlock(x, y, 1);
+      for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x += _Constants.CursorLength) {
+        for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y += _Constants.CursorLength) {
+          this.undoBlock(x, y, 0);
         }
       }
     }
@@ -867,19 +882,24 @@ var MapManager = function () {
     value: function undoBlock(x, y) {
       var _this3 = this;
 
-      var nbTiles = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : _Constants.CursorLength;
+      var timerAnim = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LengthAnimation;
 
-      var lengthX = nbTiles;
-      var lengthY = nbTiles;
+      var lengthX = _Constants.CursorLength;
+      var lengthY = _Constants.CursorLength;
       var redoElementsArray = this.removedBlock.filter(function (list) {
         return list.x === x && list.y === y;
       });
+      // no matching
+      if (redoElementsArray.length === 0) {
+        return;
+      }
       var redoElements = redoElementsArray.reduce(function (acc, elm) {
         if (elm.layerIndex < acc.layerIndex) {
           return elm;
         }
         return acc;
       });
+      console.log(redoElements);
       if (redoElements) {
         var indexRemoval = _Constants.CursorLength;
         redoElements.tiles.forEach(function (tile) {
@@ -894,7 +914,7 @@ var MapManager = function () {
           var fn = function fn() {
             _this3.map.putTile(tile, tile.x, tile.y, redoElements.layerIndex);
           };
-          setTimeout(fn, indexRemoval * LengthAnimation);
+          setTimeout(fn, indexRemoval * timerAnim);
           indexRemoval--;
           if (indexRemoval < 0) {
             indexRemoval = _Constants.CursorLength;
@@ -1043,7 +1063,7 @@ var Commands = function (_Phaser$State) {
       this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
       this.game.input.gamepad.start();
 
-      var controls = new _Controls2.default();
+      var controls = new _Controls2.default(this.game);
       controls.PostMortemDefaultConfig();
       this.game.controls = controls;
     }
@@ -1400,7 +1420,7 @@ var MainView = function (_Phaser$State) {
       this.indexLevel = indexLevel || 1;
       this.hasLevel = Object.keys(_ConstantsKey.Levels).length >= this.indexLevel;
       if (!this.game.controls) {
-        var controls = new _Controls2.default();
+        var controls = new _Controls2.default(this.game);
         controls.PostMortemDefaultConfig();
         this.game.controls = controls;
       }
@@ -1453,6 +1473,13 @@ var MainView = function (_Phaser$State) {
         this.keyUndoLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("removeLayer"));
         this.keyUndoLayer.onDown.add(this.undoBlockKeyboard, this);
 
+        if (this.game.controls.hasGamepad()) {
+          var buttonB = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_B);
+          buttonB.onDown.add(this.eraseBlockKeyboard, this);
+
+          var buttonX = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_X);
+          buttonX.onDown.add(this.undoBlockKeyboard, this);
+        }
         this.keyUpLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveUpCursor"));
         this.keyUpLayer.onDown.add(this.moveUp, this);
         this.keyDownLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveDownCursor"));
@@ -1461,7 +1488,6 @@ var MainView = function (_Phaser$State) {
         this.keyLeftLayer.onDown.add(this.moveLeft, this);
         this.keyRightLayer = this.game.input.keyboard.addKey(this.game.controls.getKey("moveRightCursor"));
         this.keyRightLayer.onDown.add(this.moveRight, this);
-
         this.game.time.advancedTiming = true;
       }
     }
@@ -1473,8 +1499,29 @@ var MainView = function (_Phaser$State) {
       if (this.hero.y > _Constants.Height + this.hero.height) {
         this.game.reset();
       }
-
+      if (this.game.controls.hasGamepad()) {
+        this.commandsPad();
+      }
       this.updateGui();
+    }
+  }, {
+    key: 'commandsPad',
+    value: function commandsPad() {
+      if (!this.game.controls.isMovingRightPad) {
+        this.game.controls.isMovingRightPad = true;
+        this.game.controls.delayControl(50);
+        if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) < -0.5) {
+          this.moveLeft();
+        } else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_X) > 0.5) {
+          this.moveRight();
+        }
+
+        if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) < -0.5) {
+          this.moveUp();
+        } else if (this.game.controls.pad.axis(Phaser.Gamepad.XBOX360_STICK_RIGHT_Y) > 0.5) {
+          this.moveDown();
+        }
+      }
     }
   }, {
     key: 'updateGui',
