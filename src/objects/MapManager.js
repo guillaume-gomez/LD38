@@ -1,6 +1,6 @@
 import { CursorLength, Width, Height, Size, WidthLevel, HeightLevel } from '../Constants.js';
 
-const LengthAnimation = 50;
+const LengthAnimation = 25;
 const MaxLayer = 3;
 const DefaultTiles = [{layer_index: 3, tile: 1152}, {layer_index: 2, tile: 1184}, {layer_index: 1, tile: 1216}]
 
@@ -196,7 +196,6 @@ class MapManager {
       }
       return acc;
     });
-    console.log(redoElements)
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
