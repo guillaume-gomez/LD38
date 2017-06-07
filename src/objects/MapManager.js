@@ -15,6 +15,9 @@ class MapManager {
     this.currentGems = 0;
     this.doorSprites = [];
     this.visibleDoor = false;
+    //animation during erase, so you we have to lock rollabck during erase processing
+    this.lockRollback = true;
+    this.nbFinishedFunctions = 0;
   }
 
   shouldPicked(tile) {
@@ -71,7 +74,17 @@ class MapManager {
     });
   }
 
+  checkIfLock() {
+    const nbFunctionMax = CursorLength * CursorLength;
+    this.nbFinishedFunctions++;
+    if(this.nbFinishedFunctions === nbFunctionMax) {
+      this.lockRollback = false;
+      this.nbFinishedFunctions = 0;
+    }
+  }
+
   eraseBlock(x, y, timerAnim = LengthAnimation) {
+    this.lockRollback = true;
     const lengthY = CursorLength;
     const lengthX = CursorLength;
     //check the layers associated to the deletion;
@@ -85,13 +98,14 @@ class MapManager {
     for(let xAxis = x; xAxis < x + lengthX; xAxis++) {
       for(let yAxis = y; yAxis < y + lengthY; yAxis++) {
         this.handleCollisionBlockOnErase(xAxis, yAxis, layerIndex);
-
+        const tile = this.map.getTile(xAxis, yAxis, layerIndex);
+        objectsRemoves.push(tile);
         const fn = () => {
-          const tile = this.map.removeTile(xAxis, yAxis, layerIndex);
-          objectsRemoves.push(tile);
+          this.map.removeTile(xAxis, yAxis, layerIndex);
+          this.checkIfLock();
         }
-        setTimeout(fn, indexRemoval * timerAnim);
         indexRemoval++;
+        setTimeout(fn, indexRemoval * timerAnim);
         if(indexRemoval > CursorLength) {
           indexRemoval = 0;
         }
@@ -183,6 +197,9 @@ class MapManager {
   }
 
   undoBlock(x, y, timerAnim = LengthAnimation) {
+    if(this.lockRollback) {
+      return;
+    }
     const lengthX = CursorLength;
     const lengthY = CursorLength;
     const redoElementsArray = this.removedBlock.filter(list => list.x === x && list.y === y );
@@ -196,7 +213,6 @@ class MapManager {
       }
       return acc;
     });
-    console.log(redoElements)
     if(redoElements) {
       let indexRemoval = CursorLength;
       redoElements.tiles.forEach(tile => {
