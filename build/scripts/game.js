@@ -687,6 +687,9 @@ var MapManager = function () {
     this.currentGems = 0;
     this.doorSprites = [];
     this.visibleDoor = false;
+    //animation during erase, so you we have to lock rollabck during erase processing
+    this.lockRollback = true;
+    this.nbFinishedFunctions = 0;
   }
 
   _createClass(MapManager, [{
@@ -748,12 +751,23 @@ var MapManager = function () {
       });
     }
   }, {
+    key: "checkIfLock",
+    value: function checkIfLock() {
+      var nbFunctionMax = _Constants.CursorLength * _Constants.CursorLength;
+      this.nbFinishedFunctions++;
+      if (this.nbFinishedFunctions === nbFunctionMax) {
+        this.lockRollback = false;
+        this.nbFinishedFunctions = 0;
+      }
+    }
+  }, {
     key: "eraseBlock",
     value: function eraseBlock(x, y) {
       var _this2 = this;
 
       var timerAnim = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LengthAnimation;
 
+      this.lockRollback = true;
       var lengthY = _Constants.CursorLength;
       var lengthX = _Constants.CursorLength;
       //check the layers associated to the deletion;
@@ -768,13 +782,14 @@ var MapManager = function () {
       var _loop = function _loop(xAxis) {
         var _loop2 = function _loop2(yAxis) {
           _this2.handleCollisionBlockOnErase(xAxis, yAxis, layerIndex);
-
+          var tile = _this2.map.getTile(xAxis, yAxis, layerIndex);
+          objectsRemoves.push(tile);
           var fn = function fn() {
-            var tile = _this2.map.removeTile(xAxis, yAxis, layerIndex);
-            objectsRemoves.push(tile);
+            _this2.map.removeTile(xAxis, yAxis, layerIndex);
+            _this2.checkIfLock();
           };
-          setTimeout(fn, indexRemoval * timerAnim);
           indexRemoval++;
+          setTimeout(fn, indexRemoval * timerAnim);
           if (indexRemoval > _Constants.CursorLength) {
             indexRemoval = 0;
           }
@@ -884,6 +899,9 @@ var MapManager = function () {
 
       var timerAnim = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LengthAnimation;
 
+      if (this.lockRollback) {
+        return;
+      }
       var lengthX = _Constants.CursorLength;
       var lengthY = _Constants.CursorLength;
       var redoElementsArray = this.removedBlock.filter(function (list) {
@@ -899,7 +917,6 @@ var MapManager = function () {
         }
         return acc;
       });
-      console.log(redoElements);
       if (redoElements) {
         var indexRemoval = _Constants.CursorLength;
         redoElements.tiles.forEach(function (tile) {
