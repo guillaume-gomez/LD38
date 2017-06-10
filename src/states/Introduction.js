@@ -45,11 +45,6 @@ class Introduction extends Phaser.State {
       this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 80 }, timer, "Quart.easeOut");
       this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 100 }, timer, "Quart.easeOut");
 
-      this.tweenF = this.game.add.tween(this.badGuy).to( { x: Width + 100 }, timer, "Quart.easeOut");
-      this.tweenG = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer, "Quart.easeOut");
-      this.tweenH = this.game.add.tween(this.baby2).to( { x: 600 }, timer, "Quart.easeOut");
-      this.tweenI = this.game.add.tween(this.baby).to( { x: 600 }, timer, "Quart.easeOut");
-
       tweenA.chain(tweenB);
       tweenB.chain(this.tweenC);
       tweenB.onComplete.add(this.catched, this);
@@ -62,27 +57,22 @@ class Introduction extends Phaser.State {
     this.tweenD.start();
     this.tweenE.start();
 
+    this.nbReboot = 0;
+
     this.tweenE.onComplete.add(() => {
+      if(this.nbReboot > 1) {
+        this.game.goToMainGame();
+        return;
+      }
       this.camera.fade(0x000000, 300, false);
-      this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenF, this.tweenG, this.tweenH]), this);
-      this.game.camera.onFadeComplete
+      this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenC, this.tweenD, this.tweenE]), this);
       this.mapManager.removeLayer();
       this.badGuy.x = 150;
       this.baby.x = 130;
       this.baby2.x = 170;
+      this.nbReboot += 1;
     }, this);
 
-    this.tweenH.onComplete.add(() => {
-      console.log("kkkk")
-      this.camera.fade(0x000000, 300, false);
-      this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenF, this.tweenI]), this);
-      this.mapManager.removeLayer();
-
-      this.badGuy.x = 150;
-      this.baby.x = 130;
-      this.baby2.kill();
-
-    }, this);
   }
 
   preload() {
