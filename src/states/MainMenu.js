@@ -1,14 +1,29 @@
 import { BackgroundColor, TextColor } from "../Constants.js";
+import Controls from "objects/Controls";
 
 class MainMenu extends Phaser.State {
 
   create() {
+    if(this.game.controls.hasGamepad()) {
+      let buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+      buttonA.onDown.add(this.next, this);
+    }
+    this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    this.enterButton.onDown.add(this.next, this);
+
     this.game.stage.setBackgroundColor(BackgroundColor);
     this.game.add.sprite(20,500, "LD");
     this.game.add.sprite(0,0, "background");
     this.game.add.text(350, 400, "Press enter to start", { font: "bold 34px Arial", fill: TextColor });
     this.game.add.text(700, 530, "Thanks for playing ! :)", { font: "bold 19px Arial", fill: TextColor })
-    this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+  }
+
+  init() {
+    if(!this.game.controls) {
+      let controls = new Controls(this.game);
+      controls.PostMortemDefaultConfig();
+      this.game.controls = controls;
+    }
   }
 
   preload() {
@@ -16,10 +31,8 @@ class MainMenu extends Phaser.State {
     this.game.load.image("background", "res/menu.png");
   }
 
-  update() {
-    if(this.enterButton.isDown) {
-      this.game.goToCommands();
-    }
+  next() {
+    this.game.goToCommands();
   }
 
 }
