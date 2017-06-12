@@ -16,7 +16,7 @@ class MapManager {
     this.doorSprites = [];
     this.visibleDoor = false;
     //animation during erase, so you we have to lock rollabck during erase processing
-    this.lockRollback = true;
+    this.lockRollback = false;
     this.nbFinishedFunctions = 0;
   }
 
@@ -84,7 +84,9 @@ class MapManager {
   }
 
   eraseBlock(x, y, timerAnim = LengthAnimation) {
-    this.lockRollback = true;
+    if(this.lockRollback === true) {
+       return;
+     }
     const lengthY = CursorLength;
     const lengthX = CursorLength;
     //check the layers associated to the deletion;
@@ -105,6 +107,7 @@ class MapManager {
           this.checkIfLock();
         }
         indexRemoval++;
+        this.lockRollback = true;
         setTimeout(fn, indexRemoval * timerAnim);
         if(indexRemoval > CursorLength) {
           indexRemoval = 0;
