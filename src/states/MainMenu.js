@@ -5,8 +5,8 @@ class MainMenu extends Phaser.State {
 
   create() {
     if(this.game.controls.hasGamepad()) {
-      let buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
-      buttonA.onDown.add(this.next, this);
+      this.buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+      this.buttonA.onDown.add(this.next, this);
     }
     this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
     this.enterButton.onDown.add(this.next, this);
@@ -32,6 +32,7 @@ class MainMenu extends Phaser.State {
   }
 
   next() {
+    this.buttonA.onDown = new Phaser.Signal();
     this.game.goToCommands();
   }
 

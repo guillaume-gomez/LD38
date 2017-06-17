@@ -38,6 +38,16 @@ class Commands extends Phaser.State {
     let controls = new Controls(this.game);
     controls.PostMortemDefaultConfig();
     this.game.controls = controls;
+
+    if(this.game.controls.hasGamepad()) {
+      this.buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+      this.buttonA.onDown.add(this.nextStep, this);
+    }
+  }
+
+  nextStep() {
+    this.buttonA.onDown = new Phaser.Signal();
+    this.game.goToMainGame();
   }
 
   update() {
