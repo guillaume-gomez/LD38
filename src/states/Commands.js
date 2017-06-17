@@ -46,7 +46,9 @@ class Commands extends Phaser.State {
   }
 
   nextStep() {
-    this.buttonA.onDown = new Phaser.Signal();
+    if(this.buttonA) {
+      this.buttonA.onDown = new Phaser.Signal();
+    }
     this.game.goToMainGame();
   }
 

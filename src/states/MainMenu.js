@@ -32,7 +32,9 @@ class MainMenu extends Phaser.State {
   }
 
   next() {
-    this.buttonA.onDown = new Phaser.Signal();
+    if(this.buttonA) {
+      this.buttonA.onDown = new Phaser.Signal();
+    }
     this.game.goToCommands();
   }
 
