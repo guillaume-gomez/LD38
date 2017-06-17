@@ -47,7 +47,7 @@ class FinalScene extends Phaser.State {
       this.badGuy.anchor.setTo(0.5, 0.5);
       this.hero.anchor.setTo(0.5, 0.5);
 
-      const timer = 3000;
+      const timer = 4000;
 
       let tweenA = this.game.add.tween(this.hero).to( { x: 200 }, timer, "Quart.easeOut");
       let tweenB = this.game.add.tween(this.badGuy).to( { x: 900 }, 2000, "Quart.easeOut");
@@ -67,21 +67,27 @@ class FinalScene extends Phaser.State {
       tweenC.start();
       tweenD.start();
 
-      this.emitter = this.game.add.emitter(200, 200, 200);
-      //gems
-      this.emitter.makeParticles(["baby", "baby2"], 10);
-      this.emitter.minParticleSpeed.set(0, 300);
-      this.emitter.maxParticleSpeed.set(0, 400);
-      
+      this.tweensGems = []
+      this.gemSprite = [];
+      const items = ["gem", "gem2", "gem3"];
+      for(let i = 0; i < 25; ++i) {
+        let sprite = this.game.add.sprite(200 , 400, items[Math.floor(Math.random()*items.length)]);
+        sprite.visible = false;
+        this.gemSprite.push(sprite);
+        const tween = this.game.add.tween(sprite).to( { x: 900 }, timer - (200 * 25 / i), "Quart.easeOut");
+        this.tweensGems.push(tween);
+      }
   }
 
   catched() {
     this.tweenE.start();
     this.tweenF.start();
-    this.emitter.start(false, 50, 20);
+    this.tweensGems.forEach(tween => tween.start());
+    this.gemSprite.forEach(sprite => sprite.visible = true);
     this.tweenF.onComplete.add(() => {
       this.tweenG.start();
       this.tweenJ.start();
+      this.gemSprite.forEach(sprite => sprite.visible = false);
       //flips
       this.badGuy.scale.setTo(HeroRatio, HeroRatio);
       this.hero.scale.setTo(-HeroRatio, HeroRatio);
@@ -99,6 +105,9 @@ class FinalScene extends Phaser.State {
     this.game.load.image("baby", "res/baby.png");
     this.game.load.image("baby2", "res/baby2.png");
     this.game.load.image("baby3", "res/baby3.png");
+    this.game.load.image("gem", "res/gem.png");
+    this.game.load.image("gem2", "res/gem2.png");
+    this.game.load.image("gem3", "res/gem3.png");
   }
 
   resetFade(TweensArray) {
