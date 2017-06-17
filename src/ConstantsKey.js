@@ -79,6 +79,12 @@ export const Level9 = {
   playerPosition: {x: 64, y: 352}
 };
 
+export const Level666 = {
+  path: "LVL_final_cut_scene.json",
+  key: Key,
+  lastLayer: 1
+};
+
 export const Level10 =
 {
   "path" : "LVL_patchwork.json",
@@ -135,7 +141,8 @@ export const Levels = {
   Level11,
   Level12,
   Level13,
-  Level14
+  Level14,
+  Level666
 };
 
 export const HeroSprite = {
