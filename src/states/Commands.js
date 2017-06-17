@@ -21,19 +21,10 @@ class Commands extends Phaser.State {
     this.game.add.text(350, 25, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D',strokeThickness: 1 });
 
     this.game.add.text(50, 125, "Move", { font: "bold 32px Arial", fill: TextColor });
-    
-
     this.game.add.text(50, 200, "Jump", { font: "bold 32px Arial", fill: TextColor });
-    
-
     this.game.add.text(50, 275, "Aim", { font: "bold 32px Arial", fill: TextColor });
-    
-
     this.game.add.text(50, 350, "Swith to inner layer", { font: "bold 32px Arial", fill: TextColor });
-    
-
     this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: TextColor });
-    
 
     this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: TextColor });
 
@@ -58,6 +49,9 @@ class Commands extends Phaser.State {
       imageLeft.scale.setTo(RatioButton, RatioButton);
       let imageRight = this.game.add.image(490, 110, 'xbox360', '360_Right_Stick');
       imageRight.scale.setTo(RatioButton, RatioButton);
+
+      group.alpha = 0;
+      this.textInfo.alpha = 0;
     } else {
       this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: TextColor });
       this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: TextColor });
