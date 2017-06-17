@@ -1,4 +1,4 @@
-import { TextPosition , Style, Height, Width } from '../Constants.js';
+import { TextPosition , Style, Height, WidthLevel } from '../Constants.js';
 
 const Timer = 5000;
 
@@ -14,7 +14,7 @@ class InformationString extends Phaser.Text {
     if(text.length !== 0) {
       this.bar = game.add.graphics();
       this.bar.beginFill(0x000000, 0.2);
-      this.bar.drawRect(0, 0, Width, 80);
+      this.bar.drawRect(0, 0, WidthLevel, 80);
     }
   }
 
