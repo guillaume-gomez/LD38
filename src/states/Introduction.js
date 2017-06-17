@@ -44,11 +44,13 @@ class Introduction extends Phaser.State {
       this.baby.scale.setTo(BabyRatio, BabyRatio);
       this.baby2.scale.setTo(BabyRatio, BabyRatio);
       this.badGuy.scale.setTo(HeroRatio, HeroRatio);
+
       const timer = 2000;
 
       let tweenA = this.game.add.tween(this.badGuy).to( { y: 370 }, 2000, "Quart.easeOut");
       let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 / 2 }, timer, "Quart.easeOut");
       this.tweenF = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
+
       this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 600 }, timer + 2000 , "Quart.easeOut");
       this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer + 2000, "Quart.easeOut");
       this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 10 }, timer + 2000, "Quart.easeOut");
