@@ -47,13 +47,13 @@ class Introduction extends Phaser.State {
 
       const timer = 2000;
 
-      let tweenA = this.game.add.tween(this.badGuy).to( { y: 370 }, 2000, "Quart.easeOut");
+      let tweenA = this.game.add.tween(this.badGuy).to( { y: 370 }, 500, "Quart.easeOut");
       let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 / 2 }, timer, "Quart.easeOut");
       this.tweenF = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
 
-      this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 600 }, timer + 2000 , "Quart.easeOut");
-      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer + 2000, "Quart.easeOut");
-      this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 10 }, timer + 2000, "Quart.easeOut");
+      this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 600 }, timer + 1000 , "Quart.easeOut");
+      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer + 1000, "Quart.easeOut");
+      this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 10 }, timer + 1000, "Quart.easeOut");
 
       tweenA.chain(tweenB);
       tweenB.chain(this.tweenC);
@@ -78,7 +78,7 @@ class Introduction extends Phaser.State {
         this.game.goToMainGame();
         return;
       }
-      this.camera.fade(0x000000, 300, false);
+      this.camera.fade(0x000000, 400, false);
       this.game.camera.onFadeComplete.addOnce(this.resetFade([this.tweenC, this.tweenD, this.tweenE]), this);
       this.mapManager.removeLayer();
       this.badGuy.x = 150;

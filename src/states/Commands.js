@@ -63,12 +63,12 @@ class Commands extends Phaser.State {
     if(this.buttonA) {
       this.buttonA.onDown = new Phaser.Signal();
     }
-    this.game.goToMainGame();
+    this.game.goToIndroduction();
   }
 
   update() {
     if(this.enterButton.isDown) {
-      this.game.goToMainGame();
+      this.game.goToIndroduction();
     }
     if(!this.game.controls.hasGamepad()) {
       if(this.game.controls.isQwerty) {
