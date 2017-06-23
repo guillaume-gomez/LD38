@@ -1,5 +1,5 @@
 import { WidthSpriteSheetHero, HeightSpriteSheetHero, Size, CursorSize, Width, Height, HudText, HudTextX, HudTextY, WidthLevel } from '../Constants.js';
-import { Tileset, Level1, Levels, HeroSprite } from '../ConstantsKey.js';
+import { Tileset, Level1, Levels, HeroSprite, MaxLevel } from '../ConstantsKey.js';
 import Character from 'objects/Character';
 import InformationString from 'objects/InformationString';
 
@@ -14,7 +14,7 @@ class MainView extends Phaser.State {
 
   init(indexLevel) {
     this.indexLevel = indexLevel || 1;
-    this.hasLevel = Object.keys(Levels).length >= this.indexLevel;
+    this.hasLevel = MaxLevel >= this.indexLevel;
     if(!this.game.controls) {
       let controls = new Controls(this.game);
       controls.PostMortemDefaultConfig();
@@ -25,7 +25,7 @@ class MainView extends Phaser.State {
 
   create() {
     if(!this.hasLevel) {
-      this.game.goToMenu();
+      this.game.goToFinalScene();
     } else {
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);

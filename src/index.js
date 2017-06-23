@@ -2,6 +2,7 @@ import MainView from 'states/MainView';
 import MainMenu from 'states/MainMenu';
 import Commands from 'states/Commands';
 import Introduction from 'states/Introduction';
+import FinalScene from 'states/FinalScene';
 import { Width, Height } from  "./Constants.js"
 
 class Game extends Phaser.Game {
@@ -13,6 +14,7 @@ class Game extends Phaser.Game {
     this.state.add('Commands', Commands, false);
     this.state.add('Introduction', Introduction, false);
     this.state.add('MainView', MainView, false);
+    this.state.add('FinalScene', FinalScene, false);
     this.state.start('MainMenu');
   }
 
@@ -26,6 +28,10 @@ class Game extends Phaser.Game {
 
   goToIndroduction() {
     this.state.start('Introduction');
+  }
+
+  goToFinalScene() {
+    this.state.start('FinalScene');
   }
 
   goToMenu() {

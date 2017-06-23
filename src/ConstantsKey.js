@@ -1,5 +1,7 @@
 const Key = "Test";
 
+export const MaxLevel = 14;
+
 export const Tileset = {
   path: "tileset.png",
   key: "tileset"
