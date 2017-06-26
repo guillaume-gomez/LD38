@@ -38,6 +38,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Key = "Test";
 
+var MaxLevel = exports.MaxLevel = 14;
+
 var Tileset = exports.Tileset = {
   path: "tileset.png",
   key: "tileset"
@@ -47,7 +49,7 @@ var Level1 = exports.Level1 = {
   path: "LVL_1.json",
   key: Key,
   lastLayer: 3,
-  text: "",
+  text: "OMG ! Someone took away the children of the village !",
   playerPosition: { x: 64, y: 352 }
 };
 
@@ -55,7 +57,7 @@ var Level2 = exports.Level2 = {
   path: "LVL_6.json",
   key: Key,
   lastLayer: 3,
-  text: "",
+  text: "He wants you to bring him gems in exchange for the children.",
   playerPosition: { x: 64, y: 20 }
 };
 
@@ -63,7 +65,7 @@ var Level3 = exports.Level3 = {
   path: "LVL_2.json",
   key: Key,
   lastLayer: 2,
-  text: "The gap seems too large. You might want to use your power",
+  text: "The gap is too large for a classic jump, thankfully you have some powers.",
   playerPosition: { x: 64, y: 352 }
 };
 
@@ -79,16 +81,84 @@ var Level5 = exports.Level5 = {
   path: "LVL_3.json",
   key: Key,
   lastLayer: 2,
-  text: "A layer can help you, but it could stop you too. Press Shift to rollback.",
+  text: "Switching layers might help you but also block you, think about the rollback...",
   playerPosition: { x: 64, y: 352 }
 };
 
 var Level6 = exports.Level6 = {
+  "path": "LVL_three_level_gems.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "Look ! Some gems seem hidden.",
+  "playerPosition": { "x": 64, "y": 344 }
+};
+
+var Level7 = exports.Level7 = {
+  "path": "LVL_leap_of_death.json",
+  "key": "Test",
+  "lastLayer": 2,
+  "text": "Nature might need to be dealt with.",
+  "playerPosition": { "x": 64, "y": 280 }
+};
+
+var Level8 = exports.Level8 = {
+  "path": "bridge.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "Sometimes there's more than meet the eye.",
+  "playerPosition": { "x": 64, "y": 140 }
+};
+
+var Level9 = exports.Level9 = {
   path: "LVL_4.json",
   key: Key,
   lastLayer: 1,
   text: "You may need to remove more than one layer",
   playerPosition: { x: 64, y: 352 }
+};
+
+var Level666 = exports.Level666 = {
+  path: "LVL_final_cut_scene.json",
+  key: Key,
+  lastLayer: 1
+};
+
+var Level10 = exports.Level10 = {
+  "path": "LVL_patchwork.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "OMG! The world all messed up, it might need a fix.",
+  "playerPosition": { "x": 64, "y": 60 }
+};
+
+var Level11 = exports.Level11 = {
+  "path": "LVL_9.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "Sometimes, you need a difference perspective.",
+  "playerPosition": { "x": 500, "y": 80 }
+};
+
+var Level12 = exports.Level12 = {
+  "path": "flashJump.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "Don't be afraid to switch universes.",
+  "playerPosition": { "x": 64, "y": 118 }
+};
+
+var Level13 = exports.Level13 = { "path": "LVL_10.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "More can mean less.",
+  "playerPosition": { "x": 64, "y": 352 }
+};
+
+var Level14 = exports.Level14 = { "path": "MaxTrigger2.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "Knowledge is power.",
+  "playerPosition": { "x": 24, "y": 438 }
 };
 
 var Levels = exports.Levels = {
@@ -97,7 +167,16 @@ var Levels = exports.Levels = {
   Level3: Level3,
   Level4: Level4,
   Level5: Level5,
-  Level6: Level6
+  Level6: Level6,
+  Level7: Level7,
+  Level8: Level8,
+  Level9: Level9,
+  Level10: Level10,
+  Level11: Level11,
+  Level12: Level12,
+  Level13: Level13,
+  Level14: Level14,
+  Level666: Level666
 };
 
 var HeroSprite = exports.HeroSprite = {
@@ -134,6 +213,10 @@ var _Introduction = require('states/Introduction');
 
 var _Introduction2 = _interopRequireDefault(_Introduction);
 
+var _FinalScene = require('states/FinalScene');
+
+var _FinalScene2 = _interopRequireDefault(_FinalScene);
+
 var _Constants = require('./Constants.js');
 
 function _interopRequireDefault(obj) {
@@ -168,9 +251,10 @@ var Game = function (_Phaser$Game) {
 
     _this.currentLevel = 1;
     _this.state.add('MainMenu', _MainMenu2.default, false);
-    _this.state.add('MainView', _MainView2.default, false);
     _this.state.add('Commands', _Commands2.default, false);
-    //this.state.add('Introduction', Introduction, false);
+    _this.state.add('Introduction', _Introduction2.default, false);
+    _this.state.add('MainView', _MainView2.default, false);
+    _this.state.add('FinalScene', _FinalScene2.default, false);
     _this.state.start('MainMenu');
     return _this;
   }
@@ -184,6 +268,16 @@ var Game = function (_Phaser$Game) {
     key: 'goToCommands',
     value: function goToCommands() {
       this.state.start('Commands');
+    }
+  }, {
+    key: 'goToIndroduction',
+    value: function goToIndroduction() {
+      this.state.start('Introduction');
+    }
+  }, {
+    key: 'goToFinalScene',
+    value: function goToFinalScene() {
+      this.state.start('FinalScene');
     }
   }, {
     key: 'goToMenu',
@@ -209,7 +303,7 @@ var Game = function (_Phaser$Game) {
 
 new Game();
 
-},{"./Constants.js":1,"states/Commands":8,"states/Introduction":9,"states/MainMenu":10,"states/MainView":11}],4:[function(require,module,exports){
+},{"./Constants.js":1,"states/Commands":8,"states/FinalScene":9,"states/Introduction":10,"states/MainMenu":11,"states/MainView":12}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -622,7 +716,7 @@ var InformationString = function (_Phaser$Text) {
     if (text.length !== 0) {
       _this.bar = game.add.graphics();
       _this.bar.beginFill(0x000000, 0.2);
-      _this.bar.drawRect(0, 0, _Constants.Width, 80);
+      _this.bar.drawRect(0, 0, _Constants.WidthLevel, 80);
     }
     return _this;
   }
@@ -688,7 +782,7 @@ var MapManager = function () {
     this.doorSprites = [];
     this.visibleDoor = false;
     //animation during erase, so you we have to lock rollabck during erase processing
-    this.lockRollback = true;
+    this.lockRollback = false;
     this.nbFinishedFunctions = 0;
   }
 
@@ -766,8 +860,11 @@ var MapManager = function () {
       var _this2 = this;
 
       var timerAnim = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : LengthAnimation;
+      var removeLock = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
-      this.lockRollback = true;
+      if (this.lockRollback === true) {
+        return;
+      }
       var lengthY = _Constants.CursorLength;
       var lengthX = _Constants.CursorLength;
       //check the layers associated to the deletion;
@@ -789,6 +886,7 @@ var MapManager = function () {
             _this2.checkIfLock();
           };
           indexRemoval++;
+          _this2.lockRollback = true && !removeLock;
           setTimeout(fn, indexRemoval * timerAnim);
           if (indexRemoval > _Constants.CursorLength) {
             indexRemoval = 0;
@@ -811,7 +909,7 @@ var MapManager = function () {
     value: function removeLayer() {
       for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x += _Constants.CursorLength) {
         for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y += _Constants.CursorLength) {
-          this.eraseBlock(x, y, 0);
+          this.eraseBlock(x, y, 0, true);
         }
       }
     }
@@ -820,7 +918,7 @@ var MapManager = function () {
     value: function undoLayer() {
       for (var x = 0; x < _Constants.WidthLevel / _Constants.Size; x += _Constants.CursorLength) {
         for (var y = 0; y < _Constants.HeightLevel / _Constants.Size; y += _Constants.CursorLength) {
-          this.undoBlock(x, y, 0);
+          this.undoBlock(x, y, 0, true);
         }
       }
     }
@@ -1037,6 +1135,8 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
+var RatioButton = 0.75;
+
 var Commands = function (_Phaser$State) {
   _inherits(Commands, _Phaser$State);
 
@@ -1058,22 +1158,16 @@ var Commands = function (_Phaser$State) {
       this.textInfo = this.game.add.text(870, 90, "Qwerty", { font: "bold 14px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
       group.add(button);
 
+      this.moveText = this.game.add.text(500, 125, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.jumpText = this.game.add.text(500, 200, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
+
       this.game.add.text(350, 25, "Commands", { font: "bold 52px Arial", fill: "#8cc169", stroke: '#4D4D4D', strokeThickness: 1 });
 
       this.game.add.text(50, 125, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.moveText = this.game.add.text(500, 125, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
-
       this.game.add.text(50, 200, "Jump", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.jumpText = this.game.add.text(500, 200, "", { font: "bold 32px Arial", fill: _Constants.TextColor });
-
       this.game.add.text(50, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: _Constants.TextColor });
-
       this.game.add.text(50, 350, "Swith to inner layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
-
       this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(500, 425, "Shift", { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
 
@@ -1083,26 +1177,59 @@ var Commands = function (_Phaser$State) {
       var controls = new _Controls2.default(this.game);
       controls.PostMortemDefaultConfig();
       this.game.controls = controls;
+
+      if (this.game.controls.hasGamepad()) {
+        this.buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+        this.buttonA.onDown.add(this.nextStep, this);
+
+        var imageA = this.game.add.image(490, 185, 'xbox360', '360_A');
+        imageA.scale.setTo(RatioButton, RatioButton);
+        var imageB = this.game.add.image(490, 335, 'xbox360', '360_B');
+        imageB.scale.setTo(RatioButton, RatioButton);
+        var imageX = this.game.add.image(490, 410, 'xbox360', '360_X');
+        imageX.scale.setTo(RatioButton, RatioButton);
+        var imageLeft = this.game.add.image(490, 260, 'xbox360', '360_Left_Stick');
+        imageLeft.scale.setTo(RatioButton, RatioButton);
+        var imageRight = this.game.add.image(490, 110, 'xbox360', '360_Right_Stick');
+        imageRight.scale.setTo(RatioButton, RatioButton);
+
+        group.alpha = 0;
+        this.textInfo.alpha = 0;
+      } else {
+        this.game.add.text(500, 275, aimText, { font: "bold 32px Arial", fill: _Constants.TextColor });
+        this.game.add.text(500, 350, eraseLayer, { font: "bold 32px Arial", fill: _Constants.TextColor });
+        this.game.add.text(500, 425, "Shift", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      }
+    }
+  }, {
+    key: "nextStep",
+    value: function nextStep() {
+      if (this.buttonA) {
+        this.buttonA.onDown = new Phaser.Signal();
+      }
+      this.game.goToIndroduction();
     }
   }, {
     key: "update",
     value: function update() {
       if (this.enterButton.isDown) {
-        this.game.goToMainGame();
+        this.game.goToIndroduction();
       }
-
-      if (this.game.controls.isQwerty) {
-        this.moveText.setText("A / D keys");
-        this.jumpText.setText("W key");
-      } else {
-        this.moveText.setText("Q / D keys");
-        this.jumpText.setText("Z key");
+      if (!this.game.controls.hasGamepad()) {
+        if (this.game.controls.isQwerty) {
+          this.moveText.setText("A / D keys");
+          this.jumpText.setText("W key");
+        } else {
+          this.moveText.setText("Q / D keys");
+          this.jumpText.setText("Z key");
+        }
       }
     }
   }, {
     key: "preload",
     value: function preload() {
       this.game.load.spritesheet('button', "res/button_sprite_sheet.png", 193, 71);
+      this.game.load.atlas('xbox360', 'res/xbox360.png', 'res/xbox360.json');
     }
   }, {
     key: "switchKeyboard",
@@ -1169,16 +1296,16 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var Introduction = function (_Phaser$State) {
-  _inherits(Introduction, _Phaser$State);
+var FinalScene = function (_Phaser$State) {
+  _inherits(FinalScene, _Phaser$State);
 
-  function Introduction() {
-    _classCallCheck(this, Introduction);
+  function FinalScene() {
+    _classCallCheck(this, FinalScene);
 
-    return _possibleConstructorReturn(this, (Introduction.__proto__ || Object.getPrototypeOf(Introduction)).call(this));
+    return _possibleConstructorReturn(this, (FinalScene.__proto__ || Object.getPrototypeOf(FinalScene)).call(this));
   }
 
-  _createClass(Introduction, [{
+  _createClass(FinalScene, [{
     key: 'create',
     value: function create() {
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -1195,77 +1322,100 @@ var Introduction = function (_Phaser$State) {
 
       this.collisionLayer.resizeWorld();
 
-      this.mapManager = new _MapManager2.default(this.map, _ConstantsKey.Levels['Level6'].lastLayer);
+      this.mapManager = new _MapManager2.default(this.map, _ConstantsKey.Levels['Level666'].lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      var originPositionBadGuy = 200;
-      var originPositionBaby = 900;
+      var originPositionBadGuy = _Constants.Width + 300;
+      var originPositionBaby = _Constants.Width + 300;
+      var originHeroPosition = -100;
 
-      this.baby = this.game.add.sprite(originPositionBaby, 395, 'baby');
-      this.baby2 = this.game.add.sprite(originPositionBaby + 50, 395, 'baby2');
-      this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
+      this.hero = this.game.add.sprite(originHeroPosition, 405, _ConstantsKey.HeroSprite.key);
+      this.baby = this.game.add.sprite(originPositionBaby, 420, 'baby');
+      this.baby2 = this.game.add.sprite(originPositionBaby + 50, 420, 'baby2');
+      this.badGuy = this.game.add.sprite(originPositionBadGuy, 405, 'baby3');
 
-      this.baby.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
-      this.baby2.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
-      this.badGuy.scale.setTo(_Constants.HeroRatio, _Constants.HeroRatio);
-      var timer = 3000;
+      this.baby.scale.setTo(-_Constants.BabyRatio, _Constants.BabyRatio);
+      this.baby2.scale.setTo(-_Constants.BabyRatio, _Constants.BabyRatio);
+      this.badGuy.scale.setTo(-_Constants.HeroRatio, _Constants.HeroRatio);
+      this.hero.scale.setTo(_Constants.HeroRatio, _Constants.HeroRatio);
 
-      var tweenA = this.game.add.tween(this.badGuy).to({ y: 320 }, 2000, "Quart.easeOut");
-      var tweenB = this.game.add.tween(this.badGuy).to({ x: 920 }, timer, "Quart.easeOut");
-      this.tweenC = this.game.add.tween(this.badGuy).to({ x: _Constants.Width + 120 }, timer, "Quart.easeOut");
-      this.tweenD = this.game.add.tween(this.baby).to({ x: _Constants.Width + 80 }, timer, "Quart.easeOut");
-      this.tweenE = this.game.add.tween(this.baby2).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
+      console.log(this.hero.anchor);
+      this.baby.anchor.setTo(0.5, 0.5);
+      this.baby2.anchor.setTo(0.5, 0.5);
+      this.badGuy.anchor.setTo(0.5, 0.5);
+      this.hero.anchor.setTo(0.5, 0.5);
 
-      this.tweenF = this.game.add.tween(this.badGuy).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
-      this.tweenG = this.game.add.tween(this.baby).to({ x: _Constants.Width + 100 }, timer, "Quart.easeOut");
-      this.tweenH = this.game.add.tween(this.baby2).to({ x: 600 }, timer, "Quart.easeOut");
-      this.tweenI = this.game.add.tween(this.baby).to({ x: 600 }, timer, "Quart.easeOut");
+      var timer = 4000;
 
-      tweenA.chain(tweenB);
-      tweenB.chain(this.tweenC);
-      tweenB.onComplete.add(this.catched, this);
+      var tweenA = this.game.add.tween(this.hero).to({ x: 200 }, timer, "Quart.easeOut");
+      var tweenB = this.game.add.tween(this.badGuy).to({ x: 900 }, 2000, "Quart.easeOut");
+      var tweenC = this.game.add.tween(this.baby).to({ x: 900 - 30 }, timer, "Quart.easeOut");
+      var tweenD = this.game.add.tween(this.baby2).to({ x: 900 + 30 }, timer, "Quart.easeOut");
+
+      this.tweenE = this.game.add.tween(this.baby).to({ x: originHeroPosition }, timer, "Quart.easeOut");
+      this.tweenF = this.game.add.tween(this.baby2).to({ x: originHeroPosition }, timer, "Quart.easeOut");
+
+      this.tweenG = this.game.add.tween(this.hero).to({ x: originHeroPosition }, timer * 1.5, "Quart.easeOut");
+      this.tweenJ = this.game.add.tween(this.badGuy).to({ x: originPositionBadGuy }, timer * 1.5, "Quart.easeOut");
+
+      tweenD.onComplete.add(this.catched, this);
 
       tweenA.start();
+      tweenB.start();
+      tweenC.start();
+      tweenD.start();
+
+      this.tweensGems = [];
+      this.gemSprite = [];
+      var items = ["gem", "gem2", "gem3"];
+      for (var i = 0; i < 25; ++i) {
+        var sprite = this.game.add.sprite(200, 400, items[Math.floor(Math.random() * items.length)]);
+        sprite.visible = false;
+        this.gemSprite.push(sprite);
+        var tween = this.game.add.tween(sprite).to({ x: 900 }, timer - 200 * 25 / i, "Quart.easeOut");
+        this.tweensGems.push(tween);
+      }
     }
   }, {
     key: 'catched',
     value: function catched() {
       var _this2 = this;
 
-      this.tweenC.start();
-      this.tweenD.start();
       this.tweenE.start();
-
-      this.tweenE.onComplete.add(function () {
-        _this2.camera.fade(0x000000, 300, false);
-        _this2.game.camera.onFadeComplete.addOnce(_this2.resetFade([_this2.tweenF, _this2.tweenG, _this2.tweenH]), _this2);
-        _this2.game.camera.onFadeComplete;
-        _this2.mapManager.removeLayer();
-        _this2.badGuy.x = 150;
-        _this2.baby.x = 130;
-        _this2.baby2.x = 170;
+      this.tweenF.start();
+      this.tweensGems.forEach(function (tween) {
+        return tween.start();
+      });
+      this.gemSprite.forEach(function (sprite) {
+        return sprite.visible = true;
+      });
+      this.tweenF.onComplete.add(function () {
+        _this2.tweenG.start();
+        _this2.tweenJ.start();
+        _this2.gemSprite.forEach(function (sprite) {
+          return sprite.visible = false;
+        });
+        //flips
+        _this2.badGuy.scale.setTo(_Constants.HeroRatio, _Constants.HeroRatio);
+        _this2.hero.scale.setTo(-_Constants.HeroRatio, _Constants.HeroRatio);
       }, this);
 
-      this.tweenH.onComplete.add(function () {
-        console.log("kkkk");
-        _this2.camera.fade(0x000000, 300, false);
-        _this2.game.camera.onFadeComplete.addOnce(_this2.resetFade([_this2.tweenF, _this2.tweenI]), _this2);
-        _this2.mapManager.removeLayer();
-
-        _this2.badGuy.x = 150;
-        _this2.baby.x = 130;
-        _this2.baby2.kill();
-      }, this);
+      this.tweenJ.onComplete.add(function () {
+        _this2.game.goToMenu();
+      });
     }
   }, {
     key: 'preload',
     value: function preload() {
       this.game.load.spritesheet(_ConstantsKey.HeroSprite.key, 'res/' + _ConstantsKey.HeroSprite.path, _Constants.WidthSpriteSheetHero, _Constants.HeightSpriteSheetHero);
       this.game.load.image(_ConstantsKey.Tileset.key, 'res/' + _ConstantsKey.Tileset.path);
-      this.game.load.tilemap(_ConstantsKey.Levels['Level6'].key, 'res/' + _ConstantsKey.Levels['Level6'].path, null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.tilemap(_ConstantsKey.Levels['Level666'].key, 'res/' + _ConstantsKey.Levels['Level666'].path, null, Phaser.Tilemap.TILED_JSON);
       this.game.load.image("baby", "res/baby.png");
       this.game.load.image("baby2", "res/baby2.png");
       this.game.load.image("baby3", "res/baby3.png");
+      this.game.load.image("gem", "res/gem.png");
+      this.game.load.image("gem2", "res/gem2.png");
+      this.game.load.image("gem3", "res/gem3.png");
     }
   }, {
     key: 'resetFade',
@@ -1282,12 +1432,185 @@ var Introduction = function (_Phaser$State) {
     }
   }]);
 
+  return FinalScene;
+}(Phaser.State);
+
+exports.default = FinalScene;
+
+},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/MapManager":7}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+  };
+}();
+
+var _Constants = require('../Constants.js');
+
+var _ConstantsKey = require('../ConstantsKey.js');
+
+var _MapManager = require('objects/MapManager');
+
+var _MapManager2 = _interopRequireDefault(_MapManager);
+
+var _Character = require('objects/Character');
+
+var _Character2 = _interopRequireDefault(_Character);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }return call && (typeof call === "object" || typeof call === "function") ? call : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
+
+var originPositionBadGuy = 200;
+var originPositionBaby = 900;
+
+var Introduction = function (_Phaser$State) {
+  _inherits(Introduction, _Phaser$State);
+
+  function Introduction() {
+    _classCallCheck(this, Introduction);
+
+    return _possibleConstructorReturn(this, (Introduction.__proto__ || Object.getPrototypeOf(Introduction)).call(this));
+  }
+
+  _createClass(Introduction, [{
+    key: 'create',
+    value: function create() {
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+      this.map = this.game.add.tilemap(_ConstantsKey.Levels['Level666'].key);
+      this.map.addTilesetImage(_ConstantsKey.Levels['Level666'].key, _ConstantsKey.Tileset.key);
+
+      this.map.createLayer('thirdLayer');
+      this.map.createLayer('secondLayer');
+      this.map.createLayer('firstLayer');
+      // This resizes the game world to match the layer dimensions
+      this.collisionLayer = this.map.createLayer('colissionLayer');
+      this.map.setCollisionByExclusion([], true, this.collisionLayer);
+
+      this.collisionLayer.resizeWorld();
+
+      this.mapManager = new _MapManager2.default(this.map, _ConstantsKey.Levels['Level6'].lastLayer);
+      this.mapManager.setUpCollisionLayer(this.collisionLayer);
+
+      var originPositionBadGuy = 200;
+      var originPositionBaby = 900;
+
+      this.baby = this.add.group();
+      this.baby.create(originPositionBaby, 800, 'baby');
+
+      this.baby2 = this.add.group();
+      this.baby2.create(originPositionBaby + 50, 800, 'baby2');
+
+      this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
+
+      this.baby.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
+      this.baby2.scale.setTo(_Constants.BabyRatio, _Constants.BabyRatio);
+      this.badGuy.scale.setTo(_Constants.HeroRatio, _Constants.HeroRatio);
+
+      var timer = 2000;
+
+      var tweenA = this.game.add.tween(this.badGuy).to({ y: 370 }, 500, "Quart.easeOut");
+      var tweenB = this.game.add.tween(this.badGuy).to({ x: 920 / 2 }, timer, "Quart.easeOut");
+      this.tweenF = this.game.add.tween(this.badGuy).to({ x: 920 }, timer, "Quart.easeOut");
+
+      this.tweenC = this.game.add.tween(this.badGuy).to({ x: _Constants.Width + 600 }, timer + 1000, "Quart.easeOut");
+      this.tweenD = this.game.add.tween(this.baby).to({ x: _Constants.Width + 100 }, timer + 1000, "Quart.easeOut");
+      this.tweenE = this.game.add.tween(this.baby2).to({ x: _Constants.Width + 10 }, timer + 1000, "Quart.easeOut");
+
+      tweenA.chain(tweenB);
+      tweenB.chain(this.tweenC);
+      tweenB.onComplete.add(this.catched, this);
+
+      tweenA.start();
+    }
+  }, {
+    key: 'catched',
+    value: function catched() {
+      var _this2 = this;
+
+      this.tweenF.start();
+      this.tweenC.start();
+      this.tweenD.start();
+      this.tweenE.start();
+
+      this.baby.create(originPositionBaby, 800, 'cage');
+      this.baby2.create(originPositionBaby + 50, 800, 'cage');
+
+      this.nbReboot = 0;
+
+      this.tweenE.onComplete.add(function () {
+        if (_this2.nbReboot > 1) {
+          _this2.game.goToMainGame();
+          return;
+        }
+        _this2.camera.fade(0x000000, 400, false);
+        _this2.game.camera.onFadeComplete.addOnce(_this2.resetFade([_this2.tweenC, _this2.tweenD, _this2.tweenE]), _this2);
+        _this2.mapManager.removeLayer();
+        _this2.badGuy.x = 150;
+        _this2.baby.x = -350;
+        _this2.baby2.x = -400;
+        _this2.nbReboot += 1;
+      }, this);
+    }
+  }, {
+    key: 'preload',
+    value: function preload() {
+      this.game.load.spritesheet(_ConstantsKey.HeroSprite.key, 'res/' + _ConstantsKey.HeroSprite.path, _Constants.WidthSpriteSheetHero, _Constants.HeightSpriteSheetHero);
+      this.game.load.image(_ConstantsKey.Tileset.key, 'res/' + _ConstantsKey.Tileset.path);
+      this.game.load.tilemap(_ConstantsKey.Levels['Level666'].key, 'res/' + _ConstantsKey.Levels['Level666'].path, null, Phaser.Tilemap.TILED_JSON);
+      this.game.load.image("baby", "res/baby.png");
+      this.game.load.image("baby2", "res/baby2.png");
+      this.game.load.image("baby3", "res/baby3.png");
+      this.game.load.image("cage", "res/cage.png");
+    }
+  }, {
+    key: 'resetFade',
+    value: function resetFade(TweensArray) {
+      var _this3 = this;
+
+      return function () {
+        _this3.game.camera.resetFX();
+        TweensArray.forEach(function (tween) {
+          tween.start();
+        });
+      };
+    }
+  }]);
+
   return Introduction;
 }(Phaser.State);
 
 exports.default = Introduction;
 
-},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/MapManager":7}],10:[function(require,module,exports){
+},{"../Constants.js":1,"../ConstantsKey.js":2,"objects/Character":4,"objects/MapManager":7}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1305,6 +1628,14 @@ var _createClass = function () {
 }();
 
 var _Constants = require("../Constants.js");
+
+var _Controls = require("objects/Controls");
+
+var _Controls2 = _interopRequireDefault(_Controls);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -1336,12 +1667,27 @@ var MainMenu = function (_Phaser$State) {
   _createClass(MainMenu, [{
     key: "create",
     value: function create() {
+      if (this.game.controls.hasGamepad()) {
+        this.buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+        this.buttonA.onDown.add(this.next, this);
+      }
+      this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+      this.enterButton.onDown.add(this.next, this);
+
       this.game.stage.setBackgroundColor(_Constants.BackgroundColor);
       this.game.add.sprite(20, 500, "LD");
       this.game.add.sprite(0, 0, "background");
       this.game.add.text(350, 400, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
       this.game.add.text(700, 530, "Thanks for playing ! :)", { font: "bold 19px Arial", fill: _Constants.TextColor });
-      this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      if (!this.game.controls) {
+        var controls = new _Controls2.default(this.game);
+        controls.PostMortemDefaultConfig();
+        this.game.controls = controls;
+      }
     }
   }, {
     key: "preload",
@@ -1350,11 +1696,12 @@ var MainMenu = function (_Phaser$State) {
       this.game.load.image("background", "res/menu.png");
     }
   }, {
-    key: "update",
-    value: function update() {
-      if (this.enterButton.isDown) {
-        this.game.goToCommands();
+    key: "next",
+    value: function next() {
+      if (this.buttonA) {
+        this.buttonA.onDown = new Phaser.Signal();
       }
+      this.game.goToCommands();
     }
   }]);
 
@@ -1363,7 +1710,7 @@ var MainMenu = function (_Phaser$State) {
 
 exports.default = MainMenu;
 
-},{"../Constants.js":1}],11:[function(require,module,exports){
+},{"../Constants.js":1,"objects/Controls":5}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1435,7 +1782,7 @@ var MainView = function (_Phaser$State) {
     key: 'init',
     value: function init(indexLevel) {
       this.indexLevel = indexLevel || 1;
-      this.hasLevel = Object.keys(_ConstantsKey.Levels).length >= this.indexLevel;
+      this.hasLevel = _ConstantsKey.MaxLevel >= this.indexLevel;
       if (!this.game.controls) {
         var controls = new _Controls2.default(this.game);
         controls.PostMortemDefaultConfig();
@@ -1447,7 +1794,7 @@ var MainView = function (_Phaser$State) {
     key: 'create',
     value: function create() {
       if (!this.hasLevel) {
-        this.game.goToMenu();
+        this.game.goToFinalScene();
       } else {
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
