@@ -13,53 +13,60 @@ class Introduction extends Phaser.State {
   }
 
   create() {
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    if(this.game.controls.hasGamepad()) {
+      this.buttonA = this.game.controls.pad.getButton(Phaser.Gamepad.XBOX360_A);
+      this.buttonA.onDown.add(this.next, this);
+    }
+    this.enterButton = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    this.enterButton.onDown.add(this.next, this);
 
-      this.map = this.game.add.tilemap(Levels[`Level666`].key);
-      this.map.addTilesetImage(Levels[`Level666`].key, Tileset.key);
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.map.createLayer('thirdLayer');
-      this.map.createLayer('secondLayer');
-      this.map.createLayer('firstLayer');
-      // This resizes the game world to match the layer dimensions
-      this.collisionLayer = this.map.createLayer('colissionLayer');
-      this.map.setCollisionByExclusion([], true, this.collisionLayer);
+    this.map = this.game.add.tilemap(Levels[`Level666`].key);
+    this.map.addTilesetImage(Levels[`Level666`].key, Tileset.key);
 
-      this.collisionLayer.resizeWorld();
+    this.map.createLayer('thirdLayer');
+    this.map.createLayer('secondLayer');
+    this.map.createLayer('firstLayer');
+    // This resizes the game world to match the layer dimensions
+    this.collisionLayer = this.map.createLayer('colissionLayer');
+    this.map.setCollisionByExclusion([], true, this.collisionLayer);
 
-      this.mapManager = new MapManager(this.map, Levels[`Level6`].lastLayer);
-      this.mapManager.setUpCollisionLayer(this.collisionLayer);
+    this.collisionLayer.resizeWorld();
 
-      const originPositionBadGuy = 200;
-      const originPositionBaby = 900;
+    this.mapManager = new MapManager(this.map, Levels[`Level6`].lastLayer);
+    this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
-      this.baby = this.add.group();
-      this.baby.create(originPositionBaby, 800, 'baby');
+    const originPositionBadGuy = 200;
+    const originPositionBaby = 900;
 
-      this.baby2 = this.add.group();
-      this.baby2.create(originPositionBaby + 50, 800, 'baby2');
+    this.baby = this.add.group();
+    this.baby.create(originPositionBaby, 800, 'baby');
 
-      this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
+    this.baby2 = this.add.group();
+    this.baby2.create(originPositionBaby + 50, 800, 'baby2');
 
-      this.baby.scale.setTo(BabyRatio, BabyRatio);
-      this.baby2.scale.setTo(BabyRatio, BabyRatio);
-      this.badGuy.scale.setTo(HeroRatio, HeroRatio);
+    this.badGuy = this.game.add.sprite(originPositionBadGuy, 370, 'baby3');
 
-      const timer = 2000;
+    this.baby.scale.setTo(BabyRatio, BabyRatio);
+    this.baby2.scale.setTo(BabyRatio, BabyRatio);
+    this.badGuy.scale.setTo(HeroRatio, HeroRatio);
 
-      let tweenA = this.game.add.tween(this.badGuy).to( { y: 370 }, 500, "Quart.easeOut");
-      let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 / 2 }, timer, "Quart.easeOut");
-      this.tweenF = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
+    const timer = 2000;
 
-      this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 600 }, timer + 1000 , "Quart.easeOut");
-      this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer + 1000, "Quart.easeOut");
-      this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 10 }, timer + 1000, "Quart.easeOut");
+    let tweenA = this.game.add.tween(this.badGuy).to( { y: 370 }, 500, "Quart.easeOut");
+    let tweenB = this.game.add.tween(this.badGuy).to( { x: 920 / 2 }, timer, "Quart.easeOut");
+    this.tweenF = this.game.add.tween(this.badGuy).to( { x: 920 }, timer, "Quart.easeOut");
 
-      tweenA.chain(tweenB);
-      tweenB.chain(this.tweenC);
-      tweenB.onComplete.add(this.catched, this);
+    this.tweenC = this.game.add.tween(this.badGuy).to( { x: Width + 600 }, timer + 1000 , "Quart.easeOut");
+    this.tweenD = this.game.add.tween(this.baby).to( { x: Width + 100 }, timer + 1000, "Quart.easeOut");
+    this.tweenE = this.game.add.tween(this.baby2).to( { x: Width + 10 }, timer + 1000, "Quart.easeOut");
 
-      tweenA.start();
+    tweenA.chain(tweenB);
+    tweenB.chain(this.tweenC);
+    tweenB.onComplete.add(this.catched, this);
+
+    tweenA.start();
   }
 
   catched() {
@@ -106,6 +113,13 @@ class Introduction extends Phaser.State {
         tween.start();
       });
     }
+  }
+
+  next() {
+    if(this.buttonA) {
+      this.buttonA.onDown = new Phaser.Signal();
+    }
+    this.game.goToMainGame();
   }
 
 }
