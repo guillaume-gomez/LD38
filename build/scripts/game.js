@@ -38,7 +38,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var Key = "Test";
 
-var MaxLevel = exports.MaxLevel = 14;
+var MaxLevel = exports.MaxLevel = 15;
 
 var Tileset = exports.Tileset = {
   path: "tileset.png",
@@ -161,6 +161,14 @@ var Level14 = exports.Level14 = { "path": "MaxTrigger2.json",
   "playerPosition": { "x": 24, "y": 438 }
 };
 
+var Level15 = exports.Level15 = {
+  "path": "theEndIsNigh.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "It feels like a treasure is ahead of us !",
+  "playerPosition": { "x": 36, "y": 246 }
+};
+
 var Levels = exports.Levels = {
   Level1: Level1,
   Level2: Level2,
@@ -176,6 +184,7 @@ var Levels = exports.Levels = {
   Level12: Level12,
   Level13: Level13,
   Level14: Level14,
+  Level15: Level15,
   Level666: Level666
 };
 
