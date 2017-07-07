@@ -1,6 +1,6 @@
 const Key = "Test";
 
-export const MaxLevel = 14;
+export const MaxLevel = 15;
 
 export const Tileset = {
   path: "tileset.png",
@@ -129,6 +129,14 @@ export const Level14 =
   "playerPosition":{"x":24,"y":438}
 };
 
+export const Level15 = {
+  "path": "theEndIsNigh.json",
+  "key": "Test",
+  "lastLayer": 1,
+  "text": "It feels like a treasure is ahead of us !",
+  "playerPosition": {"x": 36, "y": 246}
+};
+
 export const Levels = {
   Level1,
   Level2,
@@ -144,6 +152,7 @@ export const Levels = {
   Level12,
   Level13,
   Level14,
+  Level15,
   Level666
 };
 
