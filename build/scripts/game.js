@@ -705,7 +705,7 @@ function _inherits(subClass, superClass) {
   }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 }
 
-var Timer = 5000;
+var Timer = 9000;
 
 var InformationString = function (_Phaser$Text) {
   _inherits(InformationString, _Phaser$Text);
@@ -1175,7 +1175,7 @@ var Commands = function (_Phaser$State) {
       this.game.add.text(50, 125, "Move", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(50, 200, "Jump", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(50, 275, "Aim", { font: "bold 32px Arial", fill: _Constants.TextColor });
-      this.game.add.text(50, 350, "Swith to inner layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
+      this.game.add.text(50, 350, "Switch to inner layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
       this.game.add.text(50, 425, "Rollback to previous layer", { font: "bold 32px Arial", fill: _Constants.TextColor });
 
       this.game.add.text(350, 525, "Press enter to start", { font: "bold 34px Arial", fill: _Constants.TextColor });
