@@ -1,6 +1,6 @@
 import { TextPosition , Style, Height, WidthLevel } from '../Constants.js';
 
-const Timer = 5000;
+const Timer = 9000;
 
 class InformationString extends Phaser.Text {
 
