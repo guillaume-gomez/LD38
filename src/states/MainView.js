@@ -49,11 +49,15 @@ class MainView extends Phaser.State {
       this.game.add.existing(this.hero);
       this.game.camera.follow(this.hero);
 
+      const lastLayer = Levels[`Level${this.indexLevel}`].lastLayer;
       this.marker = null;
       this.createTileSelector();
+      if(lastLayer === 3) {
+        this.marker.visible = false;
+      }
       this.game.input.addMoveCallback(this.updateMarker, this);
 
-      this.mapManager = new MapManager(this.map, Levels[`Level${this.indexLevel}`].lastLayer);
+      this.mapManager = new MapManager(this.map, lastLayer);
       this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
       this.text = new InformationString(this.game, Width/2, Levels[`Level${this.indexLevel}`].text );
