@@ -1841,11 +1841,15 @@ var MainView = function (_Phaser$State) {
         this.game.add.existing(this.hero);
         this.game.camera.follow(this.hero);
 
+        var lastLayer = _ConstantsKey.Levels['Level' + this.indexLevel].lastLayer;
         this.marker = null;
         this.createTileSelector();
+        if (lastLayer === 3) {
+          this.marker.visible = false;
+        }
         this.game.input.addMoveCallback(this.updateMarker, this);
 
-        this.mapManager = new _MapManager2.default(this.map, _ConstantsKey.Levels['Level' + this.indexLevel].lastLayer);
+        this.mapManager = new _MapManager2.default(this.map, lastLayer);
         this.mapManager.setUpCollisionLayer(this.collisionLayer);
 
         this.text = new _InformationString2.default(this.game, _Constants.Width / 2, _ConstantsKey.Levels['Level' + this.indexLevel].text);
