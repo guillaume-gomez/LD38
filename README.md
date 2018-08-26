@@ -18,23 +18,26 @@ All assets have been made during the event.
 
 ### Controls
 
-- Move : A, D //  Q, D
-- Jump : W // Z 
-- Aim : Arrow keys
-- Swith to inner layer : Left mouse button / Spacebar 
-- Rollback to previous layer : Shift
+| Action | Key |
+|--------|-----|
+| Move   | A, D //  Q, D |
+| Jump | W // Z |
+| Aim | Arrow keys |
+| Swith to inner layer | Left mouse button / Spacebar |
+| Rollback to previous layer | Shift |
 
 [PLAY Post-mortem version(Chrome recommended)](https://guillaume-gomez.github.io/LD38/build/)
 
 ## Ludum dare Compo
 
 ### Controls
-
-- Move : Arrow keys
-- Jump : W
-- Aim : Mouse cursor / A, D
-- Swith to inner layer : Left mouse button / SpaceBar
-- Rollback to previous layer : B key
+| Action | Key |
+|--------|-----|
+|Move | Arrow keys |
+| Jump | W |
+| Aim | Mouse cursor / A, D |
+| Swith to inner layer | Left mouse button / SpaceBar |
+| Rollback to previous layer | B key |
 
 [PLAY Ludum dare version(Chrome recommended)](https://guillaume-gomez.github.io/LD38/build_v1/)
 
